@@ -9,7 +9,7 @@ InputManager::InputManager(
     uint8_t capacity
 )
 :
-_encoder(nullptr),
+_device(nullptr),
 _events(capacity),
 _pressStart(0),
 _buttonPressed(false),
@@ -22,12 +22,12 @@ _longPressEvent(EventType::NONE)
 
 
 void InputManager::attach(
-    Encoder& encoder
+    InputDevice& device
 )
 {
 
-    _encoder =
-        &encoder;
+    _device =
+        &device;
 
 }
 
@@ -36,7 +36,7 @@ void InputManager::attach(
 void InputManager::detach()
 {
 
-    _encoder =
+    _device =
         nullptr;
 
 
@@ -61,9 +61,9 @@ void InputManager::detach()
 void InputManager::begin()
 {
 
-    if(_encoder)
+    if(_device)
     {
-        _encoder->begin();
+        _device->begin();
     }
 
 }
@@ -73,20 +73,20 @@ void InputManager::begin()
 void InputManager::update()
 {
 
-    if(!_encoder)
+    if(!_device)
         return;
 
 
 
-    _encoder->update();
+    _device->update();
 
 
 
-    while(_encoder->available())
+    while(_device->available())
     {
 
         processInputEvent(
-            _encoder->read()
+            _device->read()
         );
 
     }
@@ -150,10 +150,12 @@ Event InputManager::read()
 
     if(!_events.pop(event))
     {
+
         return Event(
             EventType::NONE,
             millis()
         );
+
     }
 
 
@@ -291,6 +293,19 @@ void InputManager::processInputEvent(
                 );
 
             }
+
+        break;
+
+
+
+        case InputEventType::BUTTON_BACK:
+
+            _events.push(
+                Event(
+                    EventType::BUTTON_BACK,
+                    event.timestamp
+                )
+            );
 
         break;
 

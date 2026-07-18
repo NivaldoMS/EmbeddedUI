@@ -38,7 +38,26 @@ public:
 
 
     /**
-     * @brief Limpa o buffer de desenho.
+     * @brief Inicia um ciclo de renderização.
+     *
+     * Em displays paginados, inicia a primeira página.
+     */
+    virtual void beginFrame() = 0;
+
+
+
+    /**
+     * @brief Avança o ciclo de renderização.
+     *
+     * @return true enquanto houver páginas
+     * adicionais para desenhar.
+     */
+    virtual bool nextFrame() = 0;
+
+
+
+    /**
+     * @brief Limpa o buffer atual.
      */
     virtual void clear() = 0;
 
@@ -62,9 +81,6 @@ public:
 
     /**
      * @brief Define a cor ou modo de desenho.
-     *
-     * A interpretação do valor depende
-     * da implementação do driver.
      */
     virtual void setDrawColor(
         uint16_t color

@@ -25,6 +25,25 @@ void U8g2Display::begin()
 
 
 
+void U8g2Display::beginFrame()
+{
+
+    _display.firstPage();
+
+}
+
+
+
+bool U8g2Display::nextFrame()
+{
+
+    return
+        _display.nextPage();
+
+}
+
+
+
 void U8g2Display::clear()
 {
 
@@ -66,13 +85,6 @@ void U8g2Display::setDrawColor(
 )
 {
 
-    /*
-     * U8g2 utiliza:
-     *
-     * 0 = apagar
-     * 1 = desenhar
-     * 2 = XOR
-     */
     _display.setDrawColor(
         static_cast<uint8_t>(color)
     );

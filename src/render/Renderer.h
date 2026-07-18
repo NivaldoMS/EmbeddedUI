@@ -42,8 +42,7 @@ public:
 
 
     /**
-     * @brief Inicializa o display e os recursos
-     * do renderizador.
+     * @brief Inicializa o renderizador.
      */
     void begin();
 
@@ -60,23 +59,14 @@ public:
 
 
 
-    /**
-     * @brief Retorna o driver de display.
-     */
     DisplayDriver& display();
 
 
 
-    /**
-     * @brief Retorna o tema.
-     */
     Theme& theme();
 
 
 
-    /**
-     * @brief Retorna a fonte.
-     */
     Font& font();
 
 
@@ -85,6 +75,14 @@ private:
 
 
     void configureLayout();
+
+
+
+    void drawPage(
+        Menu& menu,
+        Cursor& cursor,
+        InteractionState& state
+    );
 
 
 

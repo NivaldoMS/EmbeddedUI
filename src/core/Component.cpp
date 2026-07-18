@@ -41,26 +41,37 @@ void Component::update()
 
 
 Result Component::handleEvent(
-    const Event&
+    const Event& event
 )
 {
-    return Result::NONE;
+
+    (void)event;
+
+
+
+    return Result::IGNORED;
+
 }
 
 
 
 ComponentType Component::type() const
 {
+
     return componentType;
+
 }
 
 
 
 void Component::setVisible(
-    bool state
+    bool visible
 )
 {
-    visible = state;
+
+    this->visible =
+        visible;
+
 }
 
 
@@ -70,8 +81,10 @@ bool Component::isVisible() const
 
     if(visibilityCallback)
     {
-        return visibilityCallback();
+        return
+            visibilityCallback();
     }
+
 
 
     return visible;
@@ -84,7 +97,10 @@ void Component::setVisibilityCallback(
     VisibilityCallback callback
 )
 {
-    visibilityCallback = callback;
+
+    visibilityCallback =
+        callback;
+
 }
 
 

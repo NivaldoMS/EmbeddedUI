@@ -25,45 +25,93 @@ class InteractionState
 public:
 
 
-    InteractionState();
+    InteractionState()
+    :
+    _mode(InteractionMode::Browse),
+    _valueNode(nullptr)
+    {
+
+    }
 
 
 
     /**
-     * @brief Retorna o modo atual de interação.
+     * @brief Retorna o modo atual.
      */
-    InteractionMode mode() const;
+    InteractionMode mode() const
+    {
+
+        return _mode;
+
+    }
 
 
 
     /**
-     * @brief Inicia a edição de um valor.
+     * @brief Inicia a edição de um ValueNode.
      */
     void enterEdit(
         ValueNode* value
-    );
+    )
+    {
+
+        if(!value)
+            return;
+
+
+
+        _valueNode =
+            value;
+
+
+
+        _mode =
+            InteractionMode::Edit;
+
+    }
 
 
 
     /**
      * @brief Finaliza o modo de edição.
      */
-    void leaveEdit();
+    void leaveEdit()
+    {
+
+        _valueNode =
+            nullptr;
+
+
+
+        _mode =
+            InteractionMode::Browse;
+
+    }
 
 
 
     /**
-     * @brief Informa se existe um valor em edição.
+     * @brief Informa se está no modo de edição.
      */
-    bool editing() const;
+    bool editing() const
+    {
+
+        return
+            _mode == InteractionMode::Edit;
+
+    }
 
 
 
     /**
-     * @brief Retorna o ValueNode atualmente
-     * associado ao modo de edição.
+     * @brief Retorna o ValueNode em edição.
      */
-    ValueNode* valueNode() const;
+    ValueNode* valueNode() const
+    {
+
+        return _valueNode;
+
+    }
 
 
 

@@ -34,7 +34,9 @@ enum class InputEventType : uint8_t
     BUTTON_SHORT_PRESS,
 
 
-    BUTTON_LONG_PRESS
+    BUTTON_LONG_PRESS,
+
+    BUTTON_BACK
 
 };
 

@@ -4,16 +4,12 @@
 
 #include <EmbeddedUI.h>
 
-#include "MenuBackground128.h"
-
 
 using namespace EmbeddedUI;
 
 
 /*
- * Use aqui o construtor correspondente ao seu display 128x128.
- *
- * Exemplo para SH1107 128x128 com buffer paginado:
+ * Display 128x128 com buffer paginado.
  */
 U8G2_SH1107_128X128_1_HW_I2C u8g2(
     U8G2_R0,
@@ -43,10 +39,17 @@ Renderer renderer(
 );
 
 
-Encoder encoder(
+/*
+ * Botão 1: CW
+ * Botão 2: CCW
+ * Botão 3: Enter
+ * Botão 4: Back
+ */
+Buttons buttons(
     2,
     3,
-    4
+    4,
+    5
 );
 
 
@@ -74,6 +77,12 @@ ValueNode volumeValue(
 );
 
 
+ValueNode bassValue(
+    "Bass",
+    ValueType::Integer
+);
+
+
 ValueNode enabledValue(
     "Enabled",
     ValueType::Boolean
@@ -91,40 +100,8 @@ Builder builder(
 );
 
 
-/*
- * Descritor usado pelo Theme.
- *
- * Os dados permanecem na memória de programa.
- */
-const Bitmap menuBackground =
-{
-    MENU_BACKGROUND_128_DATA,
-    128,
-    128
-};
-
-int ledPin = 13;
-
-void blink()
-{
-    digitalWrite(ledPin, HIGH);   // Turn LED on
-    delay(300);                  // Wait 1 second
-    digitalWrite(ledPin, LOW);    // Turn LED off
-    delay(300); 
-
-}
-
-
 void setup()
 {
-
-    /*
-     * Associa o bitmap ao tema antes
-     * de inicializar o Renderer.
-     */
-    theme.background =
-        &menuBackground;
-
 
     volumeValue.setRange(
         0.0f,
@@ -135,6 +112,18 @@ void setup()
 
     volumeValue.setValue(
         50.0f
+    );
+
+
+    bassValue.setRange(
+        -10.0f,
+        10.0f,
+        1.0f
+    );
+
+
+    bassValue.setValue(
+        0.0f
     );
 
 
@@ -153,6 +142,7 @@ void setup()
     builder
         .folder(settingsFolder)
             .value(volumeValue)
+            .value(bassValue)
             .value(enabledValue)
             .action(saveAction)
         .end();
@@ -164,12 +154,7 @@ void setup()
 
 
     input.attach(
-        encoder
-    );
-
-
-    input.setLongPressEvent(
-        EventType::BUTTON_BACK
+        buttons
     );
 
 
@@ -183,8 +168,6 @@ void setup()
         menuScreen
     );
 
-    pinMode(ledPin, OUTPUT);
-
 }
 
 
@@ -192,7 +175,5 @@ void loop()
 {
 
     engine.update();
-
-    blink();
 
 }

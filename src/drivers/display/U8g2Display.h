@@ -15,6 +15,8 @@ namespace EmbeddedUI
 
 /**
  * @brief Driver de display baseado na biblioteca U8g2.
+ *
+ * Compatível com buffers completos e paginados.
  */
 class U8g2Display :
     public DisplayDriver
@@ -30,6 +32,14 @@ public:
 
 
     void begin() override;
+
+
+
+    void beginFrame() override;
+
+
+
+    bool nextFrame() override;
 
 
 

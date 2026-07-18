@@ -15,6 +15,7 @@
 #include "core/Types.h"
 #include "core/Event.h"
 #include "core/EventQueue.h"
+#include "core/Callback.h"
 #include "core/Component.h"
 #include "core/Screen.h"
 #include "core/ScreenManager.h"
@@ -23,10 +24,11 @@
 
 // Input
 
+#include "input/InputDevice.h"
 #include "input/InputEvent.h"
 #include "input/Encoder.h"
+#include "input/Buttons.h"
 #include "input/InputManager.h"
-
 
 // Menu
 

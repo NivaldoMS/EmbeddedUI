@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 
-#include "Encoder.h"
+#include "InputDevice.h"
 #include "InputEvent.h"
 
 #include "../core/Event.h"
@@ -15,84 +15,48 @@ namespace EmbeddedUI
 {
 
 
-/**
- * @brief Interpreta eventos produzidos pelos
- * dispositivos físicos.
- *
- * Converte InputEvent em Event.
- */
 class InputManager
 {
 
 public:
 
 
-    /**
-     * @brief Cria o gerenciador de entrada.
-     *
-     * @param capacity Capacidade da fila interna.
-     */
     explicit InputManager(
-        uint8_t capacity = 16
+        uint8_t capacity = 4
     );
 
 
 
     /**
-     * @brief Associa um encoder ao gerenciador.
-     *
-     * O InputManager não é proprietário
-     * do encoder.
+     * @brief Associa qualquer dispositivo
+     * compatível com InputDevice.
      */
     void attach(
-        Encoder& encoder
+        InputDevice& device
     );
 
 
 
-    /**
-     * @brief Remove o encoder associado.
-     */
     void detach();
 
 
 
-    /**
-     * @brief Inicializa os dispositivos associados.
-     */
     void begin();
 
 
 
-    /**
-     * @brief Atualiza a leitura e interpretação
-     * dos dispositivos.
-     */
     void update();
 
 
 
-    /**
-     * @brief Informa se existe evento pendente.
-     */
     bool available() const;
 
 
 
-    /**
-     * @brief Retorna o próximo evento pendente.
-     *
-     * Retorna EventType::NONE quando a fila
-     * estiver vazia.
-     */
     Event read();
 
 
 
-    /**
-     * @brief Define o evento produzido por
-     * uma pressão longa.
-     */
     void setLongPressEvent(
         EventType event
     );
@@ -108,7 +72,7 @@ private:
 
 
 
-    Encoder* _encoder;
+    InputDevice* _device;
 
 
     EventQueue _events;

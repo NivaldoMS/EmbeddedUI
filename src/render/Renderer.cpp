@@ -34,9 +34,11 @@ void Renderer::begin()
 
     if(_font.valid())
     {
+
         _display.setFont(
             _font
         );
+
     }
 
 
@@ -92,7 +94,10 @@ void Renderer::configureLayout()
 
         if(visibleLines == 0)
         {
-            visibleLines = 1;
+
+            visibleLines =
+                1;
+
         }
 
     }
@@ -114,24 +119,36 @@ void Renderer::render(
 )
 {
 
+    _display.beginFrame();
+
+
+
+    do
+    {
+
+        drawPage(
+            menu,
+            cursor,
+            state
+        );
+
+    }
+    while(_display.nextFrame());
+
+}
+
+
+
+void Renderer::drawPage(
+    Menu& menu,
+    Cursor& cursor,
+    InteractionState& state
+)
+{
+
     (void)menu;
 
 
-
-    _display.clear();
-
-
-
-    _display.setDrawColor(
-        _theme.backgroundColor
-    );
-
-
-
-    /*
-     * A limpeza do buffer já define o estado
-     * inicial do fundo em displays monocromáticos.
-     */
 
     _display.setDrawColor(
         _theme.textColor
@@ -157,13 +174,7 @@ void Renderer::render(
 
 
     if(!current)
-    {
-
-        _display.refresh();
-
         return;
-
-    }
 
 
 
@@ -172,9 +183,7 @@ void Renderer::render(
 
 
 
-    while(
-        first->previousSibling()
-    )
+    while(first->previousSibling())
     {
 
         first =
@@ -259,10 +268,6 @@ void Renderer::render(
             item->nextSibling();
 
     }
-
-
-
-    _display.refresh();
 
 }
 
@@ -389,11 +394,6 @@ void Renderer::drawNode(
 
 
 
-            /*
-             * XOR permite exibir o contorno
-             * tanto sobre fundo preenchido
-             * quanto sobre fundo vazio.
-             */
             _display.setDrawColor(
                 2
             );

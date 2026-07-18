@@ -11,8 +11,7 @@ Engine::Engine()
 :
 _screenManager(),
 _renderer(nullptr),
-_input(nullptr),
-_eventQueue()
+_input(nullptr)
 {
 
 }
@@ -64,31 +63,21 @@ void Engine::update()
         while(_input->available())
         {
 
-            Event event =
+            const Event event =
                 _input->read();
 
 
 
-            _eventQueue.push(
-                event
-            );
+            if(event.type != EventType::NONE)
+            {
+
+                _screenManager.handleEvent(
+                    event
+                );
+
+            }
 
         }
-
-    }
-
-
-
-    Event event;
-
-
-
-    while(_eventQueue.pop(event))
-    {
-
-        _screenManager.handleEvent(
-            event
-        );
 
     }
 

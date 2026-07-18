@@ -2,7 +2,6 @@
 #define EMBEDDED_UI_ENGINE_H
 
 
-#include "EventQueue.h"
 #include "ScreenManager.h"
 
 #include "../input/InputManager.h"
@@ -18,8 +17,7 @@ class Renderer;
 /**
  * @brief Núcleo principal da EmbeddedUI.
  *
- * Coordena entrada, eventos, telas
- * e renderização.
+ * Coordena entrada, telas e renderização.
  */
 class Engine
 {
@@ -111,9 +109,6 @@ private:
 
 
     InputManager* _input;
-
-
-    EventQueue _eventQueue;
 
 
 };

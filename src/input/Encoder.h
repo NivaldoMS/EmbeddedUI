@@ -4,19 +4,15 @@
 
 #include <Arduino.h>
 
-#include "InputEvent.h"
+#include "InputDevice.h"
 
 
 namespace EmbeddedUI
 {
 
 
-/**
- * @brief Encoder rotativo com botão.
- *
- * Produz apenas InputEvent.
- */
-class Encoder
+class Encoder :
+    public InputDevice
 {
 
 public:
@@ -30,56 +26,35 @@ public:
 
 
 
-    /**
-     * @brief Inicializa os pinos e estados.
-     */
-    void begin();
+    void begin() override;
 
 
 
-    /**
-     * @brief Atualiza a leitura do encoder.
-     */
-    void update();
+    void update() override;
 
 
 
-    /**
-     * @brief Informa se existe InputEvent pendente.
-     */
-    bool available() const;
+    bool available() const override;
 
 
 
-    /**
-     * @brief Retorna o próximo InputEvent.
-     */
-    InputEvent read();
+    InputEvent read() override;
 
 
 
 private:
 
 
-    /**
-     * @brief Adiciona um evento à fila interna.
-     */
     bool enqueue(
         const InputEvent& event
     );
 
 
 
-    /**
-     * @brief Atualiza a rotação.
-     */
     void updateRotation();
 
 
 
-    /**
-     * @brief Atualiza o botão.
-     */
     void updateButton();
 
 
@@ -114,7 +89,7 @@ private:
 
 
     static constexpr uint8_t EVENT_CAPACITY =
-        8;
+        4;
 
 
 
