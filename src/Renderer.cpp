@@ -90,7 +90,11 @@ void UIRenderer::drawMenu(
         if(!item)
             continue;
 
-
+        display->drawText(
+            0,
+            10,
+            "EmbeddedUI"
+        );
 
         display->drawText(
             5,

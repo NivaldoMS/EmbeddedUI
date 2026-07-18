@@ -23,6 +23,7 @@
 
 #include "Engine.h"
 
+#include "drivers/U8g2Display.h"
 
 namespace EmbeddedUI
 {
