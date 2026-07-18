@@ -97,7 +97,22 @@ void U8g2Display::fillRect(
 
 }
 
+void U8g2Display::drawBitmap(
+    int16_t x,
+    int16_t y,
+    const UIBitmap& bitmap
+)
+{
 
+    display.drawXBMP(
+        x,
+        y,
+        bitmap.width,
+        bitmap.height,
+        bitmap.data
+    );
+
+}
 
 uint16_t U8g2Display::width() const
 {

@@ -25,6 +25,8 @@
 
 #include "drivers/U8g2Display.h"
 
+#include "Bitmap.h"
+#include "Background.h"
 namespace EmbeddedUI
 {
 

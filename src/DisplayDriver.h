@@ -4,6 +4,7 @@
 
 #include <Arduino.h>
 
+#include "Bitmap.h"
 
 namespace EmbeddedUI
 {
@@ -92,6 +93,13 @@ public:
      */
     virtual uint16_t height() const = 0;
 
+    virtual void drawBitmap(
+        int16_t x,
+        int16_t y,
+        const UIBitmap& bitmap
+    )
+    {
+    }
 
 };
 

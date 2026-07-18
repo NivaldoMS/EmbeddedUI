@@ -5,6 +5,7 @@
 #include "DisplayDriver.h"
 #include "MenuScreen.h"
 
+#include "Background.h"
 
 namespace EmbeddedUI
 {
@@ -18,6 +19,7 @@ class UIRenderer
 
 public:
 
+    UIBackground background;
 
     UIRenderer();
 
@@ -39,7 +41,9 @@ public:
         UIScreen* screen
     );
 
-
+    void setBackground(
+        const UIBitmap* bitmap
+    );
 
     /**
      * @brief Desenha interface.

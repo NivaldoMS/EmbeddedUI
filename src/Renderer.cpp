@@ -43,6 +43,7 @@ void UIRenderer::draw()
 
     display->clear();
 
+    background.draw(display);
 
 
     if(screen->type() == UIComponentType::MENU)
@@ -58,7 +59,12 @@ void UIRenderer::draw()
 
 }
 
-
+void UIRenderer::setBackground(
+    const UIBitmap* bitmap
+)
+{
+    background.setBitmap(bitmap);
+}
 
 void UIRenderer::drawMenu(
     UIMenuScreen* menu

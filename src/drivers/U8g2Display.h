@@ -68,7 +68,11 @@ public:
 
     uint16_t height() const override;
 
-
+    void drawBitmap(
+        int16_t x,
+        int16_t y,
+        const UIBitmap& bitmap
+    ) override;
 
 private:
 
