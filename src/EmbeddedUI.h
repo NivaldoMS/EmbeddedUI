@@ -28,7 +28,7 @@
 #include "render/Bitmap.h"
 
 // Drivers
-#include "drivers/U8g2Display.h"
+#include "drivers/display/U8g2Display.h"
 
 namespace EmbeddedUI
 {
