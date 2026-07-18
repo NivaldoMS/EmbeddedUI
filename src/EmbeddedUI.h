@@ -14,13 +14,15 @@
 
 #include "Value.h"
 #include "Item.h"
-
 #include "MenuScreen.h"
 
 #include "DisplayDriver.h"
 #include "Renderer.h"
 
 #include "Encoder.h"
+
+#include "Engine.h"
+
 
 namespace EmbeddedUI
 {
