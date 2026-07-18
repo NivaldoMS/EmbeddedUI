@@ -15,6 +15,8 @@
 #include "Value.h"
 #include "Item.h"
 
+#include "MenuScreen.h"
+
 namespace EmbeddedUI
 {
 
