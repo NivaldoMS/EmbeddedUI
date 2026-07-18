@@ -10,6 +10,7 @@
 #include "Component.h"
 #include "Screen.h"
 #include "ScreenManager.h"
+#include "Value.h"
 
 namespace EmbeddedUI
 {
