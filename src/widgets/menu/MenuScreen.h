@@ -3,17 +3,20 @@
 
 
 #include "../core/Screen.h"
-#include "Item.h"
+
+#include "Menu.h"
+#include "Cursor.h"
+#include "Navigation.h"
+#include "InteractionState.h"
+
 
 
 namespace EmbeddedUI
 {
 
 
-/**
- * @brief Tela de navegação de menus.
- */
-class UIMenuScreen : public UIScreen
+class UIMenuScreen :
+    public UIScreen
 {
 
 public:
@@ -21,57 +24,11 @@ public:
 
     UIMenuScreen();
 
-    bool isEditing() const;
-    
-    void confirmEdit();
 
-    /**
-     * @brief Define o item raiz do menu.
-     */
-    void setRoot(
-        UIItem* item
+
+    void setMenu(
+        Menu& menu
     );
-
-
-    /**
-     * @brief Retorna item atual.
-     */
-    UIItem* currentItem();
-
-
-
-    /**
-     * @brief Item selecionado atualmente.
-     */
-    UIItem* selectedItem();
-
-    uint8_t cursorPosition() const;
-
-    /**
-     * @brief Move cursor para cima.
-     */
-    void moveUp();
-
-
-
-    /**
-     * @brief Move cursor para baixo.
-     */
-    void moveDown();
-
-
-
-    /**
-     * @brief Confirma seleção.
-     */
-    void enter();
-
-
-
-    /**
-     * @brief Volta ao menu anterior.
-     */
-    void back();
 
 
 
@@ -81,22 +38,25 @@ public:
 
 
 
+    void render(
+        Renderer& renderer
+    ) override;
+
+
+
 private:
 
 
-    UIItem* root;
+    Menu* _menu;
 
 
-    UIItem* current;
+    Cursor _cursor;
 
 
-    uint8_t cursor;
+    InteractionState _state;
 
 
-
-    void selectNext();
-
-    void selectPrevious();
+    Navigation _navigation;
 
 
 };

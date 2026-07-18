@@ -1,5 +1,5 @@
 #include "ScreenManager.h"
-
+#include "../render/Renderer.h"
 
 namespace EmbeddedUI
 {
@@ -71,7 +71,19 @@ void UIScreenManager::update()
 
 }
 
+void UIScreenManager::render(
+    Renderer& renderer
+)
+{
 
+    if(activeScreen)
+    {
+        activeScreen->render(
+            renderer
+        );
+    }
+
+}
 
 UIResult UIScreenManager::handleEvent(
     const UIEvent& event

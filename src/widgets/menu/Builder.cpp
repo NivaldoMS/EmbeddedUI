@@ -21,6 +21,7 @@ Builder& Builder::folder(
     const char* caption
 )
 {
+
     Node* node =
         new Node(
             caption,
@@ -28,12 +29,17 @@ Builder& Builder::folder(
         );
 
 
-    _current->append(node);
+    _current->append(
+        node
+    );
 
-    _current = node;
+
+    _current =
+        node;
 
 
     return *this;
+
 }
 
 
@@ -43,6 +49,7 @@ Builder& Builder::value(
     ValueType type
 )
 {
+
     ValueNode* node =
         new ValueNode(
             caption,
@@ -50,10 +57,13 @@ Builder& Builder::value(
         );
 
 
-    _current->append(node);
+    _current->append(
+        node
+    );
 
 
     return *this;
+
 }
 
 
@@ -62,6 +72,7 @@ Builder& Builder::action(
     const char* caption
 )
 {
+
     Node* node =
         new Node(
             caption,
@@ -69,16 +80,20 @@ Builder& Builder::action(
         );
 
 
-    _current->append(node);
+    _current->append(
+        node
+    );
 
 
     return *this;
+
 }
 
 
 
 Builder& Builder::end()
 {
+
     if(_current->parent())
     {
         _current =
@@ -87,6 +102,7 @@ Builder& Builder::end()
 
 
     return *this;
+
 }
 
 

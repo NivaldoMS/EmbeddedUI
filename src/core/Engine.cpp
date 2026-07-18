@@ -7,7 +7,8 @@ namespace EmbeddedUI
 
 UIEngine::UIEngine()
 :
-encoder(nullptr)
+renderer(nullptr),
+input(nullptr)
 {
 
 }
@@ -16,19 +17,14 @@ encoder(nullptr)
 
 void UIEngine::begin(
     UIScreen* initialScreen,
-    UIDisplayDriver* display,
-    UIEncoder* encoder
+    UIDisplayDriver& display,
+    UIInputManager& input
 )
 {
 
-    input.begin(
-        encoder
-    );
+    this->input =
+        &input;
 
-    if(display)
-    {
-        renderer.setDisplay(display);
-    }
 
 
     screenManager.begin(
@@ -36,16 +32,13 @@ void UIEngine::begin(
     );
 
 
-    renderer.setScreen(
-        initialScreen
-    );
 
-
-
-    if(this->encoder)
-    {
-        this->encoder->begin();
-    }
+    /*
+     * O Renderer precisa ser associado
+     * externamente.
+     *
+     * A criação permanece fora da Engine.
+     */
 
 }
 
@@ -55,36 +48,63 @@ void UIEngine::update()
 {
 
     /*
-     * 1 - Ler entradas
+     * 1 - Entrada
      */
-    input.update();
 
-
-    if(input.available())
+    if(input)
     {
 
-        UIEvent event =
-            input.read();
+        input->update();
 
 
-        screenManager.handleEvent(
-            event
-        );
+
+        while(input->available())
+        {
+
+            UIEvent event =
+                input->read();
+
+
+
+            screenManager.handleEvent(
+                event
+            );
+
+        }
 
     }
 
 
+
     /*
-     * 2 - Atualizar tela
+     * 2 - Atualização da tela
      */
+
     screenManager.update();
 
 
 
     /*
-     * 3 - Renderizar
+     * 3 - Renderização
      */
-    renderer.draw();
+
+    draw();
+
+}
+
+
+
+void UIEngine::draw()
+{
+
+    if(renderer)
+    {
+
+        screenManager.render(
+            *renderer
+        );
+
+    }
 
 }
 
@@ -96,11 +116,6 @@ void UIEngine::show(
 {
 
     screenManager.show(
-        screen
-    );
-
-
-    renderer.setScreen(
         screen
     );
 

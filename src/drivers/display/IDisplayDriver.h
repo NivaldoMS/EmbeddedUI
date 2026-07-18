@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 
-#include "../render/Bitmap.h"
+#include "../../render/Bitmap.h"
 
 namespace EmbeddedUI
 {

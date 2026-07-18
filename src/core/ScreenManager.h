@@ -9,6 +9,9 @@ namespace EmbeddedUI
 {
 
 
+class Renderer;
+
+
 /**
  * @brief Gerencia as telas da aplicação.
  *
@@ -24,12 +27,14 @@ public:
     UIScreenManager();
 
 
+
     /**
      * @brief Define a tela inicial.
      */
     void begin(
         UIScreen* screen
     );
+
 
 
     /**
@@ -40,10 +45,12 @@ public:
     );
 
 
+
     /**
      * @brief Retorna tela atual.
      */
     UIScreen* current();
+
 
 
     /**
@@ -52,12 +59,23 @@ public:
     void update();
 
 
+
+    /**
+     * @brief Renderiza a tela ativa.
+     */
+    void render(
+        Renderer& renderer
+    );
+
+
+
     /**
      * @brief Envia eventos.
      */
     UIResult handleEvent(
         const UIEvent& event
     );
+
 
 
 private:

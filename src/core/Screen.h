@@ -9,13 +9,17 @@ namespace EmbeddedUI
 {
 
 
+class Renderer;
+
+
 /**
  * @brief Classe base para todas as telas.
  *
  * Uma tela representa uma área completa
  * da interface do usuário.
  */
-class UIScreen : public UIComponent
+class UIScreen :
+    public UIComponent
 {
 
 public:
@@ -27,10 +31,12 @@ public:
     virtual ~UIScreen();
 
 
+
     /**
      * @brief Chamado quando a tela se torna ativa.
      */
     virtual void onEnter();
+
 
 
     /**
@@ -39,12 +45,26 @@ public:
     virtual void onExit();
 
 
+
     /**
      * @brief Processa eventos.
      */
     virtual UIResult handleEvent(
         const UIEvent& event
     ) override;
+
+
+
+    /**
+     * @brief Renderiza a tela.
+     *
+     * Cada tela implementa sua própria
+     * apresentação visual.
+     */
+    virtual void render(
+        Renderer& renderer
+    );
+
 
 
 };

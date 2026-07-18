@@ -2,68 +2,88 @@
 #define EMBEDDED_UI_RENDERER_H
 
 
-#include "../drivers/DisplayDriver.h"
-#include "../menu/MenuScreen.h"
+#include "../drivers/display/DisplayDriver.h"
 
-#include "Background.h"
+#include "../theme/Theme.h"
+
+#include "../font/Font.h"
+
+
+#include "Layout.h"
+#include "ScrollManager.h"
+
+
+#include "../widgets/menu/Menu.h"
+#include "../widgets/menu/Cursor.h"
+#include "../widgets/menu/InteractionState.h"
+
+
 
 namespace EmbeddedUI
 {
 
 
-/**
- * @brief Renderizador geral da interface.
- */
-class UIRenderer
+class Renderer
 {
 
 public:
 
-    UIBackground background;
 
-    UIRenderer();
-
-
-
-    /**
-     * @brief Define display físico.
-     */
-    void setDisplay(
-        UIDisplayDriver* display
+    Renderer(
+        UIDisplayDriver& display,
+        Theme& theme,
+        Font& font
     );
 
 
 
-    /**
-     * @brief Define tela atual.
-     */
-    void setScreen(
-        UIScreen* screen
-    );
+    void begin();
 
-    void setBackground(
-        const UIBitmap* bitmap
-    );
+
 
     /**
-     * @brief Desenha interface.
+     * @brief Renderiza menu atual.
      */
-    void draw();
+    void render(
+        Menu& menu,
+        Cursor& cursor,
+        InteractionState& state
+    );
 
 
 
 private:
 
 
-    UIDisplayDriver* display;
+    UIDisplayDriver& _display;
 
 
-    UIScreen* screen;
+    Theme& _theme;
+
+
+    Font& _font;
 
 
 
-    void drawMenu(
-        UIMenuScreen* menu
+    Layout _layout;
+
+
+    ScrollManager _scroll;
+
+
+
+    void drawNode(
+        Node* node,
+        uint8_t line,
+        bool selected
+    );
+
+
+
+    void drawValue(
+        ValueNode* value,
+        uint16_t x,
+        uint16_t y
     );
 
 

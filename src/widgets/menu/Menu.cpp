@@ -8,10 +8,12 @@ namespace EmbeddedUI
 Menu::Menu()
 :
 _root(
-    "root",
+    "Root",
     NodeType::Folder
 ),
-_current(&_root)
+_current(
+    &_root
+)
 {
 
 }
@@ -36,10 +38,12 @@ void Menu::setCurrent(
     Node* node
 )
 {
+
     if(node)
     {
         _current = node;
     }
+
 }
 
 

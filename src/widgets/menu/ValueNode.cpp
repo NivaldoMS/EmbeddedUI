@@ -31,9 +31,27 @@ void ValueNode::setRange(
     float step
 )
 {
+
     _minimum = minimum;
+
     _maximum = maximum;
+
     _step = step;
+
+
+
+    if(_value < _minimum)
+    {
+        _value = _minimum;
+    }
+
+
+
+    if(_value > _maximum)
+    {
+        _value = _maximum;
+    }
+
 }
 
 
@@ -49,15 +67,23 @@ void ValueNode::setValue(
     float value
 )
 {
+
     if(value < _minimum)
+    {
         value = _minimum;
+    }
+
 
 
     if(value > _maximum)
+    {
         value = _maximum;
+    }
+
 
 
     _value = value;
+
 }
 
 

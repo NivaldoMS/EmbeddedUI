@@ -1,5 +1,5 @@
 #include "Screen.h"
-
+#include "../render/Renderer.h"
 
 namespace EmbeddedUI
 {
@@ -39,7 +39,24 @@ UIResult UIScreen::handleEvent(
     const UIEvent& event
 )
 {
-    return UIComponent::handleEvent(event);
+    return UIComponent::handleEvent(
+        event
+    );
+}
+
+
+
+void UIScreen::render(
+    Renderer& renderer
+)
+{
+
+    /*
+     * Tela base não possui desenho.
+     *
+     * Classes derivadas implementam.
+     */
+
 }
 
 
