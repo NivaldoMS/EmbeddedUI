@@ -5,11 +5,12 @@ namespace EmbeddedUI
 {
 
 
-UIInputManager::UIInputManager()
+UIInputManager::UIInputManager(
+    EventQueue& queue
+)
 :
 encoder(nullptr),
-pending(),
-hasEvent(false),
+eventQueue(queue),
 pressStart(0),
 buttonPressed(false),
 longPressEvent(UIEventType::NONE)
@@ -64,14 +65,12 @@ void UIInputManager::update()
 
         case UIInputEventType::ROTATE_CW:
 
-            pending =
+            eventQueue.push(
                 UIEvent(
                     UIEventType::ENCODER_CW,
                     input.timestamp
-                );
-
-
-            hasEvent = true;
+                )
+            );
 
         break;
 
@@ -79,14 +78,12 @@ void UIInputManager::update()
 
         case UIInputEventType::ROTATE_CCW:
 
-            pending =
+            eventQueue.push(
                 UIEvent(
                     UIEventType::ENCODER_CCW,
                     input.timestamp
-                );
-
-
-            hasEvent = true;
+                )
+            );
 
         break;
 
@@ -94,25 +91,12 @@ void UIInputManager::update()
 
         case UIInputEventType::BUTTON_DOWN:
 
-            /*
-             * Por enquanto:
-             *
-             * botão curto = ENTER
-             *
-             * A implementação de
-             * short/long press será
-             * refinada no próximo ajuste.
-             */
-
-            pending =
+            eventQueue.push(
                 UIEvent(
                     UIEventType::BUTTON_ENTER,
                     input.timestamp
-                );
-
-
-            hasEvent = true;
-
+                )
+            );
 
         break;
 
@@ -123,26 +107,6 @@ void UIInputManager::update()
         break;
 
     }
-
-
-}
-
-
-
-bool UIInputManager::available()
-{
-    return hasEvent;
-}
-
-
-
-UIEvent UIInputManager::read()
-{
-
-    hasEvent = false;
-
-
-    return pending;
 
 }
 

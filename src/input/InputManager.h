@@ -6,6 +6,7 @@
 
 #include "Encoder.h"
 #include "../core/Event.h"
+#include "../core/EventQueue.h"
 #include "../input/InputEvent.h"
 
 
@@ -28,6 +29,7 @@ namespace EmbeddedUI
  *   ENCODER_CCW
  *   BUTTON_ENTER
  *
+ * Os eventos gerados são enviados para EventQueue.
  */
 class UIInputManager
 {
@@ -35,7 +37,14 @@ class UIInputManager
 public:
 
 
-    UIInputManager();
+    /**
+     * @brief Cria o gerenciador de entrada.
+     *
+     * @param queue Fila de eventos da interface.
+     */
+    explicit UIInputManager(
+        EventQueue& queue
+    );
 
 
 
@@ -54,20 +63,6 @@ public:
      * Deve ser chamado no loop principal.
      */
     void update();
-
-
-
-    /**
-     * @brief Verifica se existe evento disponível.
-     */
-    bool available();
-
-
-
-    /**
-     * @brief Obtém evento pendente.
-     */
-    UIEvent read();
 
 
 
@@ -94,16 +89,9 @@ private:
 
 
     /**
-     * @brief Último evento convertido.
+     * @brief Fila de eventos da interface.
      */
-    UIEvent pending;
-
-
-
-    /**
-     * @brief Indica evento aguardando leitura.
-     */
-    bool hasEvent;
+    EventQueue& eventQueue;
 
 
 

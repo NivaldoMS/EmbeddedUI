@@ -10,7 +10,7 @@ namespace EmbeddedUI
 
 
 /**
- * @brief Eventos gerados pela interface física.
+ * @brief Eventos de interação da interface.
  */
 enum class UIEventType : uint8_t
 {
