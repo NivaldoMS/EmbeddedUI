@@ -10,9 +10,10 @@ namespace EmbeddedUI
 
 
 /**
- * @brief Eventos gerados pelos dispositivos físicos.
+ * @brief Tipos de evento produzidos
+ * pelos dispositivos físicos.
  */
-enum class UIInputEventType : uint8_t
+enum class InputEventType : uint8_t
 {
 
     NONE = 0,
@@ -39,15 +40,18 @@ enum class UIInputEventType : uint8_t
 
 
 
-
-class UIInputEvent
+/**
+ * @brief Evento de baixo nível produzido
+ * por um dispositivo de entrada.
+ */
+class InputEvent
 {
 
 public:
 
 
-    UIInputEvent(
-        UIInputEventType type = UIInputEventType::NONE,
+    InputEvent(
+        InputEventType type = InputEventType::NONE,
         uint32_t timestamp = 0
     )
     :
@@ -59,14 +63,13 @@ public:
 
 
 
-    UIInputEventType type;
+    InputEventType type;
 
 
     uint32_t timestamp;
 
 
 };
-
 
 
 }

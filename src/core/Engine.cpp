@@ -1,72 +1,75 @@
 #include "Engine.h"
 
+#include "../render/Renderer.h"
+
 
 namespace EmbeddedUI
 {
 
 
-UIEngine::UIEngine()
+Engine::Engine()
 :
-renderer(nullptr),
-input(nullptr)
+_screenManager(),
+_renderer(nullptr),
+_input(nullptr),
+_eventQueue()
 {
 
 }
 
 
 
-void UIEngine::begin(
-    UIScreen* initialScreen,
-    UIDisplayDriver& display,
-    UIInputManager& input
+void Engine::begin(
+    InputManager& input,
+    Renderer& renderer
 )
 {
 
-    this->input =
-        &input;
-
-
-
-    screenManager.begin(
-        initialScreen
+    setInput(
+        input
     );
 
 
 
-    /*
-     * O Renderer precisa ser associado
-     * externamente.
-     *
-     * A criação permanece fora da Engine.
-     */
+    setRenderer(
+        renderer
+    );
+
+
+
+    _input->begin();
+
+
+
+    _renderer->begin();
+
+
+
+    _screenManager.begin();
 
 }
 
 
 
-void UIEngine::update()
+void Engine::update()
 {
 
-    /*
-     * 1 - Entrada
-     */
-
-    if(input)
+    if(_input)
     {
 
-        input->update();
+        _input->update();
 
 
 
-        while(input->available())
+        while(_input->available())
         {
 
-            UIEvent event =
-                input->read();
+            Event event =
+                _input->read();
 
 
 
-            screenManager.handleEvent(
+            _eventQueue.push(
                 event
             );
 
@@ -76,17 +79,24 @@ void UIEngine::update()
 
 
 
-    /*
-     * 2 - Atualização da tela
-     */
-
-    screenManager.update();
+    Event event;
 
 
 
-    /*
-     * 3 - Renderização
-     */
+    while(_eventQueue.pop(event))
+    {
+
+        _screenManager.handleEvent(
+            event
+        );
+
+    }
+
+
+
+    _screenManager.update();
+
+
 
     draw();
 
@@ -94,38 +104,78 @@ void UIEngine::update()
 
 
 
-void UIEngine::draw()
+void Engine::draw()
 {
 
-    if(renderer)
-    {
-
-        screenManager.render(
-            *renderer
-        );
-
-    }
-
-}
+    if(!_renderer)
+        return;
 
 
 
-void UIEngine::show(
-    UIScreen* screen
-)
-{
-
-    screenManager.show(
-        screen
+    _screenManager.render(
+        *_renderer
     );
 
 }
 
 
 
-UIScreenManager& UIEngine::screens()
+ScreenManager& Engine::screens()
 {
-    return screenManager;
+
+    return _screenManager;
+
+}
+
+
+
+const ScreenManager& Engine::screens() const
+{
+
+    return _screenManager;
+
+}
+
+
+
+void Engine::setInput(
+    InputManager& input
+)
+{
+
+    _input =
+        &input;
+
+}
+
+
+
+void Engine::setRenderer(
+    Renderer& renderer
+)
+{
+
+    _renderer =
+        &renderer;
+
+}
+
+
+
+InputManager* Engine::input() const
+{
+
+    return _input;
+
+}
+
+
+
+Renderer* Engine::renderer() const
+{
+
+    return _renderer;
+
 }
 
 

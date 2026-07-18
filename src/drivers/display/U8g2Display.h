@@ -2,10 +2,11 @@
 #define EMBEDDED_UI_U8G2_DISPLAY_H
 
 
-#include "../DisplayDriver.h"
-
-
 #include <U8g2lib.h>
+
+#include "DisplayDriver.h"
+
+#include "../../font/Font.h"
 
 
 namespace EmbeddedUI
@@ -13,27 +14,42 @@ namespace EmbeddedUI
 
 
 /**
- * @brief Driver de display usando U8g2.
+ * @brief Driver de display baseado na biblioteca U8g2.
  */
 class U8g2Display :
-    public UIDisplayDriver
+    public DisplayDriver
 {
 
 public:
 
 
-    U8g2Display(
+    explicit U8g2Display(
         U8G2& display
     );
+
 
 
     void begin() override;
 
 
+
     void clear() override;
 
 
+
     void refresh() override;
+
+
+
+    void setFont(
+        const Font& font
+    ) override;
+
+
+
+    void setDrawColor(
+        uint16_t color
+    ) override;
 
 
 
@@ -63,21 +79,26 @@ public:
 
 
 
+    void drawBitmap(
+        int16_t x,
+        int16_t y,
+        const Bitmap& bitmap
+    ) override;
+
+
+
     uint16_t width() const override;
+
 
 
     uint16_t height() const override;
 
-    void drawBitmap(
-        int16_t x,
-        int16_t y,
-        const UIBitmap& bitmap
-    ) override;
+
 
 private:
 
 
-    U8G2& display;
+    U8G2& _display;
 
 
 };

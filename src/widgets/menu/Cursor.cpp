@@ -19,7 +19,8 @@ void Cursor::attach(
 )
 {
 
-    _current = root;
+    _current =
+        root;
 
 }
 
@@ -27,7 +28,9 @@ void Cursor::attach(
 
 Node* Cursor::current() const
 {
+
     return _current;
+
 }
 
 
@@ -40,19 +43,22 @@ bool Cursor::moveNext()
 
 
 
-    if(_current->nextSibling())
-    {
-
-        _current =
-            _current->nextSibling();
+    Node* next =
+        _current->nextSibling();
 
 
-        return true;
 
-    }
+    if(!next)
+        return false;
 
 
-    return false;
+
+    _current =
+        next;
+
+
+
+    return true;
 
 }
 
@@ -66,19 +72,22 @@ bool Cursor::movePrevious()
 
 
 
-    if(_current->previousSibling())
-    {
-
-        _current =
-            _current->previousSibling();
+    Node* previous =
+        _current->previousSibling();
 
 
-        return true;
 
-    }
+    if(!previous)
+        return false;
 
 
-    return false;
+
+    _current =
+        previous;
+
+
+
+    return true;
 
 }
 
@@ -92,19 +101,22 @@ bool Cursor::enter()
 
 
 
-    if(_current->firstChild())
-    {
-
-        _current =
-            _current->firstChild();
+    Node* child =
+        _current->firstChild();
 
 
-        return true;
 
-    }
+    if(!child)
+        return false;
 
 
-    return false;
+
+    _current =
+        child;
+
+
+
+    return true;
 
 }
 
@@ -118,19 +130,22 @@ bool Cursor::back()
 
 
 
-    if(_current->parent())
-    {
-
-        _current =
-            _current->parent();
+    Node* parent =
+        _current->parent();
 
 
-        return true;
 
-    }
+    if(!parent)
+        return false;
 
 
-    return false;
+
+    _current =
+        parent;
+
+
+
+    return true;
 
 }
 
@@ -159,6 +174,7 @@ uint16_t Cursor::index() const
         position++;
 
 
+
         node =
             node->previousSibling();
 
@@ -179,16 +195,23 @@ uint16_t Cursor::siblingCount() const
         firstSibling();
 
 
+
     uint16_t count = 0;
+
 
 
     while(node)
     {
+
         count++;
+
+
 
         node =
             node->nextSibling();
+
     }
+
 
 
     return count;
@@ -196,28 +219,6 @@ uint16_t Cursor::siblingCount() const
 }
 
 
-uint16_t Cursor::currentIndex() const
-{
-
-    if(!_current)
-        return 0;
-
-
-    uint16_t index = 0;
-
-    Node* node = _current;
-
-
-    while(node->previousSibling())
-    {
-        node = node->previousSibling();
-        index++;
-    }
-
-
-    return index;
-
-}
 
 Node* Cursor::firstSibling() const
 {
@@ -226,17 +227,25 @@ Node* Cursor::firstSibling() const
         return nullptr;
 
 
-    Node* node = _current;
+
+    Node* node =
+        _current;
+
 
 
     while(node->previousSibling())
     {
-        node = node->previousSibling();
+
+        node =
+            node->previousSibling();
+
     }
+
 
 
     return node;
 
 }
+
 
 }

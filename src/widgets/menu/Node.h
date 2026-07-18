@@ -1,10 +1,13 @@
 #ifndef EMBEDDEDUI_NODE_H
 #define EMBEDDEDUI_NODE_H
 
+
 #include <Arduino.h>
+
 
 namespace EmbeddedUI
 {
+
 
 enum class NodeType : uint8_t
 {
@@ -20,7 +23,8 @@ class Node
 
 public:
 
-    Node(
+
+    explicit Node(
         const char* caption = nullptr,
         NodeType type = NodeType::Folder
     );
@@ -29,9 +33,6 @@ public:
     virtual ~Node();
 
 
-
-    // Hierarquia
-    bool isRoot() const;
 
     Node* parent() const;
 
@@ -45,31 +46,35 @@ public:
 
 
 
-    // Manipulação
+    bool append(
+        Node* child
+    );
 
-    bool append(Node* child);
 
-    bool remove(Node* child);
+    bool remove(
+        Node* child
+    );
+
 
     void clear();
 
 
 
-    // Consulta
-
     bool hasChildren() const;
+
+    bool isRoot() const;
 
     uint16_t childCount() const;
 
 
 
-    // Dados
-
     const char* caption() const;
+
 
     void setCaption(
         const char* text
     );
+
 
 
     NodeType type() const;
@@ -78,12 +83,15 @@ public:
 
     bool isVisible() const;
 
+
     void setVisible(
         bool value
     );
 
 
+
     bool isEnabled() const;
+
 
     void setEnabled(
         bool value
@@ -93,7 +101,15 @@ public:
 
 private:
 
+
+    bool isAncestorOf(
+        const Node* node
+    ) const;
+
+
+
     NodeType _type;
+
 
     const char* _caption;
 
@@ -109,7 +125,6 @@ private:
 
     Node* _lastChild;
 
-
     Node* _previousSibling;
 
     Node* _nextSibling;
@@ -117,9 +132,11 @@ private:
 
     uint16_t _childCount;
 
+
 };
 
 
 }
+
 
 #endif

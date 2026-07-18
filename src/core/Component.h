@@ -7,94 +7,74 @@
 #include "Types.h"
 #include "Callback.h"
 
+
 namespace EmbeddedUI
 {
 
 
 /**
  * @brief Classe base de todos os elementos visuais da biblioteca.
- *
- * Componentes possuem:
- * - tipo
- * - estado
- * - visibilidade
- * - ciclo de atualização
  */
-class UIComponent
+class Component
 {
 
 public:
 
 
-    UIComponent(
-        UIComponentType componentType = UIComponentType::NONE
+    Component(
+        ComponentType componentType = ComponentType::NONE
     );
 
 
-    virtual ~UIComponent();
+    virtual ~Component();
 
 
-    /**
-     * @brief Inicialização do componente.
-     */
+
     virtual void begin();
 
 
-    /**
-     * @brief Atualização periódica.
-     */
     virtual void update();
 
 
-    /**
-     * @brief Recebe eventos da interface.
-     */
-    virtual UIResult handleEvent(
-        const UIEvent& event
+
+    virtual Result handleEvent(
+        const Event& event
     );
 
 
-    /**
-     * @brief Retorna o tipo do componente.
-     */
-    UIComponentType type() const;
+
+    ComponentType type() const;
 
 
-    /**
-     * @brief Define visibilidade.
-     */
+
     void setVisible(
         bool state
     );
 
 
-    /**
-     * @brief Verifica visibilidade.
-     */
+
     bool isVisible() const;
 
 
-    /**
-     * @brief Define callback de visibilidade dinâmica.
-     */
+
     void setVisibilityCallback(
-        UIVisibilityCallback callback
+        VisibilityCallback callback
     );
 
 
 protected:
 
 
-    UIComponentType componentType;
+    ComponentType componentType;
 
 
-    UIState state;
+    State state;
 
 
     bool visible;
 
 
-    UIVisibilityCallback visibilityCallback;
+    VisibilityCallback visibilityCallback;
 
 
 };

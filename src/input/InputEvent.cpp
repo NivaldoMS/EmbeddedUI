@@ -5,10 +5,10 @@ namespace EmbeddedUI
 {
 
 
-// Reservado para futuras extensões.
-//
-// Atualmente UIInputEvent é uma classe simples
-// de transporte de dados.
+/*
+ * InputEvent é atualmente uma estrutura
+ * simples de transporte de dados.
+ */
 
 
 }

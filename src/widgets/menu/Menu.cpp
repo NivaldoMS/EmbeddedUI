@@ -23,4 +23,11 @@ Node* Menu::root()
 }
 
 
+
+const Node* Menu::root() const
+{
+    return &_root;
+}
+
+
 }

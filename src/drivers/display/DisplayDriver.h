@@ -6,21 +6,26 @@
 
 #include "../../render/Bitmap.h"
 
+
 namespace EmbeddedUI
 {
+
+
+class Font;
 
 
 /**
  * @brief Interface abstrata para drivers de display.
  */
-class UIDisplayDriver
+class DisplayDriver
 {
 
 public:
 
 
-    virtual ~UIDisplayDriver()
+    virtual ~DisplayDriver()
     {
+
     }
 
 
@@ -33,16 +38,37 @@ public:
 
 
     /**
-     * @brief Limpa a tela.
+     * @brief Limpa o buffer de desenho.
      */
     virtual void clear() = 0;
 
 
 
     /**
-     * @brief Atualiza o display físico.
+     * @brief Envia o buffer ao display físico.
      */
     virtual void refresh() = 0;
+
+
+
+    /**
+     * @brief Define a fonte usada pelo driver.
+     */
+    virtual void setFont(
+        const Font& font
+    ) = 0;
+
+
+
+    /**
+     * @brief Define a cor ou modo de desenho.
+     *
+     * A interpretação do valor depende
+     * da implementação do driver.
+     */
+    virtual void setDrawColor(
+        uint16_t color
+    ) = 0;
 
 
 
@@ -58,7 +84,7 @@ public:
 
 
     /**
-     * @brief Desenha retângulo.
+     * @brief Desenha o contorno de um retângulo.
      */
     virtual void drawRect(
         int16_t x,
@@ -70,7 +96,7 @@ public:
 
 
     /**
-     * @brief Preenche retângulo.
+     * @brief Desenha um retângulo preenchido.
      */
     virtual void fillRect(
         int16_t x,
@@ -82,24 +108,28 @@ public:
 
 
     /**
-     * @brief Largura do display.
+     * @brief Desenha um bitmap.
+     */
+    virtual void drawBitmap(
+        int16_t x,
+        int16_t y,
+        const Bitmap& bitmap
+    ) = 0;
+
+
+
+    /**
+     * @brief Retorna a largura do display.
      */
     virtual uint16_t width() const = 0;
 
 
 
     /**
-     * @brief Altura do display.
+     * @brief Retorna a altura do display.
      */
     virtual uint16_t height() const = 0;
 
-    virtual void drawBitmap(
-        int16_t x,
-        int16_t y,
-        const UIBitmap& bitmap
-    )
-    {
-    }
 
 };
 

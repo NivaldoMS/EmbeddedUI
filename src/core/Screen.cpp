@@ -1,61 +1,48 @@
 #include "Screen.h"
-#include "../render/Renderer.h"
+
 
 namespace EmbeddedUI
 {
 
 
-UIScreen::UIScreen()
-:
-UIComponent(UIComponentType::SCREEN)
+Screen::Screen()
 {
 
 }
 
 
 
-UIScreen::~UIScreen()
+Screen::~Screen()
 {
 
 }
 
 
 
-void UIScreen::onEnter()
+void Screen::begin()
 {
 
 }
 
 
 
-void UIScreen::onExit()
+void Screen::update()
 {
 
 }
 
 
 
-UIResult UIScreen::handleEvent(
-    const UIEvent& event
-)
-{
-    return UIComponent::handleEvent(
-        event
-    );
-}
-
-
-
-void UIScreen::render(
-    Renderer& renderer
+Result Screen::handleEvent(
+    const Event& event
 )
 {
 
-    /*
-     * Tela base não possui desenho.
-     *
-     * Classes derivadas implementam.
-     */
+    (void)event;
+
+
+
+    return Result::IGNORED;
 
 }
 

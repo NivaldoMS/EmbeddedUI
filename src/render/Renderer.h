@@ -8,15 +8,19 @@
 
 #include "../font/Font.h"
 
-#include "../render/Layout.h"
-
-#include "../render/ScrollManager.h"
-
 #include "../widgets/menu/Menu.h"
 
 #include "../widgets/menu/Cursor.h"
 
 #include "../widgets/menu/InteractionState.h"
+
+#include "../widgets/menu/ValueNode.h"
+
+#include "Background.h"
+
+#include "Layout.h"
+
+#include "ScrollManager.h"
 
 
 namespace EmbeddedUI
@@ -30,17 +34,24 @@ public:
 
 
     Renderer(
-        UIDisplayDriver& display,
+        DisplayDriver& display,
         Theme& theme,
         Font& font
     );
 
 
 
+    /**
+     * @brief Inicializa o display e os recursos
+     * do renderizador.
+     */
     void begin();
 
 
 
+    /**
+     * @brief Renderiza um menu.
+     */
     void render(
         Menu& menu,
         Cursor& cursor,
@@ -49,18 +60,31 @@ public:
 
 
 
+    /**
+     * @brief Retorna o driver de display.
+     */
+    DisplayDriver& display();
+
+
+
+    /**
+     * @brief Retorna o tema.
+     */
+    Theme& theme();
+
+
+
+    /**
+     * @brief Retorna a fonte.
+     */
+    Font& font();
+
+
+
 private:
 
 
-    UIDisplayDriver& _display;
-
-    Theme& _theme;
-
-    Font& _font;
-
-    Layout _layout;
-
-    ScrollManager _scroll;
+    void configureLayout();
 
 
 
@@ -70,6 +94,33 @@ private:
         bool selected,
         bool editing
     );
+
+
+
+    void drawValue(
+        ValueNode* value,
+        int16_t x,
+        int16_t y
+    );
+
+
+
+    DisplayDriver& _display;
+
+
+    Theme& _theme;
+
+
+    Font& _font;
+
+
+    Background _background;
+
+
+    Layout _layout;
+
+
+    ScrollManager _scroll;
 
 
 };

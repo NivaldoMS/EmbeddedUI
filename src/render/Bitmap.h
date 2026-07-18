@@ -10,20 +10,21 @@ namespace EmbeddedUI
 
 
 /**
- * @brief Bitmap armazenado em memória de programa.
+ * @brief Bitmap armazenado em memória.
  */
-struct UIBitmap
+struct Bitmap
 {
 
     const uint8_t* data;
 
+
     uint16_t width;
+
 
     uint16_t height;
 
 
 };
-
 
 
 }

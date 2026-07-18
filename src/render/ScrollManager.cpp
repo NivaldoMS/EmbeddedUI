@@ -19,7 +19,10 @@ void ScrollManager::configure(
     uint8_t visibleLines
 )
 {
-    _visibleLines = visibleLines;
+
+    _visibleLines =
+        visibleLines;
+
 }
 
 
@@ -32,17 +35,21 @@ void ScrollManager::update(
 
     if(totalItems <= _visibleLines)
     {
+
         _firstVisible = 0;
 
         return;
+
     }
 
 
 
     if(selectedIndex < _firstVisible)
     {
+
         _firstVisible =
             selectedIndex;
+
     }
 
 
@@ -62,14 +69,17 @@ void ScrollManager::update(
 
 
 
-    if(_firstVisible +
-       _visibleLines >
-       totalItems)
+    if(
+        _firstVisible +
+        _visibleLines >
+        totalItems
+    )
     {
+
         _firstVisible =
-            totalItems
-            -
+            totalItems -
             _visibleLines;
+
     }
 
 }

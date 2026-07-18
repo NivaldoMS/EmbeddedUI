@@ -5,11 +5,12 @@ namespace EmbeddedUI
 {
 
 
-// Reservado para futuras operações
-// de bitmap.
-//
-// Atualmente os bitmaps são estruturas
-// simples apontando para PROGMEM.
+/*
+ * Implementação reservada.
+ *
+ * Bitmap atualmente é uma estrutura
+ * simples de dados.
+ */
 
 
 }

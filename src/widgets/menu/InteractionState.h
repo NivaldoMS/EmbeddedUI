@@ -2,7 +2,8 @@
 #define EMBEDDED_UI_INTERACTION_STATE_H
 
 
-#include "Node.h"
+#include <Arduino.h>
+
 #include "ValueNode.h"
 
 
@@ -28,23 +29,40 @@ public:
 
 
 
+    /**
+     * @brief Retorna o modo atual de interação.
+     */
     InteractionMode mode() const;
 
 
 
+    /**
+     * @brief Inicia a edição de um valor.
+     */
     void enterEdit(
         ValueNode* value
     );
 
 
+
+    /**
+     * @brief Finaliza o modo de edição.
+     */
     void leaveEdit();
 
 
 
+    /**
+     * @brief Informa se existe um valor em edição.
+     */
     bool editing() const;
 
 
 
+    /**
+     * @brief Retorna o ValueNode atualmente
+     * associado ao modo de edição.
+     */
     ValueNode* valueNode() const;
 
 

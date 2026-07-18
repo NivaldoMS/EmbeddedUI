@@ -28,13 +28,26 @@ _childCount(0)
 
 Node::~Node()
 {
+
+    /*
+     * Node não é proprietário dos filhos.
+     * Apenas desfaz os vínculos da árvore.
+     */
+
     clear();
+
+
+
+    if(_parent)
+    {
+        _parent->remove(
+            this
+        );
+    }
+
 }
 
-bool Node::isRoot() const
-{
-    return _parent == nullptr;
-}
+
 
 Node* Node::parent() const
 {
@@ -86,7 +99,27 @@ bool Node::append(
 
 
 
-    child->_parent = this;
+    /*
+     * Impede ciclos:
+     * um ancestral não pode ser inserido
+     * como filho de seu descendente.
+     */
+    if(child->isAncestorOf(this))
+        return false;
+
+
+
+    /*
+     * O mesmo nó não pode pertencer
+     * simultaneamente a dois pais.
+     */
+    if(child->_parent)
+        return false;
+
+
+
+    child->_parent =
+        this;
 
 
     child->_previousSibling =
@@ -98,26 +131,21 @@ bool Node::append(
 
 
 
-    if(!_firstChild)
+    if(_lastChild)
     {
-
-        _firstChild =
+        _lastChild->_nextSibling =
             child;
-
     }
     else
     {
-
-        _lastChild->_nextSibling =
+        _firstChild =
             child;
-
     }
 
 
 
     _lastChild =
         child;
-
 
 
     _childCount++;
@@ -171,16 +199,23 @@ bool Node::remove(
 
 
 
-    child->_parent = nullptr;
+    child->_parent =
+        nullptr;
 
-    child->_previousSibling = nullptr;
 
-    child->_nextSibling = nullptr;
+    child->_previousSibling =
+        nullptr;
+
+
+    child->_nextSibling =
+        nullptr;
 
 
 
     if(_childCount > 0)
+    {
         _childCount--;
+    }
 
 
 
@@ -193,33 +228,49 @@ bool Node::remove(
 void Node::clear()
 {
 
-    Node* current =
+    Node* child =
         _firstChild;
 
 
 
-    while(current)
+    while(child)
     {
 
         Node* next =
-            current->_nextSibling;
+            child->_nextSibling;
 
 
-        delete current;
+
+        child->_parent =
+            nullptr;
 
 
-        current =
+        child->_previousSibling =
+            nullptr;
+
+
+        child->_nextSibling =
+            nullptr;
+
+
+
+        child =
             next;
 
     }
 
 
 
-    _firstChild = nullptr;
+    _firstChild =
+        nullptr;
 
-    _lastChild = nullptr;
 
-    _childCount = 0;
+    _lastChild =
+        nullptr;
+
+
+    _childCount =
+        0;
 
 }
 
@@ -228,6 +279,13 @@ void Node::clear()
 bool Node::hasChildren() const
 {
     return _firstChild != nullptr;
+}
+
+
+
+bool Node::isRoot() const
+{
+    return _parent == nullptr;
 }
 
 
@@ -250,7 +308,8 @@ void Node::setCaption(
     const char* text
 )
 {
-    _caption = text;
+    _caption =
+        text;
 }
 
 
@@ -273,7 +332,8 @@ void Node::setVisible(
     bool value
 )
 {
-    _visible = value;
+    _visible =
+        value;
 }
 
 
@@ -289,7 +349,42 @@ void Node::setEnabled(
     bool value
 )
 {
-    _enabled = value;
+    _enabled =
+        value;
+}
+
+
+
+bool Node::isAncestorOf(
+    const Node* node
+) const
+{
+
+    if(!node)
+        return false;
+
+
+
+    const Node* current =
+        node->_parent;
+
+
+
+    while(current)
+    {
+
+        if(current == this)
+            return true;
+
+
+        current =
+            current->_parent;
+
+    }
+
+
+
+    return false;
 
 }
 

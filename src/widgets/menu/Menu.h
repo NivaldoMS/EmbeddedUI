@@ -22,6 +22,9 @@ public:
     Node* root();
 
 
+    const Node* root() const;
+
+
 
 private:
 

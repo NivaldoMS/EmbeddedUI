@@ -1,102 +1,115 @@
 #include "ScreenManager.h"
+
 #include "../render/Renderer.h"
+
 
 namespace EmbeddedUI
 {
 
 
-UIScreenManager::UIScreenManager()
+ScreenManager::ScreenManager()
 :
-activeScreen(nullptr)
+_current(nullptr)
 {
 
 }
 
 
 
-void UIScreenManager::begin(
-    UIScreen* screen
-)
+void ScreenManager::begin()
 {
-    activeScreen = screen;
 
-
-    if(activeScreen)
+    if(_current)
     {
-        activeScreen->begin();
-        activeScreen->onEnter();
+        _current->begin();
     }
+
 }
 
 
 
-void UIScreenManager::show(
-    UIScreen* screen
+void ScreenManager::show(
+    Screen& screen
 )
 {
 
-    if(activeScreen)
-    {
-        activeScreen->onExit();
-    }
+    _current =
+        &screen;
 
 
-    activeScreen = screen;
 
-
-    if(activeScreen)
-    {
-        activeScreen->begin();
-        activeScreen->onEnter();
-    }
+    _current->begin();
 
 }
 
 
 
-UIScreen* UIScreenManager::current()
-{
-    return activeScreen;
-}
-
-
-
-void UIScreenManager::update()
+void ScreenManager::clear()
 {
 
-    if(activeScreen)
-    {
-        activeScreen->update();
-    }
+    _current =
+        nullptr;
 
 }
 
-void UIScreenManager::render(
+
+
+Screen* ScreenManager::current() const
+{
+
+    return _current;
+
+}
+
+
+
+void ScreenManager::update()
+{
+
+    if(!_current)
+        return;
+
+
+
+    _current->update();
+
+}
+
+
+
+Result ScreenManager::handleEvent(
+    const Event& event
+)
+{
+
+    if(!_current)
+        return Result::IGNORED;
+
+
+
+    return
+        _current->handleEvent(
+            event
+        );
+
+}
+
+
+
+void ScreenManager::render(
     Renderer& renderer
 )
 {
 
-    if(activeScreen)
-    {
-        activeScreen->render(
-            renderer
-        );
-    }
-
-}
-
-UIResult UIScreenManager::handleEvent(
-    const UIEvent& event
-)
-{
-
-    if(activeScreen)
-    {
-        return activeScreen->handleEvent(event);
-    }
+    if(!_current)
+        return;
 
 
-    return UIResult::NONE;
+
+    _current->render(
+        renderer
+    );
+
 }
 
 

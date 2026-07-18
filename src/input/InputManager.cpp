@@ -5,70 +5,191 @@ namespace EmbeddedUI
 {
 
 
-UIInputManager::UIInputManager(
-    EventQueue& queue
+InputManager::InputManager(
+    uint8_t capacity
 )
 :
-encoder(nullptr),
-eventQueue(queue),
-pressStart(0),
-buttonPressed(false),
-longPressEvent(UIEventType::NONE)
+_encoder(nullptr),
+_events(capacity),
+_pressStart(0),
+_buttonPressed(false),
+_longPressTriggered(false),
+_longPressEvent(EventType::NONE)
 {
 
 }
 
 
 
-void UIInputManager::begin(
-    UIEncoder* encoder
+void InputManager::attach(
+    Encoder& encoder
 )
 {
 
-    this->encoder = encoder;
+    _encoder =
+        &encoder;
+
+}
 
 
-    if(this->encoder)
+
+void InputManager::detach()
+{
+
+    _encoder =
+        nullptr;
+
+
+
+    _buttonPressed =
+        false;
+
+
+
+    _longPressTriggered =
+        false;
+
+
+
+    _pressStart =
+        0;
+
+}
+
+
+
+void InputManager::begin()
+{
+
+    if(_encoder)
     {
-        this->encoder->begin();
+        _encoder->begin();
     }
 
 }
 
 
 
-void UIInputManager::update()
+void InputManager::update()
 {
 
-    if(!encoder)
+    if(!_encoder)
         return;
 
 
 
-    encoder->update();
+    _encoder->update();
 
 
 
-    if(!encoder->available())
-        return;
-
-
-
-    UIInputEvent input =
-        encoder->read();
-
-
-
-    switch(input.type)
+    while(_encoder->available())
     {
 
+        processInputEvent(
+            _encoder->read()
+        );
 
-        case UIInputEventType::ROTATE_CW:
+    }
 
-            eventQueue.push(
-                UIEvent(
-                    UIEventType::ENCODER_CW,
-                    input.timestamp
+
+
+    if(
+        _buttonPressed &&
+        !_longPressTriggered &&
+        _longPressEvent != EventType::NONE
+    )
+    {
+
+        const uint32_t now =
+            millis();
+
+
+
+        if(
+            now - _pressStart >=
+            LONG_PRESS_TIME
+        )
+        {
+
+            _events.push(
+                Event(
+                    _longPressEvent,
+                    now
+                )
+            );
+
+
+
+            _longPressTriggered =
+                true;
+
+        }
+
+    }
+
+}
+
+
+
+bool InputManager::available() const
+{
+
+    return
+        !_events.empty();
+
+}
+
+
+
+Event InputManager::read()
+{
+
+    Event event;
+
+
+
+    if(!_events.pop(event))
+    {
+        return Event(
+            EventType::NONE,
+            millis()
+        );
+    }
+
+
+
+    return event;
+
+}
+
+
+
+void InputManager::setLongPressEvent(
+    EventType event
+)
+{
+
+    _longPressEvent =
+        event;
+
+}
+
+
+
+void InputManager::processInputEvent(
+    const InputEvent& event
+)
+{
+
+    switch(event.type)
+    {
+
+        case InputEventType::ROTATE_CW:
+
+            _events.push(
+                Event(
+                    EventType::ENCODER_CW,
+                    event.timestamp
                 )
             );
 
@@ -76,12 +197,12 @@ void UIInputManager::update()
 
 
 
-        case UIInputEventType::ROTATE_CCW:
+        case InputEventType::ROTATE_CCW:
 
-            eventQueue.push(
-                UIEvent(
-                    UIEventType::ENCODER_CCW,
-                    input.timestamp
+            _events.push(
+                Event(
+                    EventType::ENCODER_CCW,
+                    event.timestamp
                 )
             );
 
@@ -89,14 +210,87 @@ void UIInputManager::update()
 
 
 
-        case UIInputEventType::BUTTON_DOWN:
+        case InputEventType::BUTTON_DOWN:
 
-            eventQueue.push(
-                UIEvent(
-                    UIEventType::BUTTON_ENTER,
-                    input.timestamp
+            _buttonPressed =
+                true;
+
+
+
+            _longPressTriggered =
+                false;
+
+
+
+            _pressStart =
+                event.timestamp;
+
+        break;
+
+
+
+        case InputEventType::BUTTON_UP:
+
+            if(
+                _buttonPressed &&
+                !_longPressTriggered
+            )
+            {
+
+                _events.push(
+                    Event(
+                        EventType::BUTTON_ENTER,
+                        event.timestamp
+                    )
+                );
+
+            }
+
+
+
+            _buttonPressed =
+                false;
+
+
+
+            _longPressTriggered =
+                false;
+
+
+
+            _pressStart =
+                0;
+
+        break;
+
+
+
+        case InputEventType::BUTTON_SHORT_PRESS:
+
+            _events.push(
+                Event(
+                    EventType::BUTTON_ENTER,
+                    event.timestamp
                 )
             );
+
+        break;
+
+
+
+        case InputEventType::BUTTON_LONG_PRESS:
+
+            if(_longPressEvent != EventType::NONE)
+            {
+
+                _events.push(
+                    Event(
+                        _longPressEvent,
+                        event.timestamp
+                    )
+                );
+
+            }
 
         break;
 
@@ -108,15 +302,6 @@ void UIInputManager::update()
 
     }
 
-}
-
-
-
-void UIInputManager::setLongPressEvent(
-    UIEventType event
-)
-{
-    longPressEvent = event;
 }
 
 

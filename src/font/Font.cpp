@@ -20,42 +20,81 @@ _height(height)
 
 
 
+const uint8_t* Font::data() const
+{
+
+    return _data;
+
+}
+
+
+
 uint8_t Font::width() const
 {
+
     return _width;
+
 }
 
 
 
 uint8_t Font::height() const
 {
+
     return _height;
+
 }
 
 
 
-const Glyph Font::glyph(
+Glyph Font::glyph(
     char character
 ) const
 {
 
+    (void)character;
+
+
+
     Glyph result;
 
 
-    result.bitmap = nullptr;
 
-    result.width = _width;
+    result.bitmap =
+        nullptr;
 
-    result.height = _height;
+
+
+    result.width =
+        _width;
+
+
+
+    result.height =
+        _height;
+
 
 
     /*
-       A busca real do bitmap
-       dependerá do formato da fonte.
-    */
-
+     * A obtenção individual do bitmap
+     * depende do formato da fonte.
+     *
+     * Drivers que trabalham diretamente
+     * com a fonte nativa não precisam
+     * utilizar este método.
+     */
 
     return result;
+
+}
+
+
+
+bool Font::valid() const
+{
+
+    return
+        _data != nullptr;
 
 }
 

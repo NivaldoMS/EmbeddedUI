@@ -16,18 +16,22 @@ _theme(theme)
 
 
 
-uint16_t Layout::lineY(
+int16_t Layout::lineY(
     uint8_t line
 ) const
 {
 
     return
-        _theme.marginTop
+        static_cast<int16_t>(
+            _theme.marginTop
+        )
         +
         (
-            line
+            static_cast<int16_t>(line)
             *
-            _theme.lineHeight
+            static_cast<int16_t>(
+                _theme.lineHeight
+            )
         );
 
 }
@@ -40,11 +44,17 @@ int16_t Layout::valueX(
 {
 
     return
-        displayWidth
+        static_cast<int16_t>(
+            displayWidth
+        )
         -
-        _theme.marginLeft
+        static_cast<int16_t>(
+            _theme.marginLeft
+        )
         -
-        32;
+        static_cast<int16_t>(
+            _theme.valueWidth
+        );
 
 }
 
@@ -59,24 +69,86 @@ Rect Layout::itemRect(
     Rect rect;
 
 
+
     rect.x =
         0;
+
 
 
     rect.y =
         lineY(line)
         -
-        _theme.lineHeight
+        static_cast<int16_t>(
+            _theme.lineHeight
+        )
         +
         2;
 
 
+
     rect.width =
-        displayWidth;
+        static_cast<int16_t>(
+            displayWidth
+        );
+
 
 
     rect.height =
-        _theme.lineHeight;
+        static_cast<int16_t>(
+            _theme.lineHeight
+        );
+
+
+
+    return rect;
+
+}
+
+
+
+Rect Layout::valueRect(
+    uint8_t line,
+    uint16_t displayWidth
+) const
+{
+
+    Rect rect;
+
+
+
+    rect.x =
+        valueX(
+            displayWidth
+        )
+        -
+        2;
+
+
+
+    rect.y =
+        lineY(line)
+        -
+        static_cast<int16_t>(
+            _theme.lineHeight
+        )
+        +
+        2;
+
+
+
+    rect.width =
+        static_cast<int16_t>(
+            _theme.valueWidth
+        )
+        +
+        2;
+
+
+
+    rect.height =
+        static_cast<int16_t>(
+            _theme.lineHeight
+        );
 
 
 

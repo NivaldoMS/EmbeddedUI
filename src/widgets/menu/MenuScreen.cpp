@@ -1,11 +1,13 @@
 #include "MenuScreen.h"
 
+#include "../../render/Renderer.h"
+
 
 namespace EmbeddedUI
 {
 
 
-UIMenuScreen::UIMenuScreen()
+MenuScreen::MenuScreen()
 :
 _menu(nullptr),
 _cursor(),
@@ -20,39 +22,74 @@ _navigation(
 
 
 
-void UIMenuScreen::setMenu(
+void MenuScreen::setMenu(
     Menu& menu
 )
 {
 
-    _menu = &menu;
+    _menu =
+        &menu;
 
 
-    _cursor.attach(
-        menu.root()
-    );
+
+    _state.leaveEdit();
+
+
+
+    Node* initial =
+        menu.root()->firstChild();
+
+
+
+    if(initial)
+    {
+        _cursor.attach(
+            initial
+        );
+    }
+    else
+    {
+        _cursor.attach(
+            menu.root()
+        );
+    }
 
 }
 
 
 
-UIResult UIMenuScreen::handleEvent(
-    const UIEvent& event
+Menu* MenuScreen::menu() const
+{
+
+    return _menu;
+
+}
+
+
+
+Result MenuScreen::handleEvent(
+    const Event& event
 )
 {
+
+    if(!_menu)
+        return Result::HANDLED;
+
+
 
     _navigation.handleEvent(
         event
     );
 
 
-    return UIResult::HANDLED;
+
+    return Result::HANDLED;
 
 }
 
 
 
-void UIMenuScreen::render(
+void MenuScreen::render(
     Renderer& renderer
 )
 {

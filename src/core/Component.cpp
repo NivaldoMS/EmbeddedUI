@@ -5,12 +5,12 @@ namespace EmbeddedUI
 {
 
 
-UIComponent::UIComponent(
-    UIComponentType componentType
+Component::Component(
+    ComponentType componentType
 )
 :
 componentType(componentType),
-state(UIState::NORMAL),
+state(State::NORMAL),
 visible(true),
 visibilityCallback(nullptr)
 {
@@ -19,44 +19,44 @@ visibilityCallback(nullptr)
 
 
 
-UIComponent::~UIComponent()
+Component::~Component()
 {
 
 }
 
 
 
-void UIComponent::begin()
+void Component::begin()
 {
 
 }
 
 
 
-void UIComponent::update()
+void Component::update()
 {
 
 }
 
 
 
-UIResult UIComponent::handleEvent(
-    const UIEvent& event
+Result Component::handleEvent(
+    const Event&
 )
 {
-    return UIResult::NONE;
+    return Result::NONE;
 }
 
 
 
-UIComponentType UIComponent::type() const
+ComponentType Component::type() const
 {
     return componentType;
 }
 
 
 
-void UIComponent::setVisible(
+void Component::setVisible(
     bool state
 )
 {
@@ -65,7 +65,7 @@ void UIComponent::setVisible(
 
 
 
-bool UIComponent::isVisible() const
+bool Component::isVisible() const
 {
 
     if(visibilityCallback)
@@ -73,13 +73,15 @@ bool UIComponent::isVisible() const
         return visibilityCallback();
     }
 
+
     return visible;
+
 }
 
 
 
-void UIComponent::setVisibilityCallback(
-    UIVisibilityCallback callback
+void Component::setVisibilityCallback(
+    VisibilityCallback callback
 )
 {
     visibilityCallback = callback;

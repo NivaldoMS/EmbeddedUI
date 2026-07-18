@@ -2,7 +2,8 @@
 #define EMBEDDED_UI_SCREEN_H
 
 
-#include "Component.h"
+#include "Event.h"
+#include "Types.h"
 
 
 namespace EmbeddedUI
@@ -13,58 +14,53 @@ class Renderer;
 
 
 /**
- * @brief Classe base para todas as telas.
- *
- * Uma tela representa uma área completa
- * da interface do usuário.
+ * @brief Classe base para telas da interface.
  */
-class UIScreen :
-    public UIComponent
+class Screen
 {
 
 public:
 
 
-    UIScreen();
+    Screen();
 
 
-    virtual ~UIScreen();
-
-
-
-    /**
-     * @brief Chamado quando a tela se torna ativa.
-     */
-    virtual void onEnter();
+    virtual ~Screen();
 
 
 
     /**
-     * @brief Chamado antes da tela ser removida.
+     * @brief Inicializa a tela.
+     *
+     * Chamado quando a tela é exibida
+     * pelo ScreenManager.
      */
-    virtual void onExit();
+    virtual void begin();
 
 
 
     /**
-     * @brief Processa eventos.
+     * @brief Atualiza a lógica interna da tela.
      */
-    virtual UIResult handleEvent(
-        const UIEvent& event
-    ) override;
+    virtual void update();
+
+
+
+    /**
+     * @brief Processa um evento recebido.
+     */
+    virtual Result handleEvent(
+        const Event& event
+    );
 
 
 
     /**
      * @brief Renderiza a tela.
-     *
-     * Cada tela implementa sua própria
-     * apresentação visual.
      */
     virtual void render(
         Renderer& renderer
-    );
-
+    ) = 0;
 
 
 };

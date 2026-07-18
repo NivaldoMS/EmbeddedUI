@@ -10,85 +10,144 @@ namespace EmbeddedUI
 
 
 /**
- * @brief Estados gerais da interface.
+ * @brief Estado visual ou lógico genérico
+ * de um componente.
  */
-enum class UIState : uint8_t
+enum class State : uint8_t
 {
+
     NORMAL = 0,
+
+
     ACTIVE,
+
+
     EDITING
+
 };
 
 
+
 /**
- * @brief Tipo de componente.
+ * @brief Tipos genéricos de componentes.
  */
-enum class UIComponentType : uint8_t
+enum class ComponentType : uint8_t
 {
+
     NONE = 0,
+
 
     SCREEN,
 
+
     MENU,
+
 
     ITEM,
 
+
     VALUE,
+
 
     DIALOG,
 
+
     POPUP
+
 };
 
 
+
 /**
- * @brief Tipo de item de menu.
+ * @brief Tipos genéricos de itens.
+ *
+ * Mantido para componentes que não utilizam
+ * diretamente NodeType e ValueType.
  */
-enum class UIItemType : uint8_t
+enum class ItemType : uint8_t
 {
+
     NONE = 0,
+
 
     SUBMENU,
 
+
     INTEGER,
+
 
     FLOAT,
 
+
     BOOLEAN,
+
 
     LIST,
 
+
     ACTION
+
 };
 
 
+
 /**
- * @brief Resultado de uma ação da interface.
+ * @brief Resultado de uma operação
+ * ou processamento de evento.
  */
-enum class UIResult : uint8_t
+enum class Result : uint8_t
 {
+
     NONE = 0,
 
+
+    /**
+     * O evento ou operação não foi tratado.
+     */
+    IGNORED,
+
+
+    /**
+     * O evento foi tratado.
+     */
     HANDLED,
 
+
+    /**
+     * A operação foi cancelada.
+     */
     CANCELLED,
 
+
+    /**
+     * A operação alterou algum estado.
+     */
     CHANGED,
 
+
+    /**
+     * Ocorreu um erro.
+     */
     ERROR
+
 };
 
 
+
 /**
- * @brief Direções de navegação.
+ * @brief Direção genérica de navegação.
  */
-enum class UIDirection : int8_t
+enum class Direction : int8_t
 {
+
     NONE = 0,
+
 
     UP = -1,
 
+
     DOWN = 1
+
 };
 
 

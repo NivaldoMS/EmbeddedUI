@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-#include "../widgets/menu/ValueNode.h"
+#include <stdio.h>
 
 
 namespace EmbeddedUI
@@ -8,7 +8,7 @@ namespace EmbeddedUI
 
 
 Renderer::Renderer(
-    UIDisplayDriver& display,
+    DisplayDriver& display,
     Theme& theme,
     Font& font
 )
@@ -16,6 +16,7 @@ Renderer::Renderer(
 _display(display),
 _theme(theme),
 _font(font),
+_background(),
 _layout(theme),
 _scroll()
 {
@@ -29,6 +30,79 @@ void Renderer::begin()
 
     _display.begin();
 
+
+
+    if(_font.valid())
+    {
+        _display.setFont(
+            _font
+        );
+    }
+
+
+
+    _background.setBitmap(
+        _theme.background
+    );
+
+
+
+    configureLayout();
+
+}
+
+
+
+void Renderer::configureLayout()
+{
+
+    uint8_t visibleLines =
+        1;
+
+
+
+    if(_theme.lineHeight > 0)
+    {
+
+        const uint16_t top =
+            _theme.marginTop >= _theme.lineHeight
+            ?
+            _theme.marginTop - _theme.lineHeight
+            :
+            0;
+
+
+
+        const uint16_t availableHeight =
+            _display.height() > top
+            ?
+            _display.height() - top
+            :
+            0;
+
+
+
+        visibleLines =
+            static_cast<uint8_t>(
+                availableHeight /
+                _theme.lineHeight
+            );
+
+
+
+        if(visibleLines == 0)
+        {
+            visibleLines = 1;
+        }
+
+    }
+
+
+
+    _scroll.configure(
+        visibleLines
+    );
+
 }
 
 
@@ -40,7 +114,40 @@ void Renderer::render(
 )
 {
 
+    (void)menu;
+
+
+
     _display.clear();
+
+
+
+    _display.setDrawColor(
+        _theme.backgroundColor
+    );
+
+
+
+    /*
+     * A limpeza do buffer já define o estado
+     * inicial do fundo em displays monocromáticos.
+     */
+
+    _display.setDrawColor(
+        _theme.textColor
+    );
+
+
+
+    _background.setBitmap(
+        _theme.background
+    );
+
+
+
+    _background.draw(
+        _display
+    );
 
 
 
@@ -51,31 +158,38 @@ void Renderer::render(
 
     if(!current)
     {
+
         _display.refresh();
+
         return;
+
     }
 
 
 
-    Node* parent =
+    Node* first =
         current;
 
 
 
-    if(current->parent())
+    while(
+        first->previousSibling()
+    )
     {
-        parent =
-            current->parent();
+
+        first =
+            first->previousSibling();
+
     }
 
 
 
-    uint16_t selectedIndex =
+    const uint16_t selectedIndex =
         cursor.index();
 
 
 
-    uint16_t totalItems =
+    const uint16_t totalItems =
         cursor.siblingCount();
 
 
@@ -88,11 +202,11 @@ void Renderer::render(
 
 
     Node* item =
-        parent->firstChild();
+        first;
 
 
 
-    uint16_t skip =
+    const uint16_t skip =
         _scroll.firstVisible();
 
 
@@ -103,13 +217,16 @@ void Renderer::render(
         i++
     )
     {
+
         item =
             item->nextSibling();
+
     }
 
 
 
-    uint8_t line = 0;
+    uint8_t line =
+        0;
 
 
 
@@ -119,21 +236,27 @@ void Renderer::render(
     )
     {
 
+        if(item->isVisible())
+        {
 
-        drawNode(
-            item,
-            line,
-            item == current
-        );
+            drawNode(
+                item,
+                line,
+                item == current,
+                state.editing() &&
+                state.valueNode() == item
+            );
+
+
+
+            line++;
+
+        }
 
 
 
         item =
             item->nextSibling();
-
-
-
-        line++;
 
     }
 
@@ -145,10 +268,38 @@ void Renderer::render(
 
 
 
+DisplayDriver& Renderer::display()
+{
+
+    return _display;
+
+}
+
+
+
+Theme& Renderer::theme()
+{
+
+    return _theme;
+
+}
+
+
+
+Font& Renderer::font()
+{
+
+    return _font;
+
+}
+
+
+
 void Renderer::drawNode(
     Node* node,
     uint8_t line,
-    bool selected
+    bool selected,
+    bool editing
 )
 {
 
@@ -157,7 +308,7 @@ void Renderer::drawNode(
 
 
 
-    uint16_t y =
+    const int16_t y =
         _layout.lineY(
             line
         );
@@ -167,11 +318,18 @@ void Renderer::drawNode(
     if(selected)
     {
 
-        Rect rect =
+        const Rect rect =
             _layout.itemRect(
                 line,
                 _display.width()
             );
+
+
+
+        _display.setDrawColor(
+            _theme.selectedColor
+        );
+
 
 
         _display.fillRect(
@@ -179,6 +337,20 @@ void Renderer::drawNode(
             rect.y,
             rect.width,
             rect.height
+        );
+
+
+
+        _display.setDrawColor(
+            _theme.selectedTextColor
+        );
+
+    }
+    else
+    {
+
+        _display.setDrawColor(
+            _theme.textColor
         );
 
     }
@@ -204,7 +376,46 @@ void Renderer::drawNode(
             y
         );
 
+
+
+        if(editing)
+        {
+
+            const Rect valueArea =
+                _layout.valueRect(
+                    line,
+                    _display.width()
+                );
+
+
+
+            /*
+             * XOR permite exibir o contorno
+             * tanto sobre fundo preenchido
+             * quanto sobre fundo vazio.
+             */
+            _display.setDrawColor(
+                2
+            );
+
+
+
+            _display.drawRect(
+                valueArea.x,
+                valueArea.y,
+                valueArea.width,
+                valueArea.height
+            );
+
+        }
+
     }
+
+
+
+    _display.setDrawColor(
+        _theme.textColor
+    );
 
 }
 
@@ -212,8 +423,8 @@ void Renderer::drawNode(
 
 void Renderer::drawValue(
     ValueNode* value,
-    uint16_t x,
-    uint16_t y
+    int16_t x,
+    int16_t y
 )
 {
 
@@ -228,7 +439,6 @@ void Renderer::drawValue(
 
     switch(value->valueType())
     {
-
 
         case ValueType::Integer:
 
@@ -262,7 +472,7 @@ void Renderer::drawValue(
                 buffer,
                 sizeof(buffer),
                 "%s",
-                value->value() > 0
+                value->value() > 0.0f
                 ?
                 "ON"
                 :
@@ -271,6 +481,14 @@ void Renderer::drawValue(
 
         break;
 
+
+
+        default:
+
+            buffer[0] =
+                '\0';
+
+        break;
 
     }
 

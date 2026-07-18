@@ -15,10 +15,10 @@ Node(
     NodeType::Value
 ),
 _valueType(type),
-_value(0),
-_minimum(0),
-_maximum(100),
-_step(1)
+_value(0.0f),
+_minimum(0.0f),
+_maximum(100.0f),
+_step(1.0f)
 {
 
 }
@@ -32,25 +32,42 @@ void ValueNode::setRange(
 )
 {
 
-    _minimum = minimum;
-
-    _maximum = maximum;
-
-    _step = step;
-
-
-
-    if(_value < _minimum)
+    if(minimum > maximum)
     {
-        _value = _minimum;
+        const float temporary =
+            minimum;
+
+
+        minimum =
+            maximum;
+
+
+        maximum =
+            temporary;
     }
 
 
 
-    if(_value > _maximum)
-    {
-        _value = _maximum;
-    }
+    _minimum =
+        minimum;
+
+
+    _maximum =
+        maximum;
+
+
+    _step =
+        step > 0.0f
+        ?
+        step
+        :
+        1.0f;
+
+
+
+    setValue(
+        _value
+    );
 
 }
 
@@ -70,19 +87,37 @@ void ValueNode::setValue(
 
     if(value < _minimum)
     {
-        value = _minimum;
+        value =
+            _minimum;
     }
 
 
 
     if(value > _maximum)
     {
-        value = _maximum;
+        value =
+            _maximum;
     }
 
 
 
-    _value = value;
+    if(_valueType == ValueType::Boolean)
+    {
+        _value =
+            value > 0.0f
+            ?
+            1.0f
+            :
+            0.0f;
+
+
+        return;
+    }
+
+
+
+    _value =
+        value;
 
 }
 

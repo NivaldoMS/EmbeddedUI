@@ -9,55 +9,63 @@ namespace EmbeddedUI
 {
 
 
-class UIDisplayDriver;
+class DisplayDriver;
 
 
 /**
- * @brief Gerenciador do plano de fundo.
+ * @brief Gerencia o bitmap de fundo.
+ *
+ * Não assume propriedade sobre o Bitmap.
  */
-class UIBackground
+class Background
 {
 
 public:
 
 
-    UIBackground();
+    Background();
 
 
 
     /**
-     * @brief Define bitmap de fundo.
+     * @brief Define o bitmap de fundo.
      */
     void setBitmap(
-        const UIBitmap* bitmap
+        const Bitmap* bitmap
     );
 
 
 
     /**
-     * @brief Remove fundo.
+     * @brief Remove o bitmap associado.
      */
     void clear();
 
 
 
     /**
-     * @brief Desenha fundo.
+     * @brief Retorna o bitmap associado.
+     */
+    const Bitmap* bitmap() const;
+
+
+
+    /**
+     * @brief Desenha o bitmap associado.
      */
     void draw(
-        UIDisplayDriver* display
-    );
+        DisplayDriver& display
+    ) const;
 
 
 
 private:
 
 
-    const UIBitmap* bitmap;
+    const Bitmap* _bitmap;
 
 
 };
-
 
 
 }

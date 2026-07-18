@@ -1,56 +1,69 @@
 #include "Background.h"
 
-#include "..\drivers\DisplayDriver.h"
+#include "../drivers/display/DisplayDriver.h"
 
 
 namespace EmbeddedUI
 {
 
 
-UIBackground::UIBackground()
+Background::Background()
 :
-bitmap(nullptr)
+_bitmap(nullptr)
 {
 
 }
 
 
 
-void UIBackground::setBitmap(
-    const UIBitmap* bitmap
-)
-{
-    this->bitmap = bitmap;
-}
-
-
-
-void UIBackground::clear()
-{
-    bitmap = nullptr;
-}
-
-
-
-void UIBackground::draw(
-    UIDisplayDriver* display
+void Background::setBitmap(
+    const Bitmap* bitmap
 )
 {
 
-    if(!bitmap)
+    _bitmap =
+        bitmap;
+
+}
+
+
+
+void Background::clear()
+{
+
+    _bitmap =
+        nullptr;
+
+}
+
+
+
+const Bitmap* Background::bitmap() const
+{
+
+    return _bitmap;
+
+}
+
+
+
+void Background::draw(
+    DisplayDriver& display
+) const
+{
+
+    if(!_bitmap)
         return;
 
 
-    /*
-     * O desenho real depende do driver.
-     *
-     * O DisplayDriver receberá suporte
-     * a bitmap no próximo refinamento.
-     */
 
+    display.drawBitmap(
+        0,
+        0,
+        *_bitmap
+    );
 
 }
-
 
 
 }

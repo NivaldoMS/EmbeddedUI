@@ -4,60 +4,75 @@
 
 #include <Arduino.h>
 
+#include "../render/Bitmap.h"
+
 
 namespace EmbeddedUI
 {
 
 
+/**
+ * @brief Configuração visual da interface.
+ */
 struct Theme
 {
 
     /*
-     * Dimensões gerais
+     * Dimensões gerais.
      */
 
     uint8_t marginLeft;
 
+
     uint8_t marginTop;
+
 
     uint8_t lineHeight;
 
 
 
     /*
-     * Menu
+     * Menu.
      */
 
     uint8_t selectedIndicatorWidth;
 
 
+    uint8_t valueWidth;
+
+
 
     /*
-     * Cores
+     * Cores ou modos de desenho.
      *
-     * O tipo será abstrato.
-     * O driver decide a conversão.
+     * A interpretação depende do driver.
      */
 
     uint16_t textColor;
 
+
+    uint16_t selectedTextColor;
+
+
     uint16_t selectedColor;
+
 
     uint16_t backgroundColor;
 
 
 
     /*
-     * Background
+     * Bitmap opcional de fundo.
      *
-     * Reservado para imagem.
+     * O Theme não é proprietário do bitmap.
      */
 
-    const uint8_t* background;
+    const Bitmap* background;
 
 
 
     Theme();
+
 
 };
 

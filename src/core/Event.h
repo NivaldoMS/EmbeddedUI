@@ -10,49 +10,58 @@ namespace EmbeddedUI
 
 
 /**
- * @brief Eventos de interação da interface.
+ * @brief Tipos de eventos processados pela interface.
  */
-enum class UIEventType : uint8_t
+enum class EventType : uint8_t
 {
+
     NONE = 0,
+
 
     ENCODER_CW,
 
+
     ENCODER_CCW,
+
 
     BUTTON_ENTER,
 
+
     BUTTON_BACK,
 
+
     TIMEOUT
+
 };
 
 
 
 /**
- * @brief Evento completo.
+ * @brief Evento de alto nível processado
+ * pela EmbeddedUI.
  */
-struct UIEvent
+struct Event
 {
-    UIEventType type;
+
+    EventType type;
+
 
     uint32_t timestamp;
 
 
-    UIEvent()
-        :
-        type(UIEventType::NONE),
-        timestamp(0)
+
+    Event(
+        EventType type = EventType::NONE,
+        uint32_t timestamp = 0
+    )
+    :
+    type(type),
+    timestamp(timestamp)
     {
+
     }
 
 
-    UIEvent(UIEventType eventType, uint32_t time)
-        :
-        type(eventType),
-        timestamp(time)
-    {
-    }
 };
 
 

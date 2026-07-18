@@ -13,43 +13,47 @@ class Renderer;
 
 
 /**
- * @brief Gerencia as telas da aplicação.
+ * @brief Gerencia a tela atualmente ativa.
  *
- * Não cria telas dinamicamente.
- * O usuário fornece as telas existentes.
+ * O ScreenManager não é proprietário da tela.
  */
-class UIScreenManager
+class ScreenManager
 {
 
 public:
 
 
-    UIScreenManager();
+    ScreenManager();
 
 
 
     /**
-     * @brief Define a tela inicial.
+     * @brief Inicializa o gerenciador.
      */
-    void begin(
-        UIScreen* screen
-    );
+    void begin();
 
 
 
     /**
-     * @brief Troca a tela atual.
+     * @brief Define a tela ativa.
      */
     void show(
-        UIScreen* screen
+        Screen& screen
     );
 
 
 
     /**
-     * @brief Retorna tela atual.
+     * @brief Remove a tela ativa.
      */
-    UIScreen* current();
+    void clear();
+
+
+
+    /**
+     * @brief Retorna a tela ativa.
+     */
+    Screen* current() const;
 
 
 
@@ -57,6 +61,15 @@ public:
      * @brief Atualiza a tela ativa.
      */
     void update();
+
+
+
+    /**
+     * @brief Encaminha um evento à tela ativa.
+     */
+    Result handleEvent(
+        const Event& event
+    );
 
 
 
@@ -69,19 +82,10 @@ public:
 
 
 
-    /**
-     * @brief Envia eventos.
-     */
-    UIResult handleEvent(
-        const UIEvent& event
-    );
-
-
-
 private:
 
 
-    UIScreen* activeScreen;
+    Screen* _current;
 
 
 };

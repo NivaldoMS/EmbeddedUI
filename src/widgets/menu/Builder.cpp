@@ -18,24 +18,28 @@ _current(menu.root())
 
 
 Builder& Builder::folder(
-    const char* caption
+    Node& node
 )
 {
 
-    Node* node =
-        new Node(
-            caption,
-            NodeType::Folder
-        );
+    if(!_current)
+        return *this;
 
 
-    _current->append(
-        node
-    );
+
+    if(node.type() != NodeType::Folder)
+        return *this;
+
+
+
+    if(!_current->append(&node))
+        return *this;
+
 
 
     _current =
-        node;
+        &node;
+
 
 
     return *this;
@@ -45,21 +49,19 @@ Builder& Builder::folder(
 
 
 Builder& Builder::value(
-    const char* caption,
-    ValueType type
+    ValueNode& node
 )
 {
 
-    ValueNode* node =
-        new ValueNode(
-            caption,
-            type
-        );
+    if(!_current)
+        return *this;
+
 
 
     _current->append(
-        node
+        &node
     );
+
 
 
     return *this;
@@ -69,20 +71,24 @@ Builder& Builder::value(
 
 
 Builder& Builder::action(
-    const char* caption
+    Node& node
 )
 {
 
-    Node* node =
-        new Node(
-            caption,
-            NodeType::Action
-        );
+    if(!_current)
+        return *this;
+
+
+
+    if(node.type() != NodeType::Action)
+        return *this;
+
 
 
     _current->append(
-        node
+        &node
     );
+
 
 
     return *this;
@@ -94,14 +100,34 @@ Builder& Builder::action(
 Builder& Builder::end()
 {
 
-    if(_current->parent())
+    if(!_current)
+        return *this;
+
+
+
+    Node* parent =
+        _current->parent();
+
+
+
+    if(parent)
     {
         _current =
-            _current->parent();
+            parent;
     }
 
 
+
     return *this;
+
+}
+
+
+
+Node* Builder::current() const
+{
+
+    return _current;
 
 }
 

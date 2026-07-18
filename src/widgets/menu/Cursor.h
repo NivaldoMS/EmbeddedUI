@@ -17,6 +17,8 @@ public:
 
     Cursor();
 
+
+
     /**
      * @brief Define o nó inicial da navegação.
      */
@@ -34,14 +36,14 @@ public:
 
 
     /**
-     * @brief Move para próximo irmão.
+     * @brief Move para o próximo irmão.
      */
     bool moveNext();
 
 
 
     /**
-     * @brief Move para irmão anterior.
+     * @brief Move para o irmão anterior.
      */
     bool movePrevious();
 
@@ -62,31 +64,30 @@ public:
 
 
     /**
-     * @brief Retorna posição do cursor entre irmãos.
-     *
-     * Exemplo:
-     *
-     * Item 0
-     * Item 1
-     * Item 2 <- retorna 2
+     * @brief Retorna a posição do cursor
+     * entre os irmãos.
      */
     uint16_t index() const;
 
 
 
     /**
-     * @brief Retorna quantidade de itens
-     * no mesmo nível.
+     * @brief Retorna a quantidade de nós
+     * existentes no mesmo nível.
      */
     uint16_t siblingCount() const;
-
-    uint16_t currentIndex() const;
-
-    Node* firstSibling() const;
 
 
 
 private:
+
+
+    /**
+     * @brief Retorna o primeiro nó
+     * do nível atual.
+     */
+    Node* firstSibling() const;
+
 
 
     Node* _current;

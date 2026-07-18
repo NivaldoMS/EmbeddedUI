@@ -20,28 +20,40 @@ _state(state)
 
 void Navigation::next()
 {
-    if(!_state.editing())
+
+    if(_state.editing())
     {
-        _cursor.moveNext();
-    }
-    else
-    {
+
         editNext();
+
+        return;
+
     }
+
+
+
+    _cursor.moveNext();
+
 }
 
 
 
 void Navigation::previous()
 {
-    if(!_state.editing())
+
+    if(_state.editing())
     {
-        _cursor.movePrevious();
-    }
-    else
-    {
+
         editPrevious();
+
+        return;
+
     }
+
+
+
+    _cursor.movePrevious();
+
 }
 
 
@@ -51,9 +63,11 @@ bool Navigation::enter()
 
     if(_state.editing())
     {
+
         confirm();
 
         return true;
+
     }
 
 
@@ -68,6 +82,11 @@ bool Navigation::enter()
 
 
 
+    if(!node->isEnabled())
+        return false;
+
+
+
     if(node->type() == NodeType::Value)
     {
 
@@ -75,12 +94,15 @@ bool Navigation::enter()
             static_cast<ValueNode*>(node);
 
 
+
         _state.enterEdit(
             value
         );
 
 
+
         return true;
+
     }
 
 
@@ -96,10 +118,13 @@ bool Navigation::back()
 
     if(_state.editing())
     {
+
         cancel();
 
         return true;
+
     }
+
 
 
     return _cursor.back();
@@ -115,14 +140,17 @@ void Navigation::editNext()
         _state.valueNode();
 
 
-    if(value)
-    {
-        value->setValue(
-            value->value()
-            +
-            value->step()
-        );
-    }
+
+    if(!value)
+        return;
+
+
+
+    value->setValue(
+        value->value()
+        +
+        value->step()
+    );
 
 }
 
@@ -135,14 +163,17 @@ void Navigation::editPrevious()
         _state.valueNode();
 
 
-    if(value)
-    {
-        value->setValue(
-            value->value()
-            -
-            value->step()
-        );
-    }
+
+    if(!value)
+        return;
+
+
+
+    value->setValue(
+        value->value()
+        -
+        value->step()
+    );
 
 }
 
@@ -150,28 +181,37 @@ void Navigation::editPrevious()
 
 void Navigation::confirm()
 {
+
     _state.leaveEdit();
+
 }
 
 
 
 void Navigation::cancel()
 {
+
+    /*
+     * O estado atual não mantém uma cópia
+     * do valor anterior. Portanto, cancelar
+     * encerra a edição sem restaurar o valor.
+     */
+
     _state.leaveEdit();
+
 }
 
 
 
 void Navigation::handleEvent(
-    const UIEvent& event
+    const Event& event
 )
 {
 
     switch(event.type)
     {
 
-
-        case UIEventType::ENCODER_CW:
+        case EventType::ENCODER_CW:
 
             next();
 
@@ -179,7 +219,7 @@ void Navigation::handleEvent(
 
 
 
-        case UIEventType::ENCODER_CCW:
+        case EventType::ENCODER_CCW:
 
             previous();
 
@@ -187,7 +227,7 @@ void Navigation::handleEvent(
 
 
 
-        case UIEventType::BUTTON_ENTER:
+        case EventType::BUTTON_ENTER:
 
             enter();
 
@@ -195,7 +235,7 @@ void Navigation::handleEvent(
 
 
 
-        case UIEventType::BUTTON_BACK:
+        case EventType::BUTTON_BACK:
 
             back();
 

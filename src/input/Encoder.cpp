@@ -5,59 +5,96 @@ namespace EmbeddedUI
 {
 
 
-UIEncoder::UIEncoder(
+Encoder::Encoder(
     uint8_t pinA,
     uint8_t pinB,
     uint8_t buttonPin
 )
 :
-pinA(pinA),
-pinB(pinB),
-buttonPin(buttonPin),
-lastA(HIGH),
-lastButton(HIGH),
-pendingEvent(),
-eventAvailable(false),
-lastButtonTime(0)
+_pinA(pinA),
+_pinB(pinB),
+_buttonPin(buttonPin),
+_lastA(HIGH),
+_buttonState(HIGH),
+_lastButtonReading(HIGH),
+_lastDebounceTime(0),
+_events(),
+_head(0),
+_tail(0),
+_count(0)
 {
 
 }
 
 
 
-void UIEncoder::begin()
+void Encoder::begin()
 {
 
     pinMode(
-        pinA,
+        _pinA,
         INPUT_PULLUP
     );
+
 
 
     pinMode(
-        pinB,
+        _pinB,
         INPUT_PULLUP
     );
+
 
 
     pinMode(
-        buttonPin,
+        _buttonPin,
         INPUT_PULLUP
     );
 
 
-    lastA = digitalRead(pinA);
 
-    lastButton = digitalRead(buttonPin);
+    _lastA =
+        digitalRead(_pinA);
+
+
+
+    _buttonState =
+        digitalRead(_buttonPin);
+
+
+
+    _lastButtonReading =
+        _buttonState;
+
+
+
+    _lastDebounceTime =
+        millis();
+
+
+
+    _head =
+        0;
+
+
+
+    _tail =
+        0;
+
+
+
+    _count =
+        0;
 
 }
 
 
 
-void UIEncoder::update()
+void Encoder::update()
 {
 
     updateRotation();
+
+
 
     updateButton();
 
@@ -65,106 +102,215 @@ void UIEncoder::update()
 
 
 
-void UIEncoder::updateRotation()
+bool Encoder::available() const
 {
 
-    uint8_t currentA = digitalRead(pinA);
+    return
+        _count > 0;
+
+}
 
 
-    if(currentA != lastA)
+
+InputEvent Encoder::read()
+{
+
+    if(_count == 0)
+    {
+        return InputEvent();
+    }
+
+
+
+    InputEvent event =
+        _events[_head];
+
+
+
+    _head++;
+
+
+
+    if(_head >= EVENT_CAPACITY)
+    {
+        _head = 0;
+    }
+
+
+
+    _count--;
+
+
+
+    return event;
+
+}
+
+
+
+bool Encoder::enqueue(
+    const InputEvent& event
+)
+{
+
+    if(_count >= EVENT_CAPACITY)
+        return false;
+
+
+
+    _events[_tail] =
+        event;
+
+
+
+    _tail++;
+
+
+
+    if(_tail >= EVENT_CAPACITY)
+    {
+        _tail = 0;
+    }
+
+
+
+    _count++;
+
+
+
+    return true;
+
+}
+
+
+
+void Encoder::updateRotation()
+{
+
+    const uint8_t currentA =
+        digitalRead(_pinA);
+
+
+
+    /*
+     * Considera apenas a borda de descida
+     * para gerar um evento por passo.
+     */
+    if(
+        _lastA == HIGH &&
+        currentA == LOW
+    )
     {
 
-        if(digitalRead(pinB) != currentA)
+        const uint8_t currentB =
+            digitalRead(_pinB);
+
+
+
+        if(currentB == HIGH)
         {
-            pendingEvent =
-                UIInputEvent(
-                    UIInputEventType::ROTATE_CW,
+
+            enqueue(
+                InputEvent(
+                    InputEventType::ROTATE_CW,
                     millis()
-                );
+                )
+            );
+
         }
         else
         {
-            pendingEvent =
-                UIEvent(
-                    UIInputEventType::ROTATE_CCW
+
+            enqueue(
+                InputEvent(
+                    InputEventType::ROTATE_CCW,
                     millis()
-                );
+                )
+            );
+
         }
 
-
-        eventAvailable = true;
     }
 
 
-    lastA = currentA;
+
+    _lastA =
+        currentA;
 
 }
 
 
 
-void UIEncoder::updateButton()
+void Encoder::updateButton()
 {
 
-    uint8_t currentButton =
-        digitalRead(buttonPin);
+    const uint8_t reading =
+        digitalRead(_buttonPin);
 
 
 
-    if(currentButton != lastButton)
+    const uint32_t now =
+        millis();
+
+
+
+    if(reading != _lastButtonReading)
     {
 
-        uint32_t now = millis();
+        _lastDebounceTime =
+            now;
 
 
 
-        if(
-            now - lastButtonTime
-            > DEBOUNCE_TIME
-        )
-        {
-
-            if(currentButton == LOW)
-            {
-
-                pendingEvent =
-                    UIEvent(
-                        UIInputEventType::BUTTON_DOWN
-                        now
-                    );
-
-
-                eventAvailable = true;
-
-            }
-
-
-            lastButtonTime = now;
-
-        }
+        _lastButtonReading =
+            reading;
 
     }
 
 
-    lastButton = currentButton;
 
-}
-
-
-
-bool UIEncoder::available()
-{
-    return eventAvailable;
-}
+    if(
+        now - _lastDebounceTime <
+        DEBOUNCE_TIME
+    )
+    {
+        return;
+    }
 
 
 
-UIInputEvent UIEncoder::read()
-{
-
-    eventAvailable = false;
+    if(reading == _buttonState)
+        return;
 
 
-    return pendingEvent;
+
+    _buttonState =
+        reading;
+
+
+
+    if(_buttonState == LOW)
+    {
+
+        enqueue(
+            InputEvent(
+                InputEventType::BUTTON_DOWN,
+                now
+            )
+        );
+
+    }
+    else
+    {
+
+        enqueue(
+            InputEvent(
+                InputEventType::BUTTON_UP,
+                now
+            )
+        );
+
+    }
 
 }
 

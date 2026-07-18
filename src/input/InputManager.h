@@ -5,9 +5,10 @@
 #include <Arduino.h>
 
 #include "Encoder.h"
+#include "InputEvent.h"
+
 #include "../core/Event.h"
 #include "../core/EventQueue.h"
-#include "../input/InputEvent.h"
 
 
 namespace EmbeddedUI
@@ -15,23 +16,12 @@ namespace EmbeddedUI
 
 
 /**
- * @brief Camada de interpretação dos controles físicos.
+ * @brief Interpreta eventos produzidos pelos
+ * dispositivos físicos.
  *
- * Converte eventos de hardware:
- *
- *   ROTATE_CW
- *   ROTATE_CCW
- *   BUTTON_DOWN
- *
- * em eventos da interface:
- *
- *   ENCODER_CW
- *   ENCODER_CCW
- *   BUTTON_ENTER
- *
- * Os eventos gerados são enviados para EventQueue.
+ * Converte InputEvent em Event.
  */
-class UIInputManager
+class InputManager
 {
 
 public:
@@ -40,40 +30,71 @@ public:
     /**
      * @brief Cria o gerenciador de entrada.
      *
-     * @param queue Fila de eventos da interface.
+     * @param capacity Capacidade da fila interna.
      */
-    explicit UIInputManager(
-        EventQueue& queue
+    explicit InputManager(
+        uint8_t capacity = 16
     );
 
 
 
     /**
-     * @brief Inicializa o gerenciador de entrada.
-     */
-    void begin(
-        UIEncoder* encoder
-    );
-
-
-
-    /**
-     * @brief Atualiza leitura dos dispositivos.
+     * @brief Associa um encoder ao gerenciador.
      *
-     * Deve ser chamado no loop principal.
+     * O InputManager não é proprietário
+     * do encoder.
+     */
+    void attach(
+        Encoder& encoder
+    );
+
+
+
+    /**
+     * @brief Remove o encoder associado.
+     */
+    void detach();
+
+
+
+    /**
+     * @brief Inicializa os dispositivos associados.
+     */
+    void begin();
+
+
+
+    /**
+     * @brief Atualiza a leitura e interpretação
+     * dos dispositivos.
      */
     void update();
 
 
 
     /**
-     * @brief Define evento gerado por pressão longa.
+     * @brief Informa se existe evento pendente.
+     */
+    bool available() const;
+
+
+
+    /**
+     * @brief Retorna o próximo evento pendente.
      *
-     * Reservado para controle global:
-     * abrir menu, sair, etc.
+     * Retorna EventType::NONE quando a fila
+     * estiver vazia.
+     */
+    Event read();
+
+
+
+    /**
+     * @brief Define o evento produzido por
+     * uma pressão longa.
      */
     void setLongPressEvent(
-        UIEventType event
+        EventType event
     );
 
 
@@ -81,46 +102,33 @@ public:
 private:
 
 
-    /**
-     * @brief Encoder físico associado.
-     */
-    UIEncoder* encoder;
+    void processInputEvent(
+        const InputEvent& event
+    );
 
 
 
-    /**
-     * @brief Fila de eventos da interface.
-     */
-    EventQueue& eventQueue;
+    Encoder* _encoder;
+
+
+    EventQueue _events;
+
+
+    uint32_t _pressStart;
+
+
+    bool _buttonPressed;
+
+
+    bool _longPressTriggered;
+
+
+    EventType _longPressEvent;
 
 
 
-    /**
-     * @brief Momento em que botão foi pressionado.
-     */
-    uint32_t pressStart;
-
-
-
-    /**
-     * @brief Estado do botão.
-     */
-    bool buttonPressed;
-
-
-
-    /**
-     * @brief Evento gerado por long press.
-     */
-    UIEventType longPressEvent;
-
-
-
-    /**
-     * @brief Tempo mínimo para considerar
-     * pressão longa.
-     */
-    static constexpr uint16_t LONG_PRESS_TIME = 800;
+    static constexpr uint16_t LONG_PRESS_TIME =
+        800;
 
 
 };
