@@ -7,6 +7,7 @@
 #include "Types.h"
 #include "Event.h"
 #include "Callback.h"
+#include "Component.h"
 
 
 namespace EmbeddedUI
