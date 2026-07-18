@@ -17,6 +17,9 @@
 
 #include "MenuScreen.h"
 
+#include "DisplayDriver.h"
+#include "Renderer.h"
+
 namespace EmbeddedUI
 {
 
