@@ -35,7 +35,10 @@ UIItem* UIMenuScreen::currentItem()
     return current;
 }
 
-
+uint8_t UIMenuScreen::cursorPosition() const
+{
+    return cursor;
+}
 
 UIItem* UIMenuScreen::selectedItem()
 {

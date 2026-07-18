@@ -65,7 +65,9 @@ void UIRenderer::drawMenu(
 )
 {
 
-    UIItem* current = menu->currentItem();
+    UIItem* current =
+        menu->currentItem();
+
 
 
     if(!current)
@@ -73,43 +75,100 @@ void UIRenderer::drawMenu(
 
 
 
-    uint8_t count = current->childCount();
+    const uint8_t visibleLines = 8;
+
+
+    uint8_t selected =
+        menu->cursorPosition();
 
 
 
-    int16_t y = 15;
+    uint8_t first =
+        0;
 
 
 
-    for(uint8_t i = 0; i < count; i++)
+    if(selected >= visibleLines)
+    {
+        first =
+            selected - visibleLines + 1;
+    }
+
+
+
+    int16_t y = 14;
+
+
+
+    for(
+        uint8_t i = first;
+        i < current->childCount()
+        &&
+        i < first + visibleLines;
+        i++
+    )
     {
 
-        UIItem* item = current->child(i);
+        UIItem* item =
+            current->child(i);
+
 
 
         if(!item)
             continue;
 
-        display->drawText(
-            0,
-            10,
-            "EmbeddedUI"
-        );
 
+
+        /*
+         * Cursor
+         */
+        if(i == selected)
+        {
+
+            display->fillRect(
+                0,
+                y - 10,
+                display->width(),
+                12
+            );
+
+
+        }
+
+
+
+        /*
+         * Nome do item
+         */
         display->drawText(
-            5,
+            4,
             y,
             item->title()
         );
 
 
 
-        y += 12;
+        /*
+         * Valor
+         */
+        if(item->getValue())
+        {
+
+            display->drawText(
+                90,
+                y,
+                item->getValue()->text()
+            );
+
+        }
+
+
+
+        y += 14;
 
     }
 
 
 }
-
 
 }

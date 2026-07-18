@@ -42,7 +42,7 @@ public:
      */
     UIItem* selectedItem();
 
-
+    uint8_t cursorPosition() const;
 
     /**
      * @brief Move cursor para cima.
