@@ -131,13 +131,19 @@ void UIRenderer::drawMenu(
         if(i == selected)
         {
 
-            display->fillRect(
-                0,
-                y - 10,
-                display->width(),
-                12
-            );
-
+            if(
+                menu->isEditing()
+                &&
+                i == selected
+            )
+            {
+                display->drawRect(
+                    1,
+                    y - 11,
+                    display->width()-2,
+                    13
+                );
+            }
 
         }
 

@@ -21,6 +21,9 @@ public:
 
     UIMenuScreen();
 
+    bool isEditing() const;
+    
+    void confirmEdit();
 
     /**
      * @brief Define o item raiz do menu.

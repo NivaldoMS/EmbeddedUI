@@ -17,6 +17,34 @@ cursor(0)
 
 }
 
+bool UIMenuScreen::isEditing() const
+{
+    return state == UIState::EDITING;
+}
+
+void UIMenuScreen::confirmEdit()
+{
+
+    UIItem* item =
+        selectedItem();
+
+
+
+    if(
+        item &&
+        item->getValue()
+    )
+    {
+
+        item->getValue()->commit();
+
+    }
+
+
+
+    state = UIState::ACTIVE;
+
+}
 
 
 void UIMenuScreen::setRoot(
@@ -109,10 +137,15 @@ void UIMenuScreen::enter()
 
 
 
-    if(item->getValue())
+    if(
+        item->getValue()
+    )
     {
+
         item->getValue()->beginEdit();
+
         state = UIState::EDITING;
+
     }
 
 }
@@ -125,19 +158,27 @@ void UIMenuScreen::back()
     if(!current)
         return;
 
-
     if(state == UIState::EDITING)
     {
-        UIItem* item = selectedItem();
-
-        if(item && item->getValue())
-        {
-            item->getValue()->cancel();
-        }
+        cancel();
 
         state = UIState::ACTIVE;
         return;
+
     }
+
+    // if(state == UIState::EDITING)
+    // {
+    //     UIItem* item = selectedItem();
+
+    //     if(item && item->getValue())
+    //     {
+    //         item->getValue()->cancel();
+    //     }
+
+    //     state = UIState::ACTIVE;
+    //     return;
+    // }
 
 
 
@@ -197,9 +238,18 @@ UIResult UIMenuScreen::handleEvent(
 
         case UIEventType::BUTTON_ENTER:
 
-            enter();
-            return UIResult::HANDLED;
 
+            if(state == UIState::EDITING)
+            {
+                confirmEdit();
+            }
+            else
+            {
+                enter();
+            }
+
+
+            return UIResult::HANDLED;
 
 
         case UIEventType::BUTTON_BACK:
