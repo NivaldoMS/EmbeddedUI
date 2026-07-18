@@ -4,9 +4,8 @@
 
 #include <Arduino.h>
 
-#include "Types.h"
-#include "Callback.h"
-
+#include "core/Types.h"
+#include "core/Callback.h"
 
 namespace EmbeddedUI
 {

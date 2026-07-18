@@ -2,7 +2,7 @@
 #define EMBEDDED_UI_SCREEN_H
 
 
-#include "Component.h"
+#include "core/Component.h"
 
 
 namespace EmbeddedUI

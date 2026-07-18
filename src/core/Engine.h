@@ -1,10 +1,9 @@
 #ifndef EMBEDDED_UI_ENGINE_H
 #define EMBEDDED_UI_ENGINE_H
 
-
-#include "ScreenManager.h"
-#include "Renderer.h"
-#include "InputManager.h"
+#include "core/ScreenManager.h"
+#include "render/Renderer.h"
+#include "input/InputManager.h"
 
 
 namespace EmbeddedUI
