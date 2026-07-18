@@ -1,7 +1,8 @@
-#ifndef EMBEDDEDUI_NAVIGATION_H
-#define EMBEDDEDUI_NAVIGATION_H
+#ifndef EMBEDDED_UI_NAVIGATION_H
+#define EMBEDDED_UI_NAVIGATION_H
 
-#include "Menu.h"
+#include "Cursor.h"
+#include "InteractionState.h"
 #include "../../core/Event.h"
 
 
@@ -14,8 +15,10 @@ class Navigation
 
 public:
 
-    explicit Navigation(
-        Menu* menu
+
+    Navigation(
+        Cursor& cursor,
+        InteractionState& state
     );
 
 
@@ -23,17 +26,35 @@ public:
 
     void previous();
 
+
     bool enter();
 
     bool back();
+
 
     void handleEvent(
         const UIEvent& event
     );
 
+
+
 private:
 
-    Menu* _menu;
+
+    void editNext();
+
+    void editPrevious();
+
+    void confirm();
+
+    void cancel();
+
+
+
+    Cursor& _cursor;
+
+    InteractionState& _state;
+
 
 };
 

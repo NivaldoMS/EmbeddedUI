@@ -6,10 +6,12 @@ namespace EmbeddedUI
 
 
 Navigation::Navigation(
-    Menu* menu
+    Cursor& cursor,
+    InteractionState& state
 )
 :
-_menu(menu)
+_cursor(cursor),
+_state(state)
 {
 
 }
@@ -18,20 +20,13 @@ _menu(menu)
 
 void Navigation::next()
 {
-    if(!_menu)
-        return;
-
-
-    Node* current =
-        _menu->current();
-
-
-    if(current &&
-       current->nextSibling())
+    if(!_state.editing())
     {
-        _menu->setCurrent(
-            current->nextSibling()
-        );
+        _cursor.moveNext();
+    }
+    else
+    {
+        editNext();
     }
 }
 
@@ -39,20 +34,13 @@ void Navigation::next()
 
 void Navigation::previous()
 {
-    if(!_menu)
-        return;
-
-
-    Node* current =
-        _menu->current();
-
-
-    if(current &&
-       current->previousSibling())
+    if(!_state.editing())
     {
-        _menu->setCurrent(
-            current->previousSibling()
-        );
+        _cursor.movePrevious();
+    }
+    else
+    {
+        editPrevious();
     }
 }
 
@@ -60,53 +48,119 @@ void Navigation::previous()
 
 bool Navigation::enter()
 {
-    if(!_menu)
-        return false;
 
-
-    Node* current =
-        _menu->current();
-
-
-    if(current &&
-       current->firstChild())
+    if(_state.editing())
     {
-        _menu->setCurrent(
-            current->firstChild()
-        );
+        confirm();
 
         return true;
     }
 
 
-    return false;
+
+    Node* node =
+        _cursor.current();
+
+
+
+    if(!node)
+        return false;
+
+
+
+    if(node->type() == NodeType::Value)
+    {
+
+        ValueNode* value =
+            static_cast<ValueNode*>(node);
+
+
+        _state.enterEdit(
+            value
+        );
+
+
+        return true;
+    }
+
+
+
+    return _cursor.enter();
+
 }
 
 
 
 bool Navigation::back()
 {
-    if(!_menu)
-        return false;
 
-
-    Node* current =
-        _menu->current();
-
-
-    if(current &&
-       current->parent())
+    if(_state.editing())
     {
-        _menu->setCurrent(
-            current->parent()
-        );
+        cancel();
 
         return true;
     }
 
 
-    return false;
+    return _cursor.back();
+
 }
+
+
+
+void Navigation::editNext()
+{
+
+    ValueNode* value =
+        _state.valueNode();
+
+
+    if(value)
+    {
+        value->setValue(
+            value->value()
+            +
+            value->step()
+        );
+    }
+
+}
+
+
+
+void Navigation::editPrevious()
+{
+
+    ValueNode* value =
+        _state.valueNode();
+
+
+    if(value)
+    {
+        value->setValue(
+            value->value()
+            -
+            value->step()
+        );
+    }
+
+}
+
+
+
+void Navigation::confirm()
+{
+    _state.leaveEdit();
+}
+
+
+
+void Navigation::cancel()
+{
+    _state.leaveEdit();
+}
+
+
 
 void Navigation::handleEvent(
     const UIEvent& event
@@ -156,5 +210,6 @@ void Navigation::handleEvent(
     }
 
 }
+
 
 }
