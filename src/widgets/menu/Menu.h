@@ -1,0 +1,3 @@
+class UIMenu : public UIContainer
+{
+};
