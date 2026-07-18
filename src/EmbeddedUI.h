@@ -8,7 +8,8 @@
 #include "Event.h"
 #include "Callback.h"
 #include "Component.h"
-
+#include "Screen.h"
+#include "ScreenManager.h"
 
 namespace EmbeddedUI
 {
