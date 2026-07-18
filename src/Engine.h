@@ -4,7 +4,7 @@
 
 #include "ScreenManager.h"
 #include "Renderer.h"
-#include "Encoder.h"
+#include "InputManager.h"
 
 
 namespace EmbeddedUI
@@ -35,7 +35,7 @@ public:
     void begin(
         UIScreen* initialScreen,
         UIDisplayDriver* display,
-        UIEncoder* encoder
+        UIInputManager input;
     );
 
 
@@ -72,7 +72,7 @@ private:
     UIRenderer renderer;
 
 
-    UIEncoder* encoder;
+    UIInputManager input;
 
 
 };

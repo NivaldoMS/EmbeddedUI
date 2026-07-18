@@ -77,8 +77,8 @@ void UIEncoder::updateRotation()
         if(digitalRead(pinB) != currentA)
         {
             pendingEvent =
-                UIEvent(
-                    UIEventType::ENCODER_CW,
+                UIInputEvent(
+                    UIInputEventType::ROTATE_CW,
                     millis()
                 );
         }
@@ -86,7 +86,7 @@ void UIEncoder::updateRotation()
         {
             pendingEvent =
                 UIEvent(
-                    UIEventType::ENCODER_CCW,
+                    UIInputEventType::ROTATE_CCW
                     millis()
                 );
         }
@@ -128,7 +128,7 @@ void UIEncoder::updateButton()
 
                 pendingEvent =
                     UIEvent(
-                        UIEventType::BUTTON_ENTER,
+                        UIInputEventType::BUTTON_DOWN
                         now
                     );
 
@@ -158,7 +158,7 @@ bool UIEncoder::available()
 
 
 
-UIEvent UIEncoder::read()
+UIInputEvent UIEncoder::read()
 {
 
     eventAvailable = false;

@@ -27,6 +27,9 @@
 
 #include "Bitmap.h"
 #include "Background.h"
+
+#include "InputEvent.h"
+#include "InputManager.h"
 namespace EmbeddedUI
 {
 

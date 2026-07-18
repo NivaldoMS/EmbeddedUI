@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 
-#include "Event.h"
+#include "InputEvent.h"
 
 
 namespace EmbeddedUI
@@ -77,7 +77,7 @@ private:
 
 
 
-    UIEvent pendingEvent;
+    UIInputEvent pendingEvent;
 
 
 

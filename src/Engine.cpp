@@ -21,8 +21,9 @@ void UIEngine::begin(
 )
 {
 
-    this->encoder = encoder;
-
+    input.begin(
+        encoder
+    );
 
     if(display)
     {
@@ -56,29 +57,21 @@ void UIEngine::update()
     /*
      * 1 - Ler entradas
      */
-    if(encoder)
+    input.update();
+
+
+    if(input.available())
     {
 
-        encoder->update();
+        UIEvent event =
+            input.read();
 
 
-
-        if(encoder->available())
-        {
-
-            UIEvent event =
-                encoder->read();
-
-
-
-            screenManager.handleEvent(
-                event
-            );
-
-        }
+        screenManager.handleEvent(
+            event
+        );
 
     }
-
 
 
     /*
