@@ -17,8 +17,6 @@ public:
 
     Cursor();
 
-
-
     /**
      * @brief Define o nó inicial da navegação.
      */
@@ -81,6 +79,10 @@ public:
      * no mesmo nível.
      */
     uint16_t siblingCount() const;
+
+    uint16_t currentIndex() const;
+
+    Node* firstSibling() const;
 
 
 

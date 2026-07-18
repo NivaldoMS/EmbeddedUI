@@ -175,46 +175,68 @@ uint16_t Cursor::index() const
 uint16_t Cursor::siblingCount() const
 {
 
-    if(!_current)
-        return 0;
-
-
-
-    Node* first =
-        _current;
-
-
-
-    while(first->previousSibling())
-    {
-
-        first =
-            first->previousSibling();
-
-    }
-
+    Node* node =
+        firstSibling();
 
 
     uint16_t count = 0;
 
 
-
-    while(first)
+    while(node)
     {
-
         count++;
 
-
-        first =
-            first->nextSibling();
-
+        node =
+            node->nextSibling();
     }
-
 
 
     return count;
 
 }
 
+
+uint16_t Cursor::currentIndex() const
+{
+
+    if(!_current)
+        return 0;
+
+
+    uint16_t index = 0;
+
+    Node* node = _current;
+
+
+    while(node->previousSibling())
+    {
+        node = node->previousSibling();
+        index++;
+    }
+
+
+    return index;
+
+}
+
+Node* Cursor::firstSibling() const
+{
+
+    if(!_current)
+        return nullptr;
+
+
+    Node* node = _current;
+
+
+    while(node->previousSibling())
+    {
+        node = node->previousSibling();
+    }
+
+
+    return node;
+
+}
 
 }

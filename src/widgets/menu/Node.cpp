@@ -31,7 +31,10 @@ Node::~Node()
     clear();
 }
 
-
+bool Node::isRoot() const
+{
+    return _parent == nullptr;
+}
 
 Node* Node::parent() const
 {

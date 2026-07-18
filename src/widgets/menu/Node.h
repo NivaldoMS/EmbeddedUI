@@ -31,6 +31,7 @@ public:
 
 
     // Hierarquia
+    bool isRoot() const;
 
     Node* parent() const;
 

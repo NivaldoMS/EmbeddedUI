@@ -8,15 +8,15 @@
 
 #include "../font/Font.h"
 
+#include "../render/Layout.h"
 
-#include "Layout.h"
-#include "ScrollManager.h"
-
+#include "../render/ScrollManager.h"
 
 #include "../widgets/menu/Menu.h"
-#include "../widgets/menu/Cursor.h"
-#include "../widgets/menu/InteractionState.h"
 
+#include "../widgets/menu/Cursor.h"
+
+#include "../widgets/menu/InteractionState.h"
 
 
 namespace EmbeddedUI
@@ -41,9 +41,6 @@ public:
 
 
 
-    /**
-     * @brief Renderiza menu atual.
-     */
     void render(
         Menu& menu,
         Cursor& cursor,
@@ -57,16 +54,11 @@ private:
 
     UIDisplayDriver& _display;
 
-
     Theme& _theme;
-
 
     Font& _font;
 
-
-
     Layout _layout;
-
 
     ScrollManager _scroll;
 
@@ -75,15 +67,8 @@ private:
     void drawNode(
         Node* node,
         uint8_t line,
-        bool selected
-    );
-
-
-
-    void drawValue(
-        ValueNode* value,
-        uint16_t x,
-        uint16_t y
+        bool selected,
+        bool editing
     );
 
 
