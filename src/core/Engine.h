@@ -1,8 +1,8 @@
 #ifndef EMBEDDED_UI_ENGINE_H
 #define EMBEDDED_UI_ENGINE_H
 
-#include "core/ScreenManager.h"
-#include "render/Renderer.h"
+#include "ScreenManager.h"
+#include "../render/Renderer.h"
 #include "../input/InputManager.h"
 
 

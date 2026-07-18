@@ -2,7 +2,7 @@
 #define EMBEDDED_UI_SCREEN_MANAGER_H
 
 
-#include "core/Screen.h"
+#include "Screen.h"
 
 
 namespace EmbeddedUI

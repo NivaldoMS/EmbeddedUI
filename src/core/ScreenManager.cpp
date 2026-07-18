@@ -1,4 +1,4 @@
-#include "core/ScreenManager.h"
+#include "ScreenManager.h"
 
 
 namespace EmbeddedUI

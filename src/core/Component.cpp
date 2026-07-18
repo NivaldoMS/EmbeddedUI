@@ -1,4 +1,4 @@
-#include "core/Component.h"
+#include "Component.h"
 
 
 namespace EmbeddedUI

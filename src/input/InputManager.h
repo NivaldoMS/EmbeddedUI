@@ -5,8 +5,8 @@
 #include <Arduino.h>
 
 #include "Encoder.h"
-#include "Event.h"
-#include "InputEvent.h"
+#include "../core/Event.h"
+#include "../input/InputEvent.h"
 
 
 namespace EmbeddedUI

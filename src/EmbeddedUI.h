@@ -2,6 +2,7 @@
 #define EMBEDDED_UI_H
 
 
+// Core
 #include "core/Version.h"
 #include "core/Types.h"
 #include "core/Event.h"
@@ -11,28 +12,23 @@
 #include "core/ScreenManager.h"
 #include "core/Engine.h"
 
+// Input
 #include "input/Encoder.h"
 #include "input/InputEvent.h"
 #include "input/InputManager.h"
 
+// Menu
+#include "menu/Item.h"
+#include "menu/Value.h"
+#include "menu/MenuScreen.h"
 
-// #include "Value.h"
-// #include "Item.h"
-// #include "MenuScreen.h"
+// Render
+#include "render/Renderer.h"
+#include "render/Background.h"
+#include "render/Bitmap.h"
 
-// #include "DisplayDriver.h"
-// #include "Renderer.h"
-
-// #include "Encoder.h"
-
-
-// #include "drivers/U8g2Display.h"
-
-// #include "Bitmap.h"
-// #include "Background.h"
-
-// #include "InputEvent.h"
-// #include "InputManager.h"
+// Drivers
+#include "drivers/U8g2Display.h"
 
 namespace EmbeddedUI
 {
