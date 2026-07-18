@@ -3,7 +3,7 @@
 
 #include "core/ScreenManager.h"
 #include "render/Renderer.h"
-#include "input/InputManager.h"
+#include "../input/InputManager.h"
 
 
 namespace EmbeddedUI

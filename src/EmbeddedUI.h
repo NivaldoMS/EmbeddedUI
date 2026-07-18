@@ -11,6 +11,9 @@
 #include "core/ScreenManager.h"
 #include "core/Engine.h"
 
+#include "input/Encoder.h"
+#include "input/InputEvent.h"
+#include "input/InputManager.h"
 
 
 // #include "Value.h"
