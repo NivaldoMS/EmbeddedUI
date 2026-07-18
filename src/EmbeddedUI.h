@@ -20,6 +20,8 @@
 #include "DisplayDriver.h"
 #include "Renderer.h"
 
+#include "Encoder.h"
+
 namespace EmbeddedUI
 {
 
