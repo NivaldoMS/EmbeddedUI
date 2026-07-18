@@ -4,6 +4,10 @@
 
 #include "Version.h"
 
+#include "Types.h"
+#include "Event.h"
+#include "Callback.h"
+
 
 namespace EmbeddedUI
 {
