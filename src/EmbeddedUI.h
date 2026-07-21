@@ -64,6 +64,7 @@
 // Display drivers
 
 #include "drivers/display/DisplayDriver.h"
+#include "drivers/display/SerialDisplay.h"
 #include "drivers/display/U8g2Display.h"
 
 

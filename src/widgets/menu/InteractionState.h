@@ -19,6 +19,14 @@ enum class InteractionMode : uint8_t
 
 
 
+/**
+ * @brief Mantém o estado atual de interação
+ * com o menu.
+ *
+ * Ao iniciar a edição, armazena o valor original.
+ * A confirmação mantém o novo valor.
+ * O cancelamento restaura o valor original.
+ */
 class InteractionState
 {
 
@@ -28,7 +36,8 @@ public:
     InteractionState()
     :
     _mode(InteractionMode::Browse),
-    _valueNode(nullptr)
+    _valueNode(nullptr),
+    _originalValue(0.0f)
     {
 
     }
@@ -36,7 +45,7 @@ public:
 
 
     /**
-     * @brief Retorna o modo atual.
+     * @brief Retorna o modo atual de interação.
      */
     InteractionMode mode() const
     {
@@ -49,6 +58,9 @@ public:
 
     /**
      * @brief Inicia a edição de um ValueNode.
+     *
+     * O valor atual é armazenado para que
+     * possa ser restaurado em caso de cancelamento.
      */
     void enterEdit(
         ValueNode* value
@@ -60,8 +72,22 @@ public:
 
 
 
+        /*
+         * Evita substituir o valor original
+         * durante uma edição já iniciada.
+         */
+        if(editing())
+            return;
+
+
+
         _valueNode =
             value;
+
+
+
+        _originalValue =
+            value->value();
 
 
 
@@ -73,38 +99,88 @@ public:
 
 
     /**
-     * @brief Finaliza o modo de edição.
+     * @brief Confirma a edição.
+     *
+     * O novo valor permanece no ValueNode.
      */
-    void leaveEdit()
+    void confirmEdit()
     {
 
-        _valueNode =
-            nullptr;
+        if(!editing())
+            return;
 
 
 
-        _mode =
-            InteractionMode::Browse;
+        clearEditState();
 
     }
 
 
 
     /**
-     * @brief Informa se está no modo de edição.
+     * @brief Cancela a edição.
+     *
+     * Restaura o valor que existia antes
+     * do início da edição.
+     */
+    void cancelEdit()
+    {
+
+        if(!editing())
+            return;
+
+
+
+        if(_valueNode)
+        {
+
+            _valueNode->setValue(
+                _originalValue
+            );
+
+        }
+
+
+
+        clearEditState();
+
+    }
+
+
+
+    /**
+     * @brief Encerra o modo de edição sem
+     * alterar o valor atual.
+     *
+     * Mantido para operações internas e
+     * compatibilidade com o código existente.
+     */
+    void leaveEdit()
+    {
+
+        clearEditState();
+
+    }
+
+
+
+    /**
+     * @brief Informa se existe um valor em edição.
      */
     bool editing() const
     {
 
         return
-            _mode == InteractionMode::Edit;
+            _mode == InteractionMode::Edit &&
+            _valueNode != nullptr;
 
     }
 
 
 
     /**
-     * @brief Retorna o ValueNode em edição.
+     * @brief Retorna o ValueNode atualmente
+     * em edição.
      */
     ValueNode* valueNode() const
     {
@@ -115,13 +191,49 @@ public:
 
 
 
+    /**
+     * @brief Retorna o valor armazenado no
+     * início da edição.
+     */
+    float originalValue() const
+    {
+
+        return _originalValue;
+
+    }
+
+
+
 private:
+
+
+    void clearEditState()
+    {
+
+        _valueNode =
+            nullptr;
+
+
+
+        _originalValue =
+            0.0f;
+
+
+
+        _mode =
+            InteractionMode::Browse;
+
+    }
+
 
 
     InteractionMode _mode;
 
 
     ValueNode* _valueNode;
+
+
+    float _originalValue;
 
 
 };

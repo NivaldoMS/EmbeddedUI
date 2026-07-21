@@ -51,7 +51,7 @@ public:
 
     /**
      * @brief Retorna ao nível anterior ou cancela
-     * o modo de edição.
+     * a edição atual.
      */
     bool back();
 

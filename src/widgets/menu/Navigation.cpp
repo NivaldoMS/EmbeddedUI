@@ -61,6 +61,10 @@ void Navigation::previous()
 bool Navigation::enter()
 {
 
+    /*
+     * ENTER durante a edição confirma
+     * o valor atualmente exibido.
+     */
     if(_state.editing())
     {
 
@@ -87,11 +91,17 @@ bool Navigation::enter()
 
 
 
+    /*
+     * Um ValueNode entra em modo de edição.
+     * O InteractionState guarda seu valor atual.
+     */
     if(node->type() == NodeType::Value)
     {
 
         ValueNode* value =
-            static_cast<ValueNode*>(node);
+            static_cast<ValueNode*>(
+                node
+            );
 
 
 
@@ -107,7 +117,8 @@ bool Navigation::enter()
 
 
 
-    return _cursor.enter();
+    return
+        _cursor.enter();
 
 }
 
@@ -116,6 +127,10 @@ bool Navigation::enter()
 bool Navigation::back()
 {
 
+    /*
+     * BACK durante a edição restaura
+     * o valor original.
+     */
     if(_state.editing())
     {
 
@@ -127,7 +142,8 @@ bool Navigation::back()
 
 
 
-    return _cursor.back();
+    return
+        _cursor.back();
 
 }
 
@@ -182,7 +198,10 @@ void Navigation::editPrevious()
 void Navigation::confirm()
 {
 
-    _state.leaveEdit();
+    /*
+     * Mantém o valor atualmente editado.
+     */
+    _state.confirmEdit();
 
 }
 
@@ -192,12 +211,10 @@ void Navigation::cancel()
 {
 
     /*
-     * O estado atual não mantém uma cópia
-     * do valor anterior. Portanto, cancelar
-     * encerra a edição sem restaurar o valor.
+     * Restaura o valor que existia
+     * antes do início da edição.
      */
-
-    _state.leaveEdit();
+    _state.cancelEdit();
 
 }
 
