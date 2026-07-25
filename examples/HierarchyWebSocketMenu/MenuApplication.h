@@ -54,7 +54,7 @@ private:
     Font _font;
 
 
-    Renderer _renderer;
+    Render _render;
 
 
     Engine _engine;

@@ -10,7 +10,7 @@ namespace EmbeddedUI
 {
 
 
-class Renderer;
+class Render;
 
 
 /**
@@ -59,7 +59,7 @@ public:
      * @brief Renderiza a tela.
      */
     virtual void render(
-        Renderer& renderer
+        Render& render
     ) = 0;
 
 

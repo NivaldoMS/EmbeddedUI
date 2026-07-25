@@ -9,7 +9,7 @@ namespace EmbeddedUI
 {
 
 
-class Renderer;
+class Render;
 
 
 /**
@@ -77,7 +77,7 @@ public:
      * @brief Renderiza a tela ativa.
      */
     void render(
-        Renderer& renderer
+        Render& render
     );
 
 

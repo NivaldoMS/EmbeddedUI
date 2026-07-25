@@ -454,7 +454,7 @@ SerialCommandInput serialInput(
 /*
  * Display lógico de 128x128.
  *
- * Toda a saída produzida pelo Renderer
+ * Toda a saída produzida pelo Render
  * será convertida em texto.
  */
 SerialDisplay display(
@@ -481,7 +481,7 @@ Font font(
 
 
 
-Renderer renderer(
+Render render(
     display,
     theme,
     font
@@ -731,7 +731,7 @@ void setup()
 
     engine.begin(
         input,
-        renderer
+        render
     );
 
 

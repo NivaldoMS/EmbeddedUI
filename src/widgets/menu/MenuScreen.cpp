@@ -1,6 +1,6 @@
 #include "MenuScreen.h"
 
-#include "../../render/Renderer.h"
+#include "../../render/Render.h"
 
 
 namespace EmbeddedUI
@@ -90,7 +90,7 @@ Result MenuScreen::handleEvent(
 
 
 void MenuScreen::render(
-    Renderer& renderer
+    Render& render
 )
 {
 
@@ -99,7 +99,7 @@ void MenuScreen::render(
 
 
 
-    renderer.render(
+    render.render(
         *_menu,
         _cursor,
         _state

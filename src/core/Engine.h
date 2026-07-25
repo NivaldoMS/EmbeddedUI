@@ -11,7 +11,7 @@ namespace EmbeddedUI
 {
 
 
-class Renderer;
+class Render;
 
 
 /**
@@ -34,7 +34,7 @@ public:
      */
     void begin(
         InputManager& input,
-        Renderer& renderer
+        Render& render
     );
 
 
@@ -79,8 +79,8 @@ public:
     /**
      * @brief Define o renderizador.
      */
-    void setRenderer(
-        Renderer& renderer
+    void setRender(
+        Render& render
     );
 
 
@@ -95,7 +95,7 @@ public:
     /**
      * @brief Retorna o renderizador.
      */
-    Renderer* renderer() const;
+    Render* render() const;
 
 
 
@@ -105,7 +105,7 @@ private:
     ScreenManager _screenManager;
 
 
-    Renderer* _renderer;
+    Render* _render;
 
 
     InputManager* _input;

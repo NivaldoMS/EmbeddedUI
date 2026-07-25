@@ -53,7 +53,7 @@ Font font(
 /*
  * Renderizador.
  */
-Renderer renderer(
+Render render(
     display,
     theme,
     font
@@ -350,7 +350,7 @@ void setup()
 
     engine.begin(
         input,
-        renderer
+        render
     );
 
 

@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "Render.h"
 
 #include <stdio.h>
 
@@ -7,7 +7,7 @@ namespace EmbeddedUI
 {
 
 
-Renderer::Renderer(
+Render::Render(
     DisplayDriver& display,
     Theme& theme,
     Font& font
@@ -25,7 +25,7 @@ _scroll()
 
 
 
-void Renderer::begin()
+void Render::begin()
 {
 
     _display.begin();
@@ -55,7 +55,7 @@ void Renderer::begin()
 
 
 
-void Renderer::configureLayout()
+void Render::configureLayout()
 {
 
     uint8_t visibleLines =
@@ -112,7 +112,7 @@ void Renderer::configureLayout()
 
 
 
-void Renderer::render(
+void Render::render(
     Menu& menu,
     Cursor& cursor,
     InteractionState& state
@@ -139,7 +139,7 @@ void Renderer::render(
 
 
 
-void Renderer::drawPage(
+void Render::drawPage(
     Menu& menu,
     Cursor& cursor,
     InteractionState& state
@@ -174,7 +174,11 @@ void Renderer::drawPage(
 
 
     if(!current)
+    {
+
         return;
+
+    }
 
 
 
@@ -273,7 +277,7 @@ void Renderer::drawPage(
 
 
 
-DisplayDriver& Renderer::display()
+DisplayDriver& Render::display()
 {
 
     return _display;
@@ -282,7 +286,7 @@ DisplayDriver& Renderer::display()
 
 
 
-Theme& Renderer::theme()
+Theme& Render::theme()
 {
 
     return _theme;
@@ -291,7 +295,7 @@ Theme& Renderer::theme()
 
 
 
-Font& Renderer::font()
+Font& Render::font()
 {
 
     return _font;
@@ -300,7 +304,7 @@ Font& Renderer::font()
 
 
 
-void Renderer::drawNode(
+void Render::drawNode(
     Node* node,
     uint8_t line,
     bool selected,
@@ -309,7 +313,11 @@ void Renderer::drawNode(
 {
 
     if(!node)
+    {
+
         return;
+
+    }
 
 
 
@@ -374,7 +382,9 @@ void Renderer::drawNode(
     {
 
         drawValue(
-            static_cast<ValueNode*>(node),
+            static_cast<ValueNode*>(
+                node
+            ),
             _layout.valueX(
                 _display.width()
             ),
@@ -394,6 +404,10 @@ void Renderer::drawNode(
 
 
 
+            /*
+             * Cor 2 no U8g2 normalmente corresponde
+             * ao modo XOR.
+             */
             _display.setDrawColor(
                 2
             );
@@ -421,7 +435,7 @@ void Renderer::drawNode(
 
 
 
-void Renderer::drawValue(
+void Render::drawValue(
     ValueNode* value,
     int16_t x,
     int16_t y
@@ -429,11 +443,19 @@ void Renderer::drawValue(
 {
 
     if(!value)
+    {
+
         return;
 
+    }
 
 
-    char buffer[16];
+
+    char buffer[24];
+
+
+    const char* text =
+        buffer;
 
 
 
@@ -483,6 +505,34 @@ void Renderer::drawValue(
 
 
 
+        case ValueType::List:
+        {
+
+            ListNode* list =
+                static_cast<ListNode*>(
+                    value
+                );
+
+
+
+            text =
+                list->selectedText();
+
+
+
+            if(text == nullptr)
+            {
+
+                text =
+                    "";
+
+            }
+
+        }
+        break;
+
+
+
         default:
 
             buffer[0] =
@@ -497,7 +547,7 @@ void Renderer::drawValue(
     _display.drawText(
         x,
         y,
-        buffer
+        text
     );
 
 }

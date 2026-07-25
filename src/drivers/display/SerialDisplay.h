@@ -18,7 +18,7 @@ namespace EmbeddedUI
  * da interface para o Monitor Serial.
  *
  * Não desenha pixels reais. As chamadas do
- * Renderer são convertidas em texto.
+ * Render são convertidas em texto.
  */
 class SerialDisplay :
     public DisplayDriver

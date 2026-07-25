@@ -48,7 +48,7 @@
 #include "render/Background.h"
 #include "render/Layout.h"
 #include "render/ScrollManager.h"
-#include "render/Renderer.h"
+#include "render/Render.h"
 
 
 // Theme

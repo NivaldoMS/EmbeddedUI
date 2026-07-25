@@ -13,7 +13,7 @@ _font(
     6,
     12
 ),
-_renderer(
+_render(
     _display,
     _theme,
     _font
@@ -89,7 +89,7 @@ void MenuApplication::begin(
 
     _engine.begin(
         _input,
-        _renderer
+        _render
     );
 
 

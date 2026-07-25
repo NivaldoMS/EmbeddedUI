@@ -1,6 +1,6 @@
 #include "ScreenManager.h"
 
-#include "../render/Renderer.h"
+#include "../render/Render.h"
 
 
 namespace EmbeddedUI
@@ -97,7 +97,7 @@ Result ScreenManager::handleEvent(
 
 
 void ScreenManager::render(
-    Renderer& renderer
+    Render& render
 )
 {
 
@@ -107,7 +107,7 @@ void ScreenManager::render(
 
 
     _current->render(
-        renderer
+        render
     );
 
 }

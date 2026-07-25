@@ -1,5 +1,5 @@
-#ifndef EMBEDDED_UI_RENDERER_H
-#define EMBEDDED_UI_RENDERER_H
+#ifndef EMBEDDED_UI_RENDER_H
+#define EMBEDDED_UI_RENDER_H
 
 
 #include "../drivers/display/DisplayDriver.h"
@@ -16,6 +16,8 @@
 
 #include "../widgets/menu/ValueNode.h"
 
+#include "../widgets/menu/ListNode.h"
+
 #include "Background.h"
 
 #include "Layout.h"
@@ -27,13 +29,13 @@ namespace EmbeddedUI
 {
 
 
-class Renderer
+class Render
 {
 
 public:
 
 
-    Renderer(
+    Render(
         DisplayDriver& display,
         Theme& theme,
         Font& font

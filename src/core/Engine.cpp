@@ -1,6 +1,6 @@
 #include "Engine.h"
 
-#include "../render/Renderer.h"
+#include "../render/Render.h"
 
 
 namespace EmbeddedUI
@@ -10,7 +10,7 @@ namespace EmbeddedUI
 Engine::Engine()
 :
 _screenManager(),
-_renderer(nullptr),
+_render(nullptr),
 _input(nullptr)
 {
 
@@ -20,7 +20,7 @@ _input(nullptr)
 
 void Engine::begin(
     InputManager& input,
-    Renderer& renderer
+    Render& render
 )
 {
 
@@ -30,8 +30,8 @@ void Engine::begin(
 
 
 
-    setRenderer(
-        renderer
+    setRender(
+        render
     );
 
 
@@ -40,7 +40,7 @@ void Engine::begin(
 
 
 
-    _renderer->begin();
+    _render->begin();
 
 
 
@@ -96,13 +96,13 @@ void Engine::update()
 void Engine::draw()
 {
 
-    if(!_renderer)
+    if(!_render)
         return;
 
 
 
     _screenManager.render(
-        *_renderer
+        *_render
     );
 
 }
@@ -139,13 +139,13 @@ void Engine::setInput(
 
 
 
-void Engine::setRenderer(
-    Renderer& renderer
+void Engine::setRender(
+    Render& render
 )
 {
 
-    _renderer =
-        &renderer;
+    _render =
+        &render;
 
 }
 
@@ -160,10 +160,10 @@ InputManager* Engine::input() const
 
 
 
-Renderer* Engine::renderer() const
+Render* Engine::render() const
 {
 
-    return _renderer;
+    return _render;
 
 }
 

@@ -11,7 +11,7 @@ Builder	KEYWORD1
 Cursor	KEYWORD1
 Navigation	KEYWORD1
 InteractionState	KEYWORD1
-Renderer	KEYWORD1
+Render	KEYWORD1
 Layout	KEYWORD1
 ScrollManager	KEYWORD1
 Background	KEYWORD1

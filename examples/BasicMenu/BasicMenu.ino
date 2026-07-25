@@ -36,7 +36,7 @@ Font font(
 );
 
 
-Renderer renderer(
+Render render(
     display,
     theme,
     font
@@ -120,7 +120,7 @@ void setup()
 
     /*
      * Associa o bitmap ao tema antes
-     * de inicializar o Renderer.
+     * de inicializar o Render.
      */
     theme.background =
         &menuBackground;
@@ -175,7 +175,7 @@ void setup()
 
     engine.begin(
         input,
-        renderer
+        render
     );
 
 

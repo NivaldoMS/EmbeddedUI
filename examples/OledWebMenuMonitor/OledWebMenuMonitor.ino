@@ -403,7 +403,7 @@ void setup()
 
     /*
      * application.begin() inicializa
-     * o U8g2Display por meio do Renderer.
+     * o U8g2Display por meio do Render.
      */
     application.begin(
         buttons

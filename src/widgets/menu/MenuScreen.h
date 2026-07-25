@@ -14,7 +14,7 @@ namespace EmbeddedUI
 {
 
 
-class Renderer;
+class Render;
 
 
 /**
@@ -80,7 +80,7 @@ public:
      * @brief Renderiza o menu associado.
      */
     void render(
-        Renderer& renderer
+        Render& render
     ) override;
 
 

@@ -63,7 +63,7 @@ static constexpr uint16_t COMMAND_LED_DURATION =
 
 
 /*
- * Dimensões lógicas usadas pelo Renderer.
+ * Dimensões lógicas usadas pelo Render.
  */
 static constexpr uint16_t VIRTUAL_DISPLAY_WIDTH =
     128;
