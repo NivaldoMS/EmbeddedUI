@@ -4,6 +4,7 @@
 
 #include "Menu.h"
 #include "ValueNode.h"
+#include "ListNode.h"
 
 
 namespace EmbeddedUI
@@ -107,7 +108,39 @@ public:
         bool initialValue
     );
 
+    template<typename... Options>
+    Builder& list(
+        ListNode& node,
+        const char* caption,
+        uint8_t initialIndex,
+        Options... options
+    )
+    {
 
+        node.configure(
+            caption
+        );
+
+
+        addListOptions(
+            node,
+            options...
+        );
+
+
+        node.setSelectedIndex(
+            initialIndex
+        );
+
+
+        value(
+            node
+        );
+
+
+        return *this;
+
+    }
 
     /**
      * @brief Adiciona uma ação previamente configurada.
@@ -158,7 +191,33 @@ private:
         Node& node
     );
 
+    void addListOptions(
+        ListNode&
+    )
+    {
 
+    }
+
+
+    template<typename... Remaining>
+    void addListOptions(
+        ListNode& node,
+        const char* option,
+        Remaining... remaining
+    )
+    {
+
+        node.addOption(
+            option
+        );
+
+
+        addListOptions(
+            node,
+            remaining...
+        );
+
+    }
 
     Menu& _menu;
 

@@ -159,6 +159,8 @@ private:
 
     ValueNode _enabledValue;
 
+    ListNode _freqValue;
+
 
 
     /*

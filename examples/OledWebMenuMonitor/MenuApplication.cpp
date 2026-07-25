@@ -31,6 +31,7 @@ _midValue(),
 _trebleValue(),
 _enabledValue(),
 _displayFolder(),
+_freqValue(),
 _brightnessValue(),
 _contrastValue(),
 _systemFolder(),
@@ -232,6 +233,18 @@ void MenuApplication::buildMenu()
                 100.0f,
                 1.0f,
                 50.0f
+            )
+
+            .list(
+                _freqValue,
+                "Frequency",
+                2,
+                "100Hz",
+                "120Hz",
+                "300Hz",
+                "350Hz",
+                "500Hz",
+                "800Hz"
             )
             
             .integer(
