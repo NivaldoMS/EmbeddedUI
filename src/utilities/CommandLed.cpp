@@ -1,14 +1,18 @@
 #include "CommandLed.h"
 
 
+namespace EmbeddedUI
+{
+
+
 CommandLed::CommandLed(
     uint8_t pin,
-    uint16_t blinkTime,
+    uint16_t duration,
     bool activeLow
 )
 :
 _pin(pin),
-_blinkTime(blinkTime),
+_duration(duration),
 _activeLow(activeLow),
 _active(false),
 _startedAt(0)
@@ -26,9 +30,7 @@ void CommandLed::begin()
     );
 
 
-    write(
-        false
-    );
+    stop();
 
 }
 
@@ -60,12 +62,20 @@ void CommandLed::update()
 
     if(
         millis() - _startedAt <
-        _blinkTime
+        _duration
     )
     {
         return;
     }
 
+
+    stop();
+
+}
+
+
+void CommandLed::stop()
+{
 
     write(
         false
@@ -91,22 +101,39 @@ void CommandLed::write(
 )
 {
 
-    const uint8_t level =
-        enabled
-        ?
-        (
-            _activeLow
+    uint8_t level;
+
+
+    if(_activeLow)
+    {
+
+        level =
+            enabled
             ?
             LOW
             :
+            HIGH;
+
+    }
+    else
+    {
+
+        level =
+            enabled
+            ?
             HIGH
-        )
-        :
-        (
-            _activeLow ? HIGH : LOW
-        );
+            :
+            LOW;
+
+    }
 
 
-    digitalWrite(_pin, level);
+    digitalWrite(
+        _pin,
+        level
+    );
+
+}
+
 
 }
