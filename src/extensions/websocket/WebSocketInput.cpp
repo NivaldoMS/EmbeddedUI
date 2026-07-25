@@ -1,6 +1,10 @@
 #include "WebSocketInput.h"
 
 
+namespace EmbeddedUI
+{
+
+
 WebSocketInput::WebSocketInput()
 :
 _events(),
@@ -83,7 +87,7 @@ bool WebSocketInput::command(
         return false;
 
 
-    const uint32_t now =
+    const uint32_t timestamp =
         millis();
 
 
@@ -98,7 +102,7 @@ bool WebSocketInput::command(
         return enqueue(
             InputEvent(
                 InputEventType::ROTATE_CW,
-                now
+                timestamp
             )
         );
 
@@ -116,7 +120,7 @@ bool WebSocketInput::command(
         return enqueue(
             InputEvent(
                 InputEventType::ROTATE_CCW,
-                now
+                timestamp
             )
         );
 
@@ -134,7 +138,7 @@ bool WebSocketInput::command(
         return enqueue(
             InputEvent(
                 InputEventType::BUTTON_SHORT_PRESS,
-                now
+                timestamp
             )
         );
 
@@ -152,7 +156,7 @@ bool WebSocketInput::command(
         return enqueue(
             InputEvent(
                 InputEventType::BUTTON_BACK,
-                now
+                timestamp
             )
         );
 
@@ -299,5 +303,8 @@ void WebSocketInput::clear()
 
     _count =
         0;
+
+}
+
 
 }

@@ -54,7 +54,27 @@ public:
         const Event& event
     ) override;
 
+    InteractionState& interactionState()
+    {
+        return _state;
+    }
 
+
+    const InteractionState& interactionState() const
+    {
+        return _state;
+    }
+
+    Cursor& cursor()
+    {
+        return _cursor;
+    }
+
+
+    const Cursor& cursor() const
+    {
+        return _cursor;
+    }
 
     /**
      * @brief Renderiza o menu associado.
