@@ -13,7 +13,7 @@ namespace AppConfig
  * Rede Wi-Fi 2,4 GHz.
  */
 static constexpr const char* WIFI_SSID =
-    "NMS";
+    "Nms";
 
 
 static constexpr const char* WIFI_PASSWORD =
@@ -76,7 +76,7 @@ static constexpr uint8_t ACTIVITY_LED_PIN =
 
 
 static constexpr uint16_t ACTIVITY_LED_DURATION =
-    60;
+    30;
 
 
 }

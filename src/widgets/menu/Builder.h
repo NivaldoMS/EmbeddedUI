@@ -11,7 +11,7 @@ namespace EmbeddedUI
 
 
 /**
- * @brief Auxilia na montagem da árvore do menu.
+ * @brief Auxilia na montagem e configuração da árvore do menu.
  *
  * O Builder não cria, não destrói e não assume
  * propriedade sobre os nós.
@@ -31,17 +31,38 @@ public:
 
 
     /**
-     * @brief Adiciona uma pasta e passa a inserir
-     * os próximos nós dentro dela.
+     * @brief Reinicia o Builder na raiz do menu.
+     *
+     * Quando clearTree for true, remove os vínculos
+     * da árvore construída anteriormente.
+     */
+    Builder& begin(
+        bool clearTree = true
+    );
+
+
+
+    /**
+     * @brief Adiciona uma pasta previamente configurada
+     * e passa a inserir os próximos nós dentro dela.
      */
     Builder& folder(
         Node& node
     );
 
 
+    /**
+     * @brief Configura e adiciona uma pasta.
+     */
+    Builder& folder(
+        Node& node,
+        const char* caption
+    );
+
+
 
     /**
-     * @brief Adiciona um nó de valor ao nível atual.
+     * @brief Adiciona um ValueNode previamente configurado.
      */
     Builder& value(
         ValueNode& node
@@ -50,9 +71,66 @@ public:
 
 
     /**
-     * @brief Adiciona um nó de ação ao nível atual.
+     * @brief Configura e adiciona um valor inteiro.
+     */
+    Builder& integer(
+        ValueNode& node,
+        const char* caption,
+        float minimum,
+        float maximum,
+        float step,
+        float initialValue
+    );
+
+
+
+    /**
+     * @brief Configura e adiciona um valor float.
+     */
+    Builder& floating(
+        ValueNode& node,
+        const char* caption,
+        float minimum,
+        float maximum,
+        float step,
+        float initialValue
+    );
+
+
+
+    /**
+     * @brief Configura e adiciona um valor booleano.
+     */
+    Builder& boolean(
+        ValueNode& node,
+        const char* caption,
+        bool initialValue
+    );
+
+
+
+    /**
+     * @brief Adiciona uma ação previamente configurada.
      */
     Builder& action(
+        Node& node
+    );
+
+
+    /**
+     * @brief Configura e adiciona uma ação.
+     */
+    Builder& action(
+        Node& node,
+        const char* caption
+    );
+
+
+
+    /**
+     * @brief Adiciona um separador previamente configurado.
+     */
+    Builder& separator(
         Node& node
     );
 
@@ -74,6 +152,12 @@ public:
 
 
 private:
+
+
+    bool append(
+        Node& node
+    );
+
 
 
     Menu& _menu;

@@ -26,10 +26,33 @@ public:
 
 
 
+    Node* current() const;
+
+
+
+    bool setCurrent(
+        Node* node
+    );
+
+
+
+    void reset();
+
+
+
 private:
 
 
+    bool contains(
+        const Node* node
+    ) const;
+
+
+
     Node _root;
+
+
+    Node* _current;
 
 
 };

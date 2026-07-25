@@ -34,6 +34,19 @@ public:
 
 
 
+    /**
+     * Reconfigura o nó para reutilização pelo MenuBuilder.
+     *
+     * O nó é removido do pai atual e seus filhos são
+     * desconectados antes da nova configuração.
+     */
+    void configure(
+        const char* caption,
+        NodeType type
+    );
+
+
+
     Node* parent() const;
 
     Node* firstChild() const;
@@ -57,6 +70,13 @@ public:
 
 
     void clear();
+
+
+
+    /**
+     * Remove este nó de seu pai atual.
+     */
+    void detach();
 
 
 
@@ -95,6 +115,19 @@ public:
 
     void setEnabled(
         bool value
+    );
+
+
+
+protected:
+
+
+    /**
+     * Permite que classes derivadas, como ValueNode,
+     * atualizem o tipo estrutural do nó.
+     */
+    void setType(
+        NodeType type
     );
 
 

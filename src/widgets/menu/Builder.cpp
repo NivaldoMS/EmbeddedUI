@@ -17,23 +17,65 @@ _current(menu.root())
 
 
 
+Builder& Builder::begin(
+    bool clearTree
+)
+{
+
+    Node* root =
+        _menu.root();
+
+
+    if(!root)
+    {
+        _current =
+            nullptr;
+
+
+        return *this;
+    }
+
+
+
+    if(clearTree)
+    {
+        root->clear();
+    }
+
+
+
+    _menu.setCurrent(
+        root
+    );
+
+
+    _current =
+        root;
+
+
+
+    return *this;
+
+}
+
+
+
 Builder& Builder::folder(
     Node& node
 )
 {
 
-    if(!_current)
-        return *this;
-
-
-
     if(node.type() != NodeType::Folder)
+    {
         return *this;
+    }
 
 
 
-    if(!_current->append(&node))
+    if(!append(node))
+    {
         return *this;
+    }
 
 
 
@@ -48,18 +90,173 @@ Builder& Builder::folder(
 
 
 
+Builder& Builder::folder(
+    Node& node,
+    const char* caption
+)
+{
+
+    node.configure(
+        caption,
+        NodeType::Folder
+    );
+
+
+    return folder(
+        node
+    );
+
+}
+
+
+
 Builder& Builder::value(
     ValueNode& node
 )
 {
 
-    if(!_current)
+    if(node.type() != NodeType::Value)
+    {
         return *this;
+    }
 
 
 
-    _current->append(
-        &node
+    append(
+        node
+    );
+
+
+
+    return *this;
+
+}
+
+
+
+Builder& Builder::integer(
+    ValueNode& node,
+    const char* caption,
+    float minimum,
+    float maximum,
+    float step,
+    float initialValue
+)
+{
+
+    node.configure(
+        caption,
+        ValueType::Integer
+    );
+
+
+    node.setRange(
+        minimum,
+        maximum,
+        step
+    );
+
+
+    node.setValue(
+        initialValue
+    );
+
+
+    return value(
+        node
+    );
+
+}
+
+
+
+Builder& Builder::floating(
+    ValueNode& node,
+    const char* caption,
+    float minimum,
+    float maximum,
+    float step,
+    float initialValue
+)
+{
+
+    node.configure(
+        caption,
+        ValueType::Float
+    );
+
+
+    node.setRange(
+        minimum,
+        maximum,
+        step
+    );
+
+
+    node.setValue(
+        initialValue
+    );
+
+
+    return value(
+        node
+    );
+
+}
+
+
+
+Builder& Builder::boolean(
+    ValueNode& node,
+    const char* caption,
+    bool initialValue
+)
+{
+
+    node.configure(
+        caption,
+        ValueType::Boolean
+    );
+
+
+    node.setRange(
+        0.0f,
+        1.0f,
+        1.0f
+    );
+
+
+    node.setValue(
+        initialValue
+        ?
+        1.0f
+        :
+        0.0f
+    );
+
+
+    return value(
+        node
+    );
+
+}
+
+
+
+Builder& Builder::action(
+    Node& node
+)
+{
+
+    if(node.type() != NodeType::Action)
+    {
+        return *this;
+    }
+
+
+
+    append(
+        node
     );
 
 
@@ -71,22 +268,38 @@ Builder& Builder::value(
 
 
 Builder& Builder::action(
+    Node& node,
+    const char* caption
+)
+{
+
+    node.configure(
+        caption,
+        NodeType::Action
+    );
+
+
+    return action(
+        node
+    );
+
+}
+
+
+
+Builder& Builder::separator(
     Node& node
 )
 {
 
-    if(!_current)
-        return *this;
+    node.configure(
+        nullptr,
+        NodeType::Separator
+    );
 
 
-
-    if(node.type() != NodeType::Action)
-        return *this;
-
-
-
-    _current->append(
-        &node
+    append(
+        node
     );
 
 
@@ -101,7 +314,9 @@ Builder& Builder::end()
 {
 
     if(!_current)
+    {
         return *this;
+    }
 
 
 
@@ -128,6 +343,26 @@ Node* Builder::current() const
 {
 
     return _current;
+
+}
+
+
+
+bool Builder::append(
+    Node& node
+)
+{
+
+    if(!_current)
+    {
+        return false;
+    }
+
+
+
+    return _current->append(
+        &node
+    );
 
 }
 

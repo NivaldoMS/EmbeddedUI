@@ -23,7 +23,14 @@ class ValueNode : public Node
 public:
 
 
-    ValueNode(
+    explicit ValueNode(
+        const char* caption = nullptr,
+        ValueType type = ValueType::Integer
+    );
+
+
+
+    void configure(
         const char* caption,
         ValueType type
     );
@@ -60,6 +67,10 @@ public:
 
 
 private:
+
+
+    float defaultStep() const;
+
 
 
     ValueType _valueType;

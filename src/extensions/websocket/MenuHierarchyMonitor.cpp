@@ -483,7 +483,7 @@ void MenuHierarchyMonitor::appendValue(
                         "{"
                         "\"type\":\"boolean\","
                         "\"raw\":true,"
-                        "\"text\":\"Ligado\""
+                        "\"text\":\" On\""
                         "}"
                     );
 
@@ -496,7 +496,7 @@ void MenuHierarchyMonitor::appendValue(
                         "{"
                         "\"type\":\"boolean\","
                         "\"raw\":false,"
-                        "\"text\":\"Desligado\""
+                        "\"text\":\"Off\""
                         "}"
                     );
 

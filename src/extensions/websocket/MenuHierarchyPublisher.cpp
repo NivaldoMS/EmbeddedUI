@@ -357,7 +357,7 @@ void MenuHierarchyPublisher::appendValue(
                         "{"
                         "\"type\":\"boolean\","
                         "\"raw\":true,"
-                        "\"text\":\"Ligado\""
+                        "\"text\":\" On\""
                         "}"
                     );
 
@@ -370,7 +370,7 @@ void MenuHierarchyPublisher::appendValue(
                         "{"
                         "\"type\":\"boolean\","
                         "\"raw\":false,"
-                        "\"text\":\"Desligado\""
+                        "\"text\":\"Off\""
                         "}"
                     );
 

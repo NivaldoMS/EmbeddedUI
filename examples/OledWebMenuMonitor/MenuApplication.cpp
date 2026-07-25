@@ -23,46 +23,19 @@ _renderer(
 _engine(),
 _menu(),
 _menuScreen(),
-_audioFolder(
-    "Audio",
-    NodeType::Folder
-),
-_volumeValue(
-    "Volume",
-    ValueType::Integer
-),
-_bassValue(
-    "Bass",
-    ValueType::Integer
-),
-_enabledValue(
-    "Enabled",
-    ValueType::Boolean
-),
-_displayFolder(
-    "Display",
-    NodeType::Folder
-),
-_brightnessValue(
-    "Brightness",
-    ValueType::Integer
-),
-_contrastValue(
-    "Contrast",
-    ValueType::Integer
-),
-_systemFolder(
-    "System",
-    NodeType::Folder
-),
-_informationAction(
-    "Information",
-    NodeType::Action
-),
-_resetAction(
-    "Reset",
-    NodeType::Action
-),
+_audioFolder(),
+_volumeValue(),
+_balValue(),
+_bassValue(),
+_midValue(),
+_trebleValue(),
+_enabledValue(),
+_displayFolder(),
+_brightnessValue(),
+_contrastValue(),
+_systemFolder(),
+_informationAction(),
+_resetAction(),
 _builder(
     _menu
 ),
@@ -78,9 +51,6 @@ void MenuApplication::begin(
 {
 
     configureTheme();
-
-
-    configureValues();
 
 
     buildMenu();
@@ -244,109 +214,110 @@ void MenuApplication::configureTheme()
 }
 
 
-void MenuApplication::configureValues()
-{
-
-    _volumeValue.setRange(
-        0.0f,
-        100.0f,
-        1.0f
-    );
-
-
-    _volumeValue.setValue(
-        50.0f
-    );
-
-
-    _bassValue.setRange(
-        -10.0f,
-        10.0f,
-        1.0f
-    );
-
-
-    _bassValue.setValue(
-        0.0f
-    );
-
-
-    _enabledValue.setRange(
-        0.0f,
-        1.0f,
-        1.0f
-    );
-
-
-    _enabledValue.setValue(
-        1.0f
-    );
-
-
-    _brightnessValue.setRange(
-        0.0f,
-        255.0f,
-        5.0f
-    );
-
-
-    _brightnessValue.setValue(
-        128.0f
-    );
-
-
-    _contrastValue.setRange(
-        0.0f,
-        255.0f,
-        5.0f
-    );
-
-
-    _contrastValue.setValue(
-        180.0f
-    );
-
-}
-
-
 void MenuApplication::buildMenu()
 {
 
     _builder
+        .begin()
+
         .folder(
-            _audioFolder
+            _audioFolder,
+            "Audio"
         )
-            .value(
-                _volumeValue
+
+            .integer(
+                _volumeValue,
+                "Volume",
+                0.0f,
+                100.0f,
+                1.0f,
+                50.0f
             )
-            .value(
-                _bassValue
+            
+            .integer(
+                _balValue,
+                "Balance",
+                -10.0f,
+                10.0f,
+                1.0f,
+                0.0f
             )
-            .value(
-                _enabledValue
+
+            .integer(
+                _bassValue,
+                "Bass",
+                -10.0f,
+                10.0f,
+                1.0f,
+                0.0f
             )
+
+            .integer(
+                _midValue,
+                "Middle",
+                -10.0f,
+                10.0f,
+                1.0f,
+                0.0f
+            )
+
+            .integer(
+                _trebleValue,
+                "Treble",
+                -10.0f,
+                10.0f,
+                1.0f,
+                0.0f
+            )
+
+            .boolean(
+                _enabledValue,
+                "Enabled",
+                true
+            )
+
         .end()
 
         .folder(
-            _displayFolder
+            _displayFolder,
+            "Display"
         )
-            .value(
-                _brightnessValue
+
+            .integer(
+                _brightnessValue,
+                "Brightness",
+                0.0f,
+                255.0f,
+                5.0f,
+                128.0f
             )
-            .value(
-                _contrastValue
+
+            .integer(
+                _contrastValue,
+                "Contrast",
+                0.0f,
+                255.0f,
+                5.0f,
+                180.0f
             )
+
         .end()
 
         .folder(
-            _systemFolder
+            _systemFolder,
+            "System"
         )
+
             .action(
-                _informationAction
+                _informationAction,
+                "Information"
             )
+
             .action(
-                _resetAction
+                _resetAction,
+                "Reset"
             )
+
         .end();
 
 }

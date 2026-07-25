@@ -11,7 +11,11 @@ Node::Node(
 )
 :
 _type(type),
-_caption(caption),
+_caption(
+    caption != nullptr
+        ? caption
+        : ""
+),
 _visible(true),
 _enabled(true),
 _parent(nullptr),
@@ -24,7 +28,41 @@ _childCount(0)
 
 }
 
+void Node::configure(
+    const char* caption,
+    NodeType type
+)
+{
+    detach();
 
+    clear();
+
+    _type = type;
+
+    _caption =
+        caption != nullptr
+            ? caption
+            : "";
+
+    _visible = true;
+
+    _enabled = true;
+}
+
+void Node::detach()
+{
+    if (_parent == nullptr)
+    {
+        _previousSibling = nullptr;
+        _nextSibling = nullptr;
+
+        return;
+    }
+
+    _parent->remove(
+        this
+    );
+}
 
 Node::~Node()
 {
@@ -47,7 +85,12 @@ Node::~Node()
 
 }
 
-
+void Node::setType(
+    NodeType type
+)
+{
+    _type = type;
+}
 
 Node* Node::parent() const
 {
