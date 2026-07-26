@@ -34,6 +34,8 @@
 
 #include "widgets/menu/Node.h"
 #include "widgets/menu/ValueNode.h"
+#include "widgets/menu/ListNode.h"
+#include "widgets/menu/ActionNode.h"
 #include "widgets/menu/Menu.h"
 #include "widgets/menu/Cursor.h"
 #include "widgets/menu/InteractionState.h"

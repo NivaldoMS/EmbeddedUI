@@ -9,6 +9,7 @@
 #include "../../widgets/menu/Menu.h"
 #include "../../widgets/menu/Node.h"
 #include "../../widgets/menu/ValueNode.h"
+#include "../../widgets/menu/ListNode.h"
 
 
 namespace EmbeddedUI

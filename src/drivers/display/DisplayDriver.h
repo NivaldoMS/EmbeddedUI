@@ -147,6 +147,18 @@ public:
     virtual uint16_t height() const = 0;
 
 
+    virtual bool setBrightness(
+        uint8_t value
+    )
+    {
+
+        (void)value;
+
+
+        return false;
+
+    }
+
 };
 
 

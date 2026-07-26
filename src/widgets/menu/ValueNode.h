@@ -13,7 +13,8 @@ enum class ValueType : uint8_t
 {
     Integer,
     Float,
-    Boolean
+    Boolean,
+    List
 };
 
 
@@ -21,6 +22,13 @@ class ValueNode : public Node
 {
 
 public:
+
+    using ChangeCallback =
+        void (*)(
+            ValueNode& node,
+            float value,
+            void* context
+        );
 
 
     explicit ValueNode(
@@ -64,10 +72,18 @@ public:
 
     ValueType valueType() const;
 
+    void setChangeCallback(
+        ChangeCallback callback,
+        void* context = nullptr
+    );
 
+
+
+    bool hasChangeCallback() const;
 
 private:
 
+    void notifyChanged();
 
     float defaultStep() const;
 
@@ -84,7 +100,10 @@ private:
 
     float _step;
 
+    ChangeCallback _changeCallback;
 
+    void* _changeContext;
+    
 };
 
 

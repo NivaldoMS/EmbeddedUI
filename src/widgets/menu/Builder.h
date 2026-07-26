@@ -5,6 +5,7 @@
 #include "Menu.h"
 #include "ValueNode.h"
 #include "ListNode.h"
+#include "ActionNode.h"
 
 
 namespace EmbeddedUI
@@ -146,18 +147,28 @@ public:
      * @brief Adiciona uma ação previamente configurada.
      */
     Builder& action(
-        Node& node
+        ActionNode& node
     );
 
 
     /**
-     * @brief Configura e adiciona uma ação.
+     * @brief Configura e adiciona uma ação sem callback.
      */
     Builder& action(
-        Node& node,
+        ActionNode& node,
         const char* caption
     );
 
+
+    /**
+     * @brief Configura e adiciona uma ação com callback.
+     */
+    Builder& action(
+        ActionNode& node,
+        const char* caption,
+        ActionNode::Callback callback,
+        void* context = nullptr
+    );
 
 
     /**

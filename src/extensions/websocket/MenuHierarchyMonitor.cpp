@@ -146,6 +146,7 @@ void MenuHierarchyMonitor::update()
 
 }
 
+
 void MenuHierarchyMonitor::sendCurrentState(
     uint8_t clientNumber
 )
@@ -165,6 +166,7 @@ void MenuHierarchyMonitor::sendCurrentState(
     );
 
 }
+
 
 String MenuHierarchyMonitor::buildPayload() const
 {
@@ -254,7 +256,9 @@ void MenuHierarchyMonitor::appendNode(
 {
 
     if(!node)
+    {
         return;
+    }
 
 
     output +=
@@ -401,7 +405,9 @@ void MenuHierarchyMonitor::appendChildren(
 {
 
     if(!parent)
+    {
         return;
+    }
 
 
     Node* child =
@@ -471,37 +477,51 @@ void MenuHierarchyMonitor::appendValue(
     {
 
         case ValueType::Boolean:
+        {
 
-            if(
+            const bool value =
                 valueNode->value() >=
-                0.5f
-            )
-            {
+                0.5f;
 
-                output +=
-                    F(
-                        "{"
-                        "\"type\":\"boolean\","
-                        "\"raw\":true,"
-                        "\"text\":\" On\""
-                        "}"
-                    );
 
-            }
-            else
-            {
+            output +=
+                F(
+                    "{"
+                    "\"type\":\"boolean\","
+                    "\"raw\":"
+                );
 
-                output +=
-                    F(
-                        "{"
-                        "\"type\":\"boolean\","
-                        "\"raw\":false,"
-                        "\"text\":\"Off\""
-                        "}"
-                    );
 
-            }
+            output +=
+                value
+                ?
+                F("true")
+                :
+                F("false");
 
+
+            output +=
+                F(
+                    ","
+                    "\"text\":\""
+                );
+
+
+            output +=
+                value
+                ?
+                F("ON")
+                :
+                F("OFF");
+
+
+            output +=
+                F(
+                    "\""
+                    "}"
+                );
+
+        }
         break;
 
 
@@ -550,7 +570,6 @@ void MenuHierarchyMonitor::appendValue(
 
 
         case ValueType::Float:
-        default:
         {
 
             const String value(
@@ -591,6 +610,66 @@ void MenuHierarchyMonitor::appendValue(
         }
         break;
 
+
+        case ValueType::List:
+        {
+
+            ListNode* listNode =
+                static_cast<ListNode*>(
+                    valueNode
+                );
+
+
+            const uint8_t selectedIndex =
+                listNode->selectedIndex();
+
+
+            const char* selectedText =
+                listNode->selectedText();
+
+
+            output +=
+                F(
+                    "{"
+                    "\"type\":\"list\","
+                    "\"raw\":"
+                );
+
+
+            output +=
+                selectedIndex;
+
+
+            output +=
+                F(
+                    ","
+                    "\"text\":\""
+                );
+
+
+            appendEscapedJson(
+                output,
+                selectedText
+            );
+
+
+            output +=
+                F(
+                    "\""
+                    "}"
+                );
+
+        }
+        break;
+
+
+        default:
+
+            output +=
+                F("null");
+
+        break;
+
     }
 
 }
@@ -603,7 +682,9 @@ void MenuHierarchyMonitor::appendEscapedJson(
 {
 
     if(!text)
+    {
         return;
+    }
 
 
     while(*text)

@@ -340,6 +340,8 @@ static const char WEB_PAGE[] PROGMEM = R"HTML(
         {
             min-width: 74px;
 
+            justify-self: end;
+
             padding:
                 4px
                 8px;
@@ -371,12 +373,17 @@ static const char WEB_PAGE[] PROGMEM = R"HTML(
 
         .state
         {
-            min-width: 88px;
+            min-width: 0;
 
             font-size: 0.72rem;
             font-weight: bold;
 
             text-align: right;
+        }
+
+        .state:empty
+        {
+            display: none;
         }
 
         .state.editing

@@ -244,21 +244,21 @@ Builder& Builder::boolean(
 
 
 Builder& Builder::action(
-    Node& node
+    ActionNode& node
 )
 {
 
-    if(node.type() != NodeType::Action)
+    if(!_current)
     {
-        return *this;
-    }
 
+        return *this;
+
+    }
 
 
     append(
         node
     );
-
 
 
     return *this;
@@ -268,23 +268,66 @@ Builder& Builder::action(
 
 
 Builder& Builder::action(
-    Node& node,
+    ActionNode& node,
     const char* caption
 )
 {
 
+    if(!_current)
+    {
+
+        return *this;
+
+    }
+
+
     node.configure(
-        caption,
-        NodeType::Action
+        caption
     );
 
 
-    return action(
+    append(
         node
     );
 
+
+    return *this;
+
 }
 
+
+
+Builder& Builder::action(
+    ActionNode& node,
+    const char* caption,
+    ActionNode::Callback callback,
+    void* context
+)
+{
+
+    if(!_current)
+    {
+
+        return *this;
+
+    }
+
+
+    node.configure(
+        caption,
+        callback,
+        context
+    );
+
+
+    append(
+        node
+    );
+
+
+    return *this;
+
+}
 
 
 Builder& Builder::separator(

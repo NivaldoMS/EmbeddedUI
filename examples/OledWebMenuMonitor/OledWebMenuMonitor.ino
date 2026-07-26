@@ -4,8 +4,10 @@
 
 #include <U8g2lib.h>
 
+#if defined(ESP8266)
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#endif
 
 #include <WebSocketsServer.h>
 
@@ -372,6 +374,16 @@ void handleWebSocketEvent(
 
 }
 
+void serialpln(const __FlashStringHelper* text)
+{
+    Serial.println(text);
+}
+
+void serialp(const __FlashStringHelper* text)
+{
+    Serial.println(text);
+}
+
 
 void setup()
 {
@@ -380,14 +392,11 @@ void setup()
         115200
     );
 
-
     delay(
         300
     );
 
-
     activityLed.begin();
-
 
     /*
      * Inicializa explicitamente o I2C:
@@ -400,6 +409,9 @@ void setup()
         AppConfig::I2C_SCL_PIN
     );
 
+    oled.begin();
+    oled.firstPage();
+    do { } while( oled.nextPage() );
 
     /*
      * application.begin() inicializa
@@ -409,7 +421,6 @@ void setup()
         buttons
     );
 
-
     networkReady =
         connectToWiFi();
 
@@ -417,12 +428,7 @@ void setup()
     if(!networkReady)
     {
 
-        Serial.println(
-            F(
-                "OLED e menu iniciados sem monitor web."
-            )
-        );
-
+        serialpln(F("OLED e menu iniciados sem monitor web."));
 
         return;
 
@@ -446,11 +452,7 @@ void setup()
     hierarchyMonitor.forcePublish();
 
 
-    Serial.println(
-        F(
-            "OLED e monitor web iniciados."
-        )
-    );
+    serialpln(F("OLED e monitor web iniciados."));
 
 }
 

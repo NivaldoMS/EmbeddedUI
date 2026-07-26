@@ -18,7 +18,9 @@ _valueType(type),
 _value(0.0f),
 _minimum(0.0f),
 _maximum(100.0f),
-_step(1.0f)
+_step(1.0f),
+_changeCallback(nullptr),
+_changeContext(nullptr)
 {
 
     configure(
@@ -103,6 +105,19 @@ void ValueNode::configure(
 
             break;
 
+        case ValueType::List:
+
+            _minimum =
+                0.0f;
+
+            _maximum =
+                0.0f;
+
+            _step =
+                1.0f;
+
+            break;
+
     }
 
 }
@@ -171,17 +186,26 @@ void ValueNode::setValue(
 
     if(value < _minimum)
     {
+
         value =
             _minimum;
+
     }
 
 
 
     if(value > _maximum)
     {
+
         value =
             _maximum;
+
     }
+
+
+
+    float newValue =
+        value;
 
 
 
@@ -190,41 +214,59 @@ void ValueNode::setValue(
 
         case ValueType::Boolean:
 
-            _value =
+            newValue =
                 value > 0.0f
                 ?
                 1.0f
                 :
                 0.0f;
 
-            return;
+        break;
+
+
+
+        case ValueType::List:
+
+            newValue =
+                static_cast<float>(
+                    static_cast<uint16_t>(
+                        value
+                    )
+                );
+
+        break;
 
 
 
         case ValueType::Integer:
 
-            _value =
-                static_cast<float>(
-                    static_cast<int32_t>(
-                        value
-                    )
-                );
-
-            return;
-
-
-
         case ValueType::Float:
 
-            _value =
-                value;
+        default:
 
-            return;
+        break;
 
     }
 
-}
 
+
+    if(newValue == _value)
+    {
+
+        return;
+
+    }
+
+
+
+    _value =
+        newValue;
+
+
+
+    notifyChanged();
+
+}
 
 
 float ValueNode::minimum() const
@@ -276,6 +318,53 @@ float ValueNode::defaultStep() const
             return 1.0f;
 
     }
+
+}
+
+void ValueNode::setChangeCallback(
+    ChangeCallback callback,
+    void* context
+)
+{
+
+    _changeCallback =
+        callback;
+
+
+    _changeContext =
+        context;
+
+}
+
+
+
+bool ValueNode::hasChangeCallback() const
+{
+
+    return
+        _changeCallback != nullptr;
+
+}
+
+
+
+void ValueNode::notifyChanged()
+{
+
+    if(_changeCallback == nullptr)
+    {
+
+        return;
+
+    }
+
+
+
+    _changeCallback(
+        *this,
+        _value,
+        _changeContext
+    );
 
 }
 

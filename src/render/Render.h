@@ -80,6 +80,17 @@ private:
 
 
 
+    /**
+     * @brief Desenha o título na faixa superior
+     * de 16 pixels do display.
+     */
+    void drawHeader(
+        Menu& menu,
+        Cursor& cursor
+    );
+
+
+
     void drawPage(
         Menu& menu,
         Cursor& cursor,

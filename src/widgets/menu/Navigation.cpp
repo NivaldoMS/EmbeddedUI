@@ -1,5 +1,9 @@
 #include "Navigation.h"
 
+#include "ActionNode.h"
+
+#include <Arduino.h>
+
 
 namespace EmbeddedUI
 {
@@ -57,14 +61,9 @@ void Navigation::previous()
 }
 
 
-
 bool Navigation::enter()
 {
 
-    /*
-     * ENTER durante a edição confirma
-     * o valor atualmente exibido.
-     */
     if(_state.editing())
     {
 
@@ -81,48 +80,72 @@ bool Navigation::enter()
 
 
 
-    if(!node)
-        return false;
-
-
-
-    if(!node->isEnabled())
-        return false;
-
-
-
-    /*
-     * Um ValueNode entra em modo de edição.
-     * O InteractionState guarda seu valor atual.
-     */
-    if(node->type() == NodeType::Value)
+    if(node == nullptr)
     {
 
-        ValueNode* value =
-            static_cast<ValueNode*>(
-                node
-            );
-
-
-
-        _state.enterEdit(
-            value
-        );
-
-
-
-        return true;
+        return false;
 
     }
 
 
 
-    return
-        _cursor.enter();
+    if(!node->isEnabled())
+    {
+
+        return false;
+
+    }
+
+
+
+    switch(node->type())
+    {
+
+        case NodeType::Value:
+
+            _state.enterEdit(
+                static_cast<ValueNode*>(
+                    node
+                )
+            );
+
+
+            return true;
+
+
+
+        case NodeType::Action:
+        {
+
+            ActionNode* actionNode =
+                static_cast<ActionNode*>(
+                    node
+                );
+
+
+            return
+                actionNode->execute();
+
+        }
+
+
+
+        case NodeType::Folder:
+
+            return
+                _cursor.enter();
+
+
+
+        case NodeType::Separator:
+
+        default:
+
+            return false;
+
+    }
 
 }
-
-
 
 bool Navigation::back()
 {
@@ -158,7 +181,11 @@ void Navigation::editNext()
 
 
     if(!value)
+    {
+
         return;
+
+    }
 
 
 
@@ -181,7 +208,11 @@ void Navigation::editPrevious()
 
 
     if(!value)
+    {
+
         return;
+
+    }
 
 
 

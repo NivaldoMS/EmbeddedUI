@@ -29,9 +29,10 @@ _balValue(),
 _bassValue(),
 _midValue(),
 _trebleValue(),
+_lowFreqValue(),
+_highFreqValue(),
 _enabledValue(),
 _displayFolder(),
-_freqValue(),
 _brightnessValue(),
 _contrastValue(),
 _systemFolder(),
@@ -178,8 +179,17 @@ void MenuApplication::configureTheme()
         3;
 
 
+
+    /*
+     * A faixa superior ocupa:
+     *
+     * y = 0 até y = 15
+     *
+     * A primeira linha da área azul utiliza
+     * baseline em y = 28.
+     */
     _theme.marginTop =
-        12;
+        28;
 
 
     _theme.lineHeight =
@@ -214,6 +224,93 @@ void MenuApplication::configureTheme()
 
 }
 
+void MenuApplication::handleInformation(
+    ActionNode& node,
+    void* context
+)
+{
+
+    (void)node;
+    (void)context;
+
+
+    Serial.println(
+        F("[Action] Information executada")
+    );
+
+}
+
+
+
+void MenuApplication::handleReset(
+    ActionNode& node,
+    void* context
+)
+{
+
+    (void)node;
+    (void)context;
+
+
+    /*
+     * Durante o teste, não reinicie o ESP.
+     */
+    Serial.println(
+        F("[Action] Reset executada")
+    );
+
+}
+
+void MenuApplication::handleBrightnessChanged(
+    ValueNode& node,
+    float value,
+    void* context
+)
+{
+
+    (void)node;
+
+
+
+    MenuApplication* application =
+        static_cast<MenuApplication*>(
+            context
+        );
+
+
+
+    if(application == nullptr)
+    {
+
+        return;
+
+    }
+
+
+
+    const uint8_t brightness =
+        static_cast<uint8_t>(
+            value
+        );
+
+
+
+    application->_display.setBrightness(
+        brightness
+    );
+
+
+
+    Serial.print(
+        F("[Display] Brightness: ")
+    );
+
+
+    Serial.println(
+        brightness
+    );
+
+}
 
 void MenuApplication::buildMenu()
 {
@@ -236,15 +333,34 @@ void MenuApplication::buildMenu()
             )
 
             .list(
-                _freqValue,
-                "Frequency",
+                _lowFreqValue,
+                "Low Freq.",
                 2,
+                "40Hz",
+                "60Hz",
+                "80Hz",
                 "100Hz",
                 "120Hz",
                 "300Hz",
                 "350Hz",
+                "400Hz"
+            )
+
+            .list(
+                _highFreqValue,
+                "High Freq.",
+                4,
                 "500Hz",
-                "800Hz"
+                "600Hz",
+                "680Hz",
+                "800Hz",
+                "900Hz",
+                "1.2kHz",
+                "2kHz",
+                "3kHz",
+                "4.5kHz",
+                "8kHz",
+                "10kHz"
             )
 
             .integer(
@@ -323,14 +439,24 @@ void MenuApplication::buildMenu()
 
             .action(
                 _informationAction,
-                "Information"
+                "Information",
+                handleInformation,
+                this
             )
 
             .action(
                 _resetAction,
-                "Reset"
+                "Reset",
+                handleReset,
+                this
             )
 
         .end();
+
+    _brightnessValue.setChangeCallback(
+        handleBrightnessChanged,
+        this
+    );
+
 
 }

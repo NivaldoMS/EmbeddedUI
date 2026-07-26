@@ -103,15 +103,17 @@ public:
 
     uint16_t height() const override;
 
+    bool setBrightness(
+        uint8_t value
+    ) override;
+
+    private:
 
 
-private:
+        U8G2& _display;
 
 
-    U8G2& _display;
-
-
-};
+    };
 
 
 }

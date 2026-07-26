@@ -211,5 +211,18 @@ uint16_t U8g2Display::height() const
 
 }
 
+bool U8g2Display::setBrightness(
+    uint8_t value
+)
+{
+
+    _display.setContrast(
+        value
+    );
+
+
+    return true;
+
+}
 
 }
