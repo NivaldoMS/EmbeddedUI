@@ -4,6 +4,9 @@
 
 #include <EmbeddedUI.h>
 
+#include "screens/InformationScreen.h"
+#include "screens/ResetScreen.h"
+
 
 using namespace EmbeddedUI;
 
@@ -90,6 +93,7 @@ private:
     );
 
 
+
     DisplayDriver& _display;
 
 
@@ -112,10 +116,11 @@ private:
 
 
     MenuScreen _menuScreen;
-
-    InformationScreen _informationScreen;
     
-    ResetScreen _resetScreen;
+    ApplicationScreens::InformationScreen _informationScreen;
+
+    ApplicationScreens::ResetScreen _resetScreen;
+
 
 
     Node _audioFolder;

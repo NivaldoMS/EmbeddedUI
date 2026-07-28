@@ -76,6 +76,12 @@ void MenuApplication::begin(
         inputDevice
     );
 
+
+    _engine.begin(
+        _input,
+        _render
+    );
+
     _menuScreen.setRender(
         _render
     );
@@ -104,13 +110,6 @@ void MenuApplication::begin(
         performResetTask,
         this
     );
-
-
-    _engine.begin(
-        _input,
-        _render
-    );
-
 
     _engine.screens().show(
         _menuScreen
@@ -477,7 +476,7 @@ void MenuApplication::buildMenu()
                 0.0f,
                 255.0f,
                 5.0f,
-                10.0f
+                128.0f
             )
 
             .integer(

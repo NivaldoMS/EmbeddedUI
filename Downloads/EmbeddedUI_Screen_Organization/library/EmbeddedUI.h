@@ -69,8 +69,11 @@
 #include "drivers/display/SerialDisplay.h"
 #include "drivers/display/U8g2Display.h"
 
-#include "screens/InformationScreen.h"
-#include "screens/ResetScreen.h"
+
+
+// Generic screens
+
+#include "screens/SplashScreen.h"
 
 
 #endif

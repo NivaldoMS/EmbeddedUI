@@ -1,0 +1,124 @@
+1) Em EmbeddedUI.h, acrescente:
+
+#include "screens/InformationScreen.h"
+#include "screens/ResetScreen.h"
+
+
+2) Em MenuApplication.h, depois de MenuScreen _menuScreen, acrescente:
+
+InformationScreen _informationScreen;
+ResetScreen _resetScreen;
+
+Declare também:
+
+static void performResetTask(
+    void* context
+);
+
+
+3) No construtor de MenuApplication.cpp, depois de _menuScreen():
+
+_informationScreen(
+    _engine.screens(),
+    _menuScreen
+),
+_resetScreen(
+    _engine.screens(),
+    _menuScreen,
+    2000
+),
+
+
+4) Em begin(), antes de _engine.begin(...):
+
+_menuScreen.setRender(
+    _render
+);
+
+static const char* informationLines[] =
+{
+    "EmbeddedUI",
+    "OLED: 128x64",
+    "Driver: U8g2",
+    "Input: Buttons",
+    "WebSocket: ativo",
+    "BACK para sair"
+};
+
+_informationScreen.setTitle(
+    "Information"
+);
+
+_informationScreen.setLines(
+    informationLines,
+    sizeof(informationLines) /
+    sizeof(informationLines[0])
+);
+
+_resetScreen.setTask(
+    performResetTask,
+    this
+);
+
+
+5) Callback Information:
+
+void MenuApplication::handleInformation(
+    ActionNode& node,
+    void* context
+)
+{
+    (void)node;
+
+    MenuApplication* application =
+        static_cast<MenuApplication*>(context);
+
+    if(!application)
+        return;
+
+    application->_engine.screens().show(
+        application->_informationScreen
+    );
+}
+
+
+6) Callback Reset:
+
+void MenuApplication::handleReset(
+    ActionNode& node,
+    void* context
+)
+{
+    (void)node;
+
+    MenuApplication* application =
+        static_cast<MenuApplication*>(context);
+
+    if(!application)
+        return;
+
+    application->_engine.screens().show(
+        application->_resetScreen
+    );
+}
+
+
+7) Tarefa executada pela tela Reset:
+
+void MenuApplication::performResetTask(
+    void* context
+)
+{
+    MenuApplication* application =
+        static_cast<MenuApplication*>(context);
+
+    if(!application)
+        return;
+
+    // Coloque aqui a restauração real dos valores.
+    // Não use ESP.restart(), pois a tela final precisa permanecer visível.
+
+    Serial.println(
+        F("[Reset] Configuracoes restauradas")
+    );
+}
