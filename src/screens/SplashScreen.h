@@ -1,101 +1,76 @@
-#ifndef EMBEDDED_UI_RESET_SCREEN_H
-#define EMBEDDED_UI_RESET_SCREEN_H
-
+#ifndef EMBEDDED_UI_SPLASH_SCREEN_H
+#define EMBEDDED_UI_SPLASH_SCREEN_H
 
 #include "../core/Screen.h"
 #include "../core/ScreenManager.h"
 
-
 namespace EmbeddedUI
 {
 
-
-class DisplayDriver;
-
-
-class ResetScreen :
+class SplashScreen :
     public Screen
 {
 
 public:
 
-
-    using TaskCallback =
-        void (*)(
-            void* context
-        );
-
-
-    ResetScreen(
+    SplashScreen(
         ScreenManager& screens,
-        Screen& returnScreen,
+        Screen& nextScreen,
         uint32_t duration = 2000
     );
 
-
-    void setTask(
-        TaskCallback callback,
-        void* context = nullptr
+    void setTitle(
+        const char* title
     );
 
+    void setMessage(
+        const char* message
+    );
 
     void setDuration(
         uint32_t duration
     );
 
+    void setBorderVisible(
+        bool visible
+    );
 
-    bool finished() const;
-
+    /**
+     * @brief Libera a splash para iniciar
+     * a contagem até a próxima tela.
+     */
+    void release();
 
     void begin() override;
-
-
     void update() override;
-
 
     Result handleEvent(
         const Event& event
     ) override;
 
-
     void render(
         DisplayDriver& display
     ) override;
 
-
 private:
 
-
     ScreenManager& _screens;
+    Screen& _nextScreen;
 
-
-    Screen& _returnScreen;
-
-
-    TaskCallback _task;
-
-
-    void* _context;
-
+    const char* _title;
+    const char* _message;
 
     uint32_t _duration;
-
-
     uint32_t _startedAt;
 
-
-    bool _finished;
-
+    bool _borderVisible;
 
     bool _renderedOnce;
 
-
-    bool _taskExecuted;
+    bool _released;
 
 };
 
-
 }
-
 
 #endif

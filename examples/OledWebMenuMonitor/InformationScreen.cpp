@@ -1,15 +1,13 @@
 #include "InformationScreen.h"
 
-#include "../drivers/display/DisplayDriver.h"
 
-
-namespace EmbeddedUI
+namespace ApplicationScreens
 {
 
 
 InformationScreen::InformationScreen(
-    ScreenManager& screens,
-    Screen& returnScreen
+    EmbeddedUI::ScreenManager& screens,
+    EmbeddedUI::Screen& returnScreen
 )
 :
 _screens(screens),
@@ -23,6 +21,7 @@ _firstVisible(0)
 }
 
 
+
 void InformationScreen::setTitle(
     const char* title
 )
@@ -32,6 +31,7 @@ void InformationScreen::setTitle(
         title ? title : "";
 
 }
+
 
 
 void InformationScreen::setLines(
@@ -54,6 +54,7 @@ void InformationScreen::setLines(
 }
 
 
+
 void InformationScreen::begin()
 {
 
@@ -63,15 +64,16 @@ void InformationScreen::begin()
 }
 
 
-Result InformationScreen::handleEvent(
-    const Event& event
+
+EmbeddedUI::Result InformationScreen::handleEvent(
+    const EmbeddedUI::Event& event
 )
 {
 
     switch(event.type)
     {
 
-        case EventType::ENCODER_CW:
+        case EmbeddedUI::EventType::ENCODER_CW:
 
             if(
                 _lineCount > VisibleLines &&
@@ -85,10 +87,11 @@ Result InformationScreen::handleEvent(
             }
 
 
-            return Result::HANDLED;
+            return EmbeddedUI::Result::HANDLED;
 
 
-        case EventType::ENCODER_CCW:
+
+        case EmbeddedUI::EventType::ENCODER_CCW:
 
             if(_firstVisible > 0)
             {
@@ -98,30 +101,33 @@ Result InformationScreen::handleEvent(
             }
 
 
-            return Result::HANDLED;
+            return EmbeddedUI::Result::HANDLED;
 
 
-        case EventType::BUTTON_BACK:
+
+        case EmbeddedUI::EventType::BUTTON_BACK:
 
             _screens.show(
                 _returnScreen
             );
 
 
-            return Result::HANDLED;
+            return EmbeddedUI::Result::HANDLED;
+
 
 
         default:
 
-            return Result::IGNORED;
+            return EmbeddedUI::Result::IGNORED;
 
     }
 
 }
 
 
+
 void InformationScreen::render(
-    DisplayDriver& display
+    EmbeddedUI::DisplayDriver& display
 )
 {
 
@@ -210,7 +216,9 @@ void InformationScreen::render(
         }
 
     }
-    while(display.nextFrame());
+    while(
+        display.nextFrame()
+    );
 
 }
 

@@ -23,6 +23,11 @@ _render(
 _engine(),
 _menu(),
 _menuScreen(),
+_splashScreen(
+    _engine.screens(),
+    _menuScreen,
+    2500
+),
 _informationScreen(
     _engine.screens(),
     _menuScreen
@@ -111,9 +116,26 @@ void MenuApplication::begin(
         this
     );
 
-    _engine.screens().show(
-        _menuScreen
+    _splashScreen.setTitle(
+        "EmbeddedUI"
     );
+
+    _splashScreen.setMessage(
+        "Inicializando..."
+    );
+
+    _splashScreen.setBorderVisible(
+        true
+    );
+
+    _splashScreen.setDuration(
+        2500
+    );
+
+    _engine.screens().show(
+        _splashScreen
+    );
+
 
 }
 
@@ -226,7 +248,7 @@ void MenuApplication::configureTheme()
      * baseline em y = 28.
      */
     _theme.marginTop =
-        28;
+        26;
 
 
     _theme.lineHeight =

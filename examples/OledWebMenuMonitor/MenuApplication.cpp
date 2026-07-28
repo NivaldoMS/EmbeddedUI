@@ -23,6 +23,11 @@ _render(
 _engine(),
 _menu(),
 _menuScreen(),
+_splashScreen(
+    _engine.screens(),
+    _menuScreen,
+    2500
+),
 _informationScreen(
     _engine.screens(),
     _menuScreen
@@ -111,8 +116,23 @@ void MenuApplication::begin(
         this
     );
 
+    _splashScreen.setTitle(
+        "EmbeddedUI"
+    );
+
+
+    _splashScreen.setMessage(
+        "Inicializando..."
+    );
+
+
+    _splashScreen.setBorderVisible(
+        true
+    );
+
+
     _engine.screens().show(
-        _menuScreen
+        _splashScreen
     );
 
 }
@@ -125,6 +145,13 @@ void MenuApplication::update()
 
 }
 
+
+void MenuApplication::finishStartup()
+{
+
+    _splashScreen.release();
+
+}
 
 Menu& MenuApplication::menu()
 {
@@ -223,10 +250,10 @@ void MenuApplication::configureTheme()
      * y = 0 até y = 15
      *
      * A primeira linha da área azul utiliza
-     * baseline em y = 28.
+     * baseline em y = 26.
      */
     _theme.marginTop =
-        28;
+        26;
 
 
     _theme.lineHeight =

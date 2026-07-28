@@ -1,28 +1,24 @@
-#ifndef EMBEDDED_UI_INFORMATION_SCREEN_H
-#define EMBEDDED_UI_INFORMATION_SCREEN_H
+#ifndef OLED_WEB_MENU_MONITOR_INFORMATION_SCREEN_H
+#define OLED_WEB_MENU_MONITOR_INFORMATION_SCREEN_H
 
 
-#include "../core/Screen.h"
-#include "../core/ScreenManager.h"
+#include <EmbeddedUI.h>
 
 
-namespace EmbeddedUI
+namespace ApplicationScreens
 {
 
 
-class DisplayDriver;
-
-
 class InformationScreen :
-    public Screen
+    public EmbeddedUI::Screen
 {
 
 public:
 
 
     InformationScreen(
-        ScreenManager& screens,
-        Screen& returnScreen
+        EmbeddedUI::ScreenManager& screens,
+        EmbeddedUI::Screen& returnScreen
     );
 
 
@@ -40,13 +36,13 @@ public:
     void begin() override;
 
 
-    Result handleEvent(
-        const Event& event
+    EmbeddedUI::Result handleEvent(
+        const EmbeddedUI::Event& event
     ) override;
 
 
     void render(
-        DisplayDriver& display
+        EmbeddedUI::DisplayDriver& display
     ) override;
 
 
@@ -57,10 +53,10 @@ private:
         4;
 
 
-    ScreenManager& _screens;
+    EmbeddedUI::ScreenManager& _screens;
 
 
-    Screen& _returnScreen;
+    EmbeddedUI::Screen& _returnScreen;
 
 
     const char* _title;
@@ -73,6 +69,7 @@ private:
 
 
     uint8_t _firstVisible;
+
 
 };
 

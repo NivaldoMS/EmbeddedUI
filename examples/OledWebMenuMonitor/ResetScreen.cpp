@@ -1,17 +1,15 @@
 #include "ResetScreen.h"
 
-#include "../drivers/display/DisplayDriver.h"
-
 #include <Arduino.h>
 
 
-namespace EmbeddedUI
+namespace ApplicationScreens
 {
 
 
 ResetScreen::ResetScreen(
-    ScreenManager& screens,
-    Screen& returnScreen,
+    EmbeddedUI::ScreenManager& screens,
+    EmbeddedUI::Screen& returnScreen,
     uint32_t duration
 )
 :
@@ -27,6 +25,7 @@ _taskExecuted(false)
 {
 
 }
+
 
 
 void ResetScreen::setTask(
@@ -45,6 +44,7 @@ void ResetScreen::setTask(
 }
 
 
+
 void ResetScreen::setDuration(
     uint32_t duration
 )
@@ -56,12 +56,14 @@ void ResetScreen::setDuration(
 }
 
 
+
 bool ResetScreen::finished() const
 {
 
     return _finished;
 
 }
+
 
 
 void ResetScreen::begin()
@@ -85,13 +87,10 @@ void ResetScreen::begin()
 }
 
 
+
 void ResetScreen::update()
 {
 
-    /*
-     * Aguarda pelo menos uma renderização antes
-     * de executar a tarefa de reinicialização.
-     */
     if(
         _renderedOnce &&
         !_taskExecuted
@@ -112,10 +111,6 @@ void ResetScreen::update()
         }
 
 
-        /*
-         * O tempo da mensagem final começa após
-         * a conclusão da tarefa.
-         */
         _startedAt =
             millis();
 
@@ -136,13 +131,16 @@ void ResetScreen::update()
 
 }
 
-Result ResetScreen::handleEvent(
-    const Event& event
+
+
+EmbeddedUI::Result ResetScreen::handleEvent(
+    const EmbeddedUI::Event& event
 )
 {
 
     if(
-        event.type == EventType::BUTTON_BACK &&
+        event.type ==
+            EmbeddedUI::EventType::BUTTON_BACK &&
         _finished
     )
     {
@@ -152,18 +150,19 @@ Result ResetScreen::handleEvent(
         );
 
 
-        return Result::HANDLED;
+        return EmbeddedUI::Result::HANDLED;
 
     }
 
 
-    return Result::IGNORED;
+    return EmbeddedUI::Result::IGNORED;
 
 }
 
 
+
 void ResetScreen::render(
-    DisplayDriver& display
+    EmbeddedUI::DisplayDriver& display
 )
 {
 
@@ -227,13 +226,10 @@ void ResetScreen::render(
     );
 
 
-    /*
-     * Informa ao update() que a tela inicial
-     * já foi enviada ao display.
-     */
     _renderedOnce =
         true;
 
 }
+
 
 }

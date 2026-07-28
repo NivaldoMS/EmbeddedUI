@@ -421,10 +421,21 @@ void setup()
         buttons
     );
 
+    /*
+    * Desenha a SplashScreen antes de iniciar
+    * a conexão bloqueante com o Wi-Fi.
+    */
+    application.update();
+
     networkReady =
         connectToWiFi();
 
-
+    /*
+    * O Wi-Fi terminou. Agora começa o tempo
+    * configurado da SplashScreen.
+    */
+    application.finishStartup();
+    
     if(!networkReady)
     {
 

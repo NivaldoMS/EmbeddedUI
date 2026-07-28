@@ -4,9 +4,11 @@
 
 #include <EmbeddedUI.h>
 
+#include "InformationScreen.h"
+#include "ResetScreen.h"
+
 
 using namespace EmbeddedUI;
-
 
 class MenuApplication
 {
@@ -28,6 +30,8 @@ public:
 
     void update();
 
+
+    void finishStartup();
 
 
     Menu& menu();
@@ -68,6 +72,8 @@ private:
 
     void buildMenu();
 
+
+
     static void handleInformation(
         ActionNode& node,
         void* context
@@ -89,8 +95,6 @@ private:
         void* context
     );
 
-
-
     DisplayDriver& _display;
 
 
@@ -111,13 +115,13 @@ private:
 
     Menu _menu;
 
-
     MenuScreen _menuScreen;
+
+    SplashScreen _splashScreen;
     
-    InformationScreen _informationScreen;
+    ApplicationScreens::InformationScreen _informationScreen;
 
-    ResetScreen _resetScreen;
-
+    ApplicationScreens::ResetScreen _resetScreen;
 
 
     Node _audioFolder;
