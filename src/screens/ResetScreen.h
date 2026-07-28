@@ -86,6 +86,12 @@ private:
 
     bool _finished;
 
+
+    bool _renderedOnce;
+
+
+    bool _taskExecuted;
+
 };
 
 

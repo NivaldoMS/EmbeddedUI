@@ -21,7 +21,9 @@ _task(nullptr),
 _context(nullptr),
 _duration(duration),
 _startedAt(0),
-_finished(false)
+_finished(false),
+_renderedOnce(false),
+_taskExecuted(false)
 {
 
 }
@@ -73,14 +75,12 @@ void ResetScreen::begin()
         false;
 
 
-    if(_task)
-    {
+    _renderedOnce =
+        false;
 
-        _task(
-            _context
-        );
 
-    }
+    _taskExecuted =
+        false;
 
 }
 
@@ -88,8 +88,43 @@ void ResetScreen::begin()
 void ResetScreen::update()
 {
 
+    /*
+     * Aguarda pelo menos uma renderização antes
+     * de executar a tarefa de reinicialização.
+     */
+    if(
+        _renderedOnce &&
+        !_taskExecuted
+    )
+    {
+
+        _taskExecuted =
+            true;
+
+
+        if(_task)
+        {
+
+            _task(
+                _context
+            );
+
+        }
+
+
+        /*
+         * O tempo da mensagem final começa após
+         * a conclusão da tarefa.
+         */
+        _startedAt =
+            millis();
+
+    }
+
+
     if(
         !_finished &&
+        _taskExecuted &&
         millis() - _startedAt >= _duration
     )
     {
@@ -100,7 +135,6 @@ void ResetScreen::update()
     }
 
 }
-
 
 Result ResetScreen::handleEvent(
     const Event& event
@@ -188,9 +222,18 @@ void ResetScreen::render(
         }
 
     }
-    while(display.nextFrame());
+    while(
+        display.nextFrame()
+    );
+
+
+    /*
+     * Informa ao update() que a tela inicial
+     * já foi enviada ao display.
+     */
+    _renderedOnce =
+        true;
 
 }
-
 
 }

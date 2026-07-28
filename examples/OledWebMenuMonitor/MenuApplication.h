@@ -90,6 +90,7 @@ private:
     );
 
 
+
     DisplayDriver& _display;
 
 
@@ -112,10 +113,11 @@ private:
 
 
     MenuScreen _menuScreen;
-
-    InformationScreen _informationScreen;
     
+    InformationScreen _informationScreen;
+
     ResetScreen _resetScreen;
+
 
 
     Node _audioFolder;
