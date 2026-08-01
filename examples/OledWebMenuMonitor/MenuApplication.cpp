@@ -87,6 +87,8 @@ void MenuApplication::begin(
         _render
     );
 
+    applyBrightness();
+
     _menuScreen.setRender(
         _render
     );
@@ -344,7 +346,16 @@ void MenuApplication::performResetTask(
     );
 }
 
+void MenuApplication::applyBrightness()
+{
 
+    _display.setBrightness(
+        static_cast<uint8_t>(
+            _brightnessValue.value()
+        )
+    );
+
+}
 
 void MenuApplication::handleBrightnessChanged(
     ValueNode& node,
@@ -354,14 +365,13 @@ void MenuApplication::handleBrightnessChanged(
 {
 
     (void)node;
-
+    (void)value;
 
 
     MenuApplication* application =
         static_cast<MenuApplication*>(
             context
         );
-
 
 
     if(application == nullptr)
@@ -372,28 +382,7 @@ void MenuApplication::handleBrightnessChanged(
     }
 
 
-
-    const uint8_t brightness =
-        static_cast<uint8_t>(
-            value
-        );
-
-
-
-    application->_display.setBrightness(
-        brightness
-    );
-
-
-
-    Serial.print(
-        F("[Display] Brightness: ")
-    );
-
-
-    Serial.println(
-        brightness
-    );
+    application->applyBrightness();
 
 }
 
@@ -503,7 +492,7 @@ void MenuApplication::buildMenu()
                 0.0f,
                 255.0f,
                 5.0f,
-                128.0f
+                30.0f
             )
 
             .integer(

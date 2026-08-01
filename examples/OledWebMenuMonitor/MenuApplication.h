@@ -85,6 +85,8 @@ private:
         void* context
     );
 
+    void applyBrightness();
+
     static void handleBrightnessChanged(
         ValueNode& node,
         float value,
